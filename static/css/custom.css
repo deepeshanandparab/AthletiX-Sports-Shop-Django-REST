@@ -1,0 +1,70 @@
+.logo{
+    height: 50px!important;
+}
+
+.atx-blue{
+    color: #0b2540!important;
+}
+
+.atx-red{
+    color: #e9684d!important;
+}
+
+.bg-atx-blue{
+    background-color: #0b2540!important;
+}
+
+.bg-atx-red{
+    background-color: #e9684d!important;
+}
+
+.pointer{
+    cursor: pointer!important;
+}
+
+.h-100{
+    height: 100px!important;
+}
+
+
+
+/* ------------------------ Register and Login ----------------------*/
+.btn-facebook {
+    background: #405D9D;
+    border: none;
+}
+
+.btn-facebook:hover, .btn-facebook:focus {
+    background: #314879;
+}
+
+.btn-google {
+    background: #DB4437;
+    border: none;
+}
+
+.btn-google:hover, .btn-google:focus {
+    background: #bb1a0c;
+}
+
+.font-12{
+    font-size: 12px!important;
+}
+
+.border-atx-blue{
+    border: 1px solid #0b2540;
+}
+
+.border-atx-red{
+    border: 1px solid #e9684d;
+}
+
+.profile-image{
+    height: 30px;
+    width: 30px;
+    border: 1px solid #0b2540;
+}
+
+.inline{
+    display: inline;
+}
