@@ -28,48 +28,82 @@
             <!-- Price Start -->
             <div class="border-bottom mb-4 pb-4">
                 <h5 class="font-weight-semi-bold mb-4">Filter by price</h5>
-                <form>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" checked id="price-all">
-                        <label class="custom-control-label" for="price-all">All Price</label>
-                        <span class="badge border font-weight-normal">{{all_products|length}}</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="price-1">
-                        <label class="custom-control-label" for="price-1">Rs. 10 - Rs. 100</label>
-                        <span class="badge border font-weight-normal">{% filter_by_price all_products 10 100 %}</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="price-1">
-                        <label class="custom-control-label" for="price-1">Rs. 100 - Rs. 1000</label>
-                        <span class="badge border font-weight-normal">{% filter_by_price all_products 100 1000 %}</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="price-1">
-                        <label class="custom-control-label" for="price-1">Rs. 1000 - Rs. 2000</label>
-                        <span class="badge border font-weight-normal">{% filter_by_price all_products 1000 2000 %}</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="price-2">
-                        <label class="custom-control-label" for="price-2">Rs. 2000 - Rs. 4000</label>
-                        <span class="badge border font-weight-normal">{% filter_by_price all_products 2000 4000 %}</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="price-3">
-                        <label class="custom-control-label" for="price-3">Rs. 4000 - Rs. 6000</label>
-                        <span class="badge border font-weight-normal">{% filter_by_price all_products 4000 6000 %}</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="price-4">
-                        <label class="custom-control-label" for="price-4">Rs. 6000 - Rs. 8000</label>
-                        <span class="badge border font-weight-normal">{% filter_by_price all_products 6000 8000 %}</span>
-                    </div>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                        <input type="checkbox" class="custom-control-input" id="price-5">
-                        <label class="custom-control-label" for="price-5">Rs. 8000 - Rs. 10000</label>
-                        <span class="badge border font-weight-normal">{% filter_by_price all_products 8000 10000 %}</span>
+                        <form method="get">
+                            <button type="submit" class="btn pl-0">
+                            <input type="checkbox" class="custom-control-input" name="price-all" id="price-all" 
+                                {% if filter_dict.price_all == 'on'  %}checked{% endif %}>
+                                <label class="custom-control-label" for="price-all">All Price</label>
+                            </button>
+                        </form>
+                            <span class="badge border font-weight-normal">{{all_products|length}}</span>
                     </div>
-                </form>
+
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                        <form method="get">
+                            <button type="submit" class="btn pl-0">
+                            <input type="checkbox" class="custom-control-input" name="price-50-100" id="price-50-100"
+                                {% if filter_dict.price_50_100 == 'on'  %}checked{% endif %}>
+                            <label class="custom-control-label" for="price-50-100">Rs. 50 - Rs. 100</label>
+                            </button>
+                        </form>
+                        <span class="badge border font-weight-normal">{% filter_by_price all_products 50 100 %}</span>
+                    </div>
+
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                        <form method="get">
+                            <button type="submit" class="btn pl-0">
+                            <input type="checkbox" class="custom-control-input" name="price-101-1000" id="price-101-1000"
+                                {% if filter_dict.price_101_1000 == 'on'  %}checked{% endif %}>
+                            <label class="custom-control-label" for="price-101-1000">Rs. 101 - Rs. 1000</label>
+                            </button>
+                        </form>
+                        <span class="badge border font-weight-normal">{% filter_by_price all_products 101 1000 %}</span>
+                    </div>
+
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                        <form method="get">
+                            <button type="submit" class="btn pl-0">
+                            <input type="checkbox" class="custom-control-input" name="price-1001-3000" id="price-1001-3000"
+                                {% if filter_dict.price_1001_3000 == 'on'  %}checked{% endif %}>
+                            <label class="custom-control-label" for="price-1001-3000">Rs. 1001 - Rs. 3000</label>
+                            </button>
+                        </form>
+                        <span class="badge border font-weight-normal">{% filter_by_price all_products 1001 3000 %}</span>
+                    </div>
+
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                        <form method="get">
+                            <button type="submit" class="btn pl-0">
+                            <input type="checkbox" class="custom-control-input" name="price-3001-6000" id="price-3001-6000"
+                                {% if filter_dict.price_3001_6000 == 'on'  %}checked{% endif %}>
+                            <label class="custom-control-label" for="price-3001-6000">Rs. 3001 - Rs. 6000</label>
+                            </button>
+                        </form>
+                        <span class="badge border font-weight-normal">{% filter_by_price all_products 3001 6000 %}</span>
+                    </div>
+
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                        <form method="get">
+                            <button type="submit" class="btn pl-0">
+                            <input type="checkbox" class="custom-control-input" name="price-6001-9000" id="price-6001-9000"
+                                {% if filter_dict.price_6001_9000 == 'on'  %}checked{% endif %}>
+                            <label class="custom-control-label" for="price-6001-9000">Rs. 6001 - Rs. 9000</label>
+                            </button>
+                        </form>
+                        <span class="badge border font-weight-normal">{% filter_by_price all_products 6001 9000 %}</span>
+                    </div>
+
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                        <form method="get">
+                            <button type="submit" class="btn pl-0">
+                            <input type="checkbox" class="custom-control-input" name="price-9001-12000" id="price-9001-12000"
+                                {% if filter_dict.price_9001_12000 == 'on'  %}checked{% endif %}>
+                            <label class="custom-control-label" for="price-9001-12000">Rs. 9001 - Rs. 12000</label>
+                            </button>
+                        </form>
+                        <span class="badge border font-weight-normal">{% filter_by_price all_products 9001 12000 %}</span>
+                    </div>
             </div>
             <!-- Price End -->
 
@@ -254,12 +288,12 @@
                                 <ul class="pagination">
                                     {% if product_list.has_previous %}
                                     <li class="page-item">
-                                        <a class="page-link" href="?page=1{% if request.GET.title %}&title={{ request.GET.title }}{% endif %}">
+                                        <a class="page-link" href="?page=1{% if request.GET.name %}&name={{ request.GET.name }}{% endif %}">
                                             <i class="fa fa-angle-double-left font-bold"></i>
                                         </a>
                                     </li>
                                     <li class="page-item">
-                                        <a class="page-link" href="?page={{ product_list.previous_page_number }}{% if request.GET.title %}&title={{ request.GET.title }}{% endif %}"
+                                        <a class="page-link" href="?page={{ product_list.previous_page_number }}{% if request.GET.name %}&name={{ request.GET.name }}{% endif %}"
                                            tabindex="-1">
                                             <i class="fa fa-angle-left"></i>
                                         </a>
@@ -276,7 +310,7 @@
                                     </li>
                                     {% else %}
                                     <li class="page-item">
-                                        <a class="page-link" href="?page={{ page }}{% if request.GET.title %}&title={{ request.GET.title }}{% endif %}">{{ page }}</a>
+                                        <a class="page-link" href="?page={{ page }}{% if request.GET.name %}&name={{ request.GET.name }}{% endif %}">{{ page }}</a>
                                     </li>
                                     {% endif %}
                                     {% endfor %}
@@ -284,12 +318,12 @@
         
                                     {% if product_list.has_next %}
                                     <li class="page-item">
-                                        <a class="page-link" href="?page={{ product_list.next_page_number }}{% if request.GET.title %}&title={{ request.GET.title }}{% endif %}">
+                                        <a class="page-link" href="?page={{ product_list.next_page_number }}{% if request.GET.name %}&name={{ request.GET.name }}{% endif %}">
                                             <i class="fa fa-angle-right"></i>
                                         </a>
                                     </li>
                                     <li class="page-item">
-                                        <a class="page-link" href="?page={{ product_list.paginator.num_pages }}{% if request.GET.title %}&title={{ request.GET.title }}{% endif %}">
+                                        <a class="page-link" href="?page={{ product_list.paginator.num_pages }}{% if request.GET.name %}&name={{ request.GET.name }}{% endif %}">
                                             <i class="fa fa-angle-double-right font-bold"></i>
                                         </a>
                                     </li>
