@@ -26,6 +26,20 @@
     height: 100px!important;
 }
 
+.h-inherit{
+    height: inherit!important;
+}
+
+.no-product{
+    width: 300px;
+    padding-top: 15%;
+}
+
+.product-name{
+    height: 50px!important;
+}
+
+
 
 
 /* ------------------------ Register and Login ----------------------*/

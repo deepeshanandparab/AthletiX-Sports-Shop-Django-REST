@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load currency_filter %}
 
 {% block content %}
 <!-- Page Header Start -->
@@ -47,7 +48,7 @@
         <div class="col-lg-7 pb-5">
             <div class="row">
                 <div class="col-10">
-                    <h3 class="font-weight-semi-bold">AthletiX Sports Prodigy Batting Gloves</h3>
+                    <h3 class="font-weight-semi-bold">{{product.name}}</h3>
                 </div>
                 <div class="col-2">
                     <i class="fa fa-heart-o fa-2x float-right atx-red pointer" title="Add to Wishlist"></i>
@@ -65,8 +66,15 @@
                 </div>
                 <small class="pt-1">(50 Reviews)</small>
             </div>
-            <h3 class="font-weight-semi-bold mb-4 inline mr-3">Rs. 1000</h3> <del>Rs. 1500</del>
-            <p class="mb-4">Volup erat ipsum diam elitr rebum et dolor. Est nonumy elitr erat diam stet sit clita ea. Sanc invidunt ipsum et, labore clita lorem magna lorem ut. Erat lorem duo dolor no sea nonumy. Accus labore stet, est lorem sit diam sea et justo, amet at lorem et eirmod ipsum diam et rebum kasd rebum.</p>
+
+            {% if product.discounted_price %}
+            <h3 class="font-weight-semi-bold mb-4 inline mr-3">{{product.discounted_price|inrcurrency|currency}}</h3> 
+            <del>{{product.price|inrcurrency|currency}}</del>
+            {% else %}
+            <h3 class="font-weight-semi-bold mb-4 inline mr-3">{{product.price|inrcurrency|currency}}</h3>
+            {% endif %}
+
+            <p class="mb-4">{{product.description}}</p>
             <div class="d-flex mb-3">
                 <p class="text-dark font-weight-medium mb-0 mr-3">Sizes:</p>
                 <form>
