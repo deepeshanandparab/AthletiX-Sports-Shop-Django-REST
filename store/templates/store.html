@@ -29,78 +29,71 @@
             <div class="border-bottom mb-4 pb-4">
                 <h5 class="font-weight-semi-bold mb-4">Filter by price</h5>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                        <form method="get">
-                            <button type="submit" class="btn pl-0">
+                        <form method="get" action="#search-product-filter">
                             <input type="checkbox" class="custom-control-input" name="price-all" id="price-all" 
-                                {% if filter_dict.price_all == 'on'  %}checked{% endif %}>
+                                {% if filter_dict.price_all == 'on' %}checked{% endif %}
+                                onChange="this.form.submit()">
                                 <label class="custom-control-label" for="price-all">All Price</label>
-                            </button>
                         </form>
                             <span class="badge border font-weight-normal">{{all_products|length}}</span>
                     </div>
 
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                        <form method="get">
-                            <button type="submit" class="btn pl-0">
+                        <form method="get" action="#search-product-filter">
                             <input type="checkbox" class="custom-control-input" name="price-50-100" id="price-50-100"
-                                {% if filter_dict.price_50_100 == 'on'  %}checked{% endif %}>
+                                {% if filter_dict.price_50_100 == 'on' %}checked{% endif %}
+                                onChange="this.form.submit()">
                             <label class="custom-control-label" for="price-50-100">Rs. 50 - Rs. 100</label>
-                            </button>
                         </form>
                         <span class="badge border font-weight-normal">{% filter_by_price all_products 50 100 %}</span>
                     </div>
 
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                        <form method="get">
-                            <button type="submit" class="btn pl-0">
+                        <form method="get" action="#search-product-filter">
                             <input type="checkbox" class="custom-control-input" name="price-101-1000" id="price-101-1000"
-                                {% if filter_dict.price_101_1000 == 'on'  %}checked{% endif %}>
+                                {% if filter_dict.price_101_1000 == 'on'  %}checked{% endif %}
+                                onChange="this.form.submit()">
                             <label class="custom-control-label" for="price-101-1000">Rs. 101 - Rs. 1000</label>
-                            </button>
                         </form>
                         <span class="badge border font-weight-normal">{% filter_by_price all_products 101 1000 %}</span>
                     </div>
 
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                        <form method="get">
-                            <button type="submit" class="btn pl-0">
+                        <form method="get" action="#search-product-filter">
                             <input type="checkbox" class="custom-control-input" name="price-1001-3000" id="price-1001-3000"
-                                {% if filter_dict.price_1001_3000 == 'on'  %}checked{% endif %}>
+                                {% if filter_dict.price_1001_3000 == 'on'  %}checked{% endif %}
+                                onChange="this.form.submit()">
                             <label class="custom-control-label" for="price-1001-3000">Rs. 1001 - Rs. 3000</label>
-                            </button>
                         </form>
                         <span class="badge border font-weight-normal">{% filter_by_price all_products 1001 3000 %}</span>
                     </div>
 
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                        <form method="get">
-                            <button type="submit" class="btn pl-0">
+                        <form method="get" action="#search-product-filter">
                             <input type="checkbox" class="custom-control-input" name="price-3001-6000" id="price-3001-6000"
-                                {% if filter_dict.price_3001_6000 == 'on'  %}checked{% endif %}>
+                                {% if filter_dict.price_3001_6000 == 'on'  %}checked{% endif %}
+                                onChange="this.form.submit()">
                             <label class="custom-control-label" for="price-3001-6000">Rs. 3001 - Rs. 6000</label>
-                            </button>
                         </form>
                         <span class="badge border font-weight-normal">{% filter_by_price all_products 3001 6000 %}</span>
                     </div>
 
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                        <form method="get">
-                            <button type="submit" class="btn pl-0">
+                        <form method="get" action="#search-product-filter">
                             <input type="checkbox" class="custom-control-input" name="price-6001-9000" id="price-6001-9000"
-                                {% if filter_dict.price_6001_9000 == 'on'  %}checked{% endif %}>
+                                {% if filter_dict.price_6001_9000 == 'on'  %}checked{% endif %}
+                                onChange="this.form.submit()">
                             <label class="custom-control-label" for="price-6001-9000">Rs. 6001 - Rs. 9000</label>
-                            </button>
                         </form>
                         <span class="badge border font-weight-normal">{% filter_by_price all_products 6001 9000 %}</span>
                     </div>
 
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                        <form method="get">
-                            <button type="submit" class="btn pl-0">
+                        <form method="get" action="#search-product-filter">
                             <input type="checkbox" class="custom-control-input" name="price-9001-12000" id="price-9001-12000"
-                                {% if filter_dict.price_9001_12000 == 'on'  %}checked{% endif %}>
+                                {% if filter_dict.price_9001_12000 == 'on'  %}checked{% endif %}
+                                onChange="this.form.submit()">
                             <label class="custom-control-label" for="price-9001-12000">Rs. 9001 - Rs. 12000</label>
-                            </button>
                         </form>
                         <span class="badge border font-weight-normal">{% filter_by_price all_products 9001 12000 %}</span>
                     </div>
@@ -109,39 +102,58 @@
 
             <!-- Size Start -->
             <div class="mb-5">
-                <h5 class="font-weight-semi-bold mb-4">Filter by size</h5>
-                <form>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" checked id="size-all">
-                        <label class="custom-control-label" for="size-all">All Size</label>
-                        <span class="badge border font-weight-normal">1000</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="size-1">
-                        <label class="custom-control-label" for="size-1">XS</label>
-                        <span class="badge border font-weight-normal">150</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="size-2">
-                        <label class="custom-control-label" for="size-2">S</label>
-                        <span class="badge border font-weight-normal">295</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="size-3">
-                        <label class="custom-control-label" for="size-3">M</label>
-                        <span class="badge border font-weight-normal">246</span>
-                    </div>
-                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                        <input type="checkbox" class="custom-control-input" id="size-4">
-                        <label class="custom-control-label" for="size-4">L</label>
-                        <span class="badge border font-weight-normal">145</span>
-                    </div>
+                <h5 class="font-weight-semi-bold mb-4">Filter by category</h5>
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                        <input type="checkbox" class="custom-control-input" id="size-5">
-                        <label class="custom-control-label" for="size-5">XL</label>
-                        <span class="badge border font-weight-normal">168</span>
+                        <form method="get" action="#search-product-filter">
+                            <input type="checkbox" class="custom-control-input" name="category_all" id="category_all"
+                                {% if filter_dict.category_all == 'on'  %}checked{% endif %}
+                                onChange="this.form.submit()">
+                            <label class="custom-control-label" for="category_all">All Categories</label>
+                        </form>
+                        <span class="badge border font-weight-normal">{{all_products|length}}</span>
                     </div>
-                </form>
+
+                    <!-------------------- Size Start ------------------->
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                        <form method="get" action="#search-product-filter">
+                            <input type="checkbox" class="custom-control-input" name="category_kashmir_willow_bat" id="category_kashmir_willow_bat"
+                                {% if filter_dict.category_kashmir_willow_bat == 'on'  %}checked{% endif %}
+                                onChange="this.form.submit()">
+                            <label class="custom-control-label" for="category_kashmir_willow_bat">Kashmir Willow Bat</label>
+                        </form>
+                        <span class="badge border font-weight-normal">{{all_products|filter_by_category:'kashmir_willow_bat'}}</span>
+                    </div>
+
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                        <form method="get" action="#search-product-filter">
+                            <input type="checkbox" class="custom-control-input" name="category_english_willow_bat" id="category_english_willow_bat"
+                                {% if filter_dict.category_english_willow_bat == 'on'  %}checked{% endif %}
+                                onChange="this.form.submit()">
+                            <label class="custom-control-label" for="category_english_willow_bat">English Willow Bat</label>
+                        </form>
+                        <span class="badge border font-weight-normal">{{all_products|filter_by_category:'english_willow_bat'}}</span>
+                    </div>
+
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                        <form method="get" action="#search-product-filter">
+                            <input type="checkbox" class="custom-control-input" name="category_leather_ball" id="category_leather_ball"
+                                {% if filter_dict.category_leather_ball == 'on'  %}checked{% endif %}
+                                onChange="this.form.submit()">
+                            <label class="custom-control-label" for="category_leather_ball">Leather Ball</label>
+                        </form>
+                        <span class="badge border font-weight-normal">{{all_products|filter_by_category:'leather_ball'}}</span>
+                    </div>
+
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                        <form method="get" action="#search-product-filter">
+                            <input type="checkbox" class="custom-control-input" name="category_batting_gloves" id="category_batting_gloves"
+                                {% if filter_dict.category_batting_gloves == 'on'  %}checked{% endif %}
+                                onChange="this.form.submit()">
+                            <label class="custom-control-label" for="category_batting_gloves">Batting Gloves</label>
+                        </form>
+                        <span class="badge border font-weight-normal">{{all_products|filter_by_category:'batting_gloves'}}</span>
+                    </div>
+                    <!----------------------------------------------------->
             </div>
             <!-- Size End -->
         </div>
@@ -154,14 +166,15 @@
             <div class="row pb-3">
                 <div class="col-12 pb-1">
                     <div class="d-flex align-items-center justify-content-between mb-4">
-                        <form method="get">
+                        <form method="get" id="search-product-filter" action="#search-product-filter">
                             <div class="input-group">
                                 <input type="text" name="name" class="form-control" placeholder="Search by name" autocomplete="false">
                                 <div class="input-group-append">
                                     <button type="submit" class="input-group-text bg-transparent text-primary">
                                         <i class="fa fa-search"></i>
                                     </button>
-                                    <a href="{% url 'storepage' %}" class="no-text-decoration text-dark ml-3 py-2">Clear</a>
+                                    <a href="{% url 'storepage' %}" onclick="scrolldiv()"
+                                    class="no-text-decoration text-dark ml-3 py-2">Clear</a>
                                 </div>
                             </div>
                         </form>
@@ -170,23 +183,23 @@
                             <button class="btn border dropdown-toggle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">Sort by</button>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
-                                <form method="get" class="form">
+                                <form method="get" class="form" action="#search-product-filter">
                                     <input type="text" name="latest" value="true" hidden>
                                     <button class="btn dropdown-item" type="submit">Latest</button>
                                 </form>
-                                <form method="get" class="form">
+                                <form method="get" class="form" action="#search-product-filter">
                                     <input type="text" name="popularity" value="true" hidden>
                                     <button class="btn dropdown-item" type="submit">Popularity</button>
                                 </form>
-                                <form method="get" class="form">
+                                <form method="get" class="form" action="#search-product-filter">
                                     <input type="text" name="best_rating" value="true" hidden>
                                     <button class="btn dropdown-item" type="submit">Best Rating</button>
                                 </form>
-                                <form method="get" class="form">
+                                <form method="get" class="form" action="#search-product-filter">
                                     <input type="text" name="low_price" value="true" hidden>
                                     <button class="btn dropdown-item" type="submit">Price <small>(Low to High)</small></button>
                                 </form>
-                                <form method="get" class="form">
+                                <form method="get" class="form" action="#search-product-filter">
                                     <input type="text" name="high_price" value="true" hidden>
                                     <button class="btn dropdown-item" type="submit">Price <small>(High to Low)</small></button>
                                 </form>
@@ -203,7 +216,7 @@
 
                 {% if product_list|length > 0 %}
                     {% for product in product_list %}
-                    <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
+                    <div class="col-lg-4 col-md-6 col-sm-12 pb-1" id="product_{{product.id}}">
                         <div class="card product-item border-0 mb-4">
                             <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
                                 <a href="{% url 'productdetailpage' product.id %}">
@@ -225,7 +238,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <i class="fa fa-heart-o atx-red ml-2"></i>
+                                        <div class="heart-animation"></div>
                                     </div>
                                     <div class="col-6">
                                         4.5 <i class="fa fa-star text-muted ml-2"></i>
@@ -240,22 +253,40 @@
                                         <i class="fas fa-eye text-primary mr-1"></i>View Detail
                                     </a>
                                 </div>
-                                <div class="col-6 p-2 text-center">
-                                    <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                                
+                                {% if product|is_in_cart:request.session.cart %}
+                                <div class="col-6 input-group quantity px-0">
+                                    <div class="input-group-btn">
+                                        <form action="/store/?page={{page_number}}#product_{{product.id}}" method="post">
+                                        {% csrf_token %}
+                                            <input type="text" name="product" value="{{product.id}}" hidden> 
+                                            <input type="text" name="remove" value="True" hidden>    
+                                            <input type="submit" class="btn bg-atx-red text-white btn-minus py-2" value=" - ">
+                                        </form>
+                                    </div>
+
+                                    <input type="text" class="form-control bg-secondary text-center bg-white border-0" 
+                                        value="{{product|cart_quantity:request.session.cart}}">
+                                    
+                                    <div class="input-group-btn">
+                                        <form action="/store/?page={{page_number}}#product_{{product.id}}" method="post">
+                                            {% csrf_token %}
+                                            <input type="text" name="product" value="{{product.id}}" hidden> 
+                                            <input type="submit" class="btn bg-atx-red text-white btn-plus py-2" value=" + ">
+                                        </form>
+                                    </div>
                                 </div>
-                                <!-- <div class="col-6 input-group quantity px-0">
-                                    <div class="input-group-btn">
-                                        <button class="btn bg-atx-red text-white btn-minus py-2">
-                                        <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" class="form-control bg-secondary text-center bg-white border-0" value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn bg-atx-red text-white btn-plus py-2">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div> -->
+                                {% else %}
+                                <div class="col-6 p-2 text-center">
+                                    <form method="post" action="/store/?page={{page_number}}#product_{{product.id}}">
+                                        {% csrf_token %}
+                                        <input type="text" name="product" value="{{product.id}}" hidden>
+                                        <i class="fas fa-shopping-cart text-primary mr-1"></i>
+                                        <input type="submit" class="btn btn-sm text-dark p-0" value="Add to Cart">
+                                    </form>
+                                </div>
+                                {% endif %}
+
                             </div>
                         </div>
                     </div>
@@ -288,13 +319,14 @@
                                 <ul class="pagination">
                                     {% if product_list.has_previous %}
                                     <li class="page-item">
-                                        <a class="page-link" href="?page=1{% if request.GET.name %}&name={{ request.GET.name }}{% endif %}">
+                                        <a class="page-link" href="?page=1{% if request.GET.name %}&name={{ request.GET.name }}{% endif %}"
+                                            action="/?page=1#search-product-filter">
                                             <i class="fa fa-angle-double-left font-bold"></i>
                                         </a>
                                     </li>
                                     <li class="page-item">
                                         <a class="page-link" href="?page={{ product_list.previous_page_number }}{% if request.GET.name %}&name={{ request.GET.name }}{% endif %}"
-                                           tabindex="-1">
+                                           tabindex="-1" action="?page={{ product_list.previous_page_number }}#search-product-filter">
                                             <i class="fa fa-angle-left"></i>
                                         </a>
                                     </li>
@@ -310,7 +342,8 @@
                                     </li>
                                     {% else %}
                                     <li class="page-item">
-                                        <a class="page-link" href="?page={{ page }}{% if request.GET.name %}&name={{ request.GET.name }}{% endif %}">{{ page }}</a>
+                                        <a class="page-link" href="?page={{ page }}{% if request.GET.name %}&name={{ request.GET.name }}{% endif %}"
+                                            action="/?page={{ page }}#search-product-filter">{{ page }}</a>
                                     </li>
                                     {% endif %}
                                     {% endfor %}
@@ -318,12 +351,14 @@
         
                                     {% if product_list.has_next %}
                                     <li class="page-item">
-                                        <a class="page-link" href="?page={{ product_list.next_page_number }}{% if request.GET.name %}&name={{ request.GET.name }}{% endif %}">
+                                        <a class="page-link" href="?page={{ product_list.next_page_number }}{% if request.GET.name %}&name={{ request.GET.name }}{% endif %}"
+                                            action="/?page={{ product_list.next_page_number }}#search-product-filter">
                                             <i class="fa fa-angle-right"></i>
                                         </a>
                                     </li>
                                     <li class="page-item">
-                                        <a class="page-link" href="?page={{ product_list.paginator.num_pages }}{% if request.GET.name %}&name={{ request.GET.name }}{% endif %}">
+                                        <a class="page-link" href="?page={{ product_list.paginator.num_pages }}{% if request.GET.name %}&name={{ request.GET.name }}{% endif %}"
+                                            action="/?page={{ product_list.paginator.num_pages }}#search-product-filter">
                                             <i class="fa fa-angle-double-right font-bold"></i>
                                         </a>
                                     </li>
@@ -336,7 +371,7 @@
                         </div>
                     </div>
                     {% else %}
-                    <div class="col-12 text-center">
+                    <div class="col-12 text-center" style="height: 500px;">
                         <img src="{% static 'img/no products.png' %}" class="no-product">
                     </div>
                     {% endif %}

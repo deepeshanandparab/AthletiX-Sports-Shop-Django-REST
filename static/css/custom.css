@@ -82,3 +82,30 @@
 .inline{
     display: inline;
 }
+
+
+/* Parts are from twitter.com */
+
+.heart-animation {
+    padding-top: 1.5em;
+    background-image: url(../img/heart_animation.png);
+      background-repeat: no-repeat;
+      background-size: 2900%;
+    background-position: left;
+      width: 50px;
+    margin: 0 auto;
+    cursor: pointer;
+  }
+  
+  .animate {
+    animation: heart-burst .8s steps(28) forwards;
+  }
+  
+  @keyframes heart-burst {
+      0% {
+          background-position: left
+      }
+      100% {
+          background-position: right
+      }
+  }

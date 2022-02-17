@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
+{% load cart_filter %}
 
 <head>
     <meta charset="utf-8">
@@ -90,7 +91,7 @@
                 </a>
                 <a href="" class="btn border">
                     <i class="fas fa-shopping-cart atx-red"></i>
-                    <span class="badge">0</span>
+                    <span class="badge">{{request.session.cart|cart_count}}</span>
                 </a>
             </div>
         </div>
@@ -290,6 +291,8 @@
     <script src="{% static 'js/owl.carousel.min.js' %}"></script>
 
     <script src="{% static 'js/main.js' %}"></script>
+
+    <script src="{% static 'js/custom.js' %}"></script>
     
 </body>
 </html>

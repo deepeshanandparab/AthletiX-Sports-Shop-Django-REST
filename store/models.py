@@ -1,3 +1,4 @@
+from unicodedata import category
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -17,23 +18,19 @@ class Brand(models.Model):
 
 
 class ProductType(models.Model):
-    type = models.CharField(max_length=15)
-    value = models.CharField(max_length=15, default='')
-
+    type = models.CharField(max_length=30)
+    value = models.CharField(max_length=30, default='')
 
     def __str__(self):
         return self.type
 
 
-class ProductCategory(models.Model):
-    type = models.ForeignKey(ProductType, related_name='product_type', on_delete=models.CASCADE)
-    category = models.CharField(max_length=15)
-    value = models.CharField(max_length=15, default='')
-
-
-    def __str__(self):
-        return f'{self.category} in {self.type.type}' 
-
+TYPE_CHOICES = (
+    ('kashmir_willow_bat','kashmir_willow_bat'),
+    ('english_willow_bat','english_willow_bat'),
+    ('leather_ball','leather_ball'),
+    ('batting_gloves','batting_gloves')
+)
 
 class Product(models.Model):
     name = models.CharField(max_length=200)
@@ -43,6 +40,8 @@ class Product(models.Model):
     description = models.CharField(max_length=500)
     brand = models.ForeignKey(Brand, related_name='brand', on_delete = models.CASCADE)
     status = models.BooleanField(default=False)
+    category = models.CharField(max_length=10, default='', null=True, blank=True)
+    type = models.CharField(max_length=40, choices=TYPE_CHOICES, default='')
     wishlist = models.ManyToManyField(User, related_name='wishlist', blank=True)
     sold_quantity = models.IntegerField(default=0)
     stock_quantity = models.IntegerField(default=0)
