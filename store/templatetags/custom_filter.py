@@ -25,3 +25,14 @@ def filter_by_category(product_list, type):
 def readable_text(value):
     value = value.replace('_', ' ')
     return value.title()
+
+
+@register.filter(name='new_line')
+def new_line(value):
+    value = value.replace(';', '')
+    return value
+
+
+@register.filter(name='split')
+def split(value, key):
+  return value.split(key)

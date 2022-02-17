@@ -29,7 +29,8 @@ TYPE_CHOICES = (
     ('kashmir_willow_bat','kashmir_willow_bat'),
     ('english_willow_bat','english_willow_bat'),
     ('leather_ball','leather_ball'),
-    ('batting_gloves','batting_gloves')
+    ('batting_gloves','batting_gloves'),
+    ('kit_bag_junior','kit_bag_junior')
 )
 
 class Product(models.Model):
@@ -37,7 +38,8 @@ class Product(models.Model):
     price = models.IntegerField()
     discount = models.IntegerField()
     discounted_price = models.IntegerField(null=True, blank=True)
-    description = models.CharField(max_length=500)
+    summary = models.CharField(max_length=1000, default='')
+    description = models.CharField(max_length=5000)
     brand = models.ForeignKey(Brand, related_name='brand', on_delete = models.CASCADE)
     status = models.BooleanField(default=False)
     category = models.CharField(max_length=10, default='', null=True, blank=True)
@@ -59,6 +61,11 @@ class Product(models.Model):
         return f'{self.name} {self.price}'
 
 
+class BuyingPrice(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    buying_price = models.IntegerField()
+
+
 class ImageAlbum(models.Model):
     name = models.CharField(max_length=255)
     image = models.FileField(upload_to=get_upload_path)
@@ -75,4 +82,12 @@ class ImageAlbum(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Wishlist(models.Model):
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='wishlist_product')
+    user_id = models.ForeignKey(User, on_delete=models.DO_NOTHING,  related_name='wishlist_user')
+
+    def __str__(self):
+        return f'{self.user_id} wishlisted product number : {self.product_id.name}'
 

@@ -153,6 +153,16 @@
                         </form>
                         <span class="badge border font-weight-normal">{{all_products|filter_by_category:'batting_gloves'}}</span>
                     </div>
+
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                        <form method="get" action="#search-product-filter">
+                            <input type="checkbox" class="custom-control-input" name="category_kit_bag_junior" id="category_kit_bag_junior"
+                                {% if filter_dict.category_kit_bag_junior == 'on'  %}checked{% endif %}
+                                onChange="this.form.submit()">
+                            <label class="custom-control-label" for="category_kit_bag_junior">Kit Bag - Junior</label>
+                        </form>
+                        <span class="badge border font-weight-normal">{{all_products|filter_by_category:'kit_bag_junior'}}</span>
+                    </div>
                     <!----------------------------------------------------->
             </div>
             <!-- Size End -->
@@ -238,15 +248,26 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <div class="heart-animation"></div>
+                                        {% if request.session.username %}
+                                        <form method="post" action="#product_{{product.id}}">
+                                            {% csrf_token %}
+                                            <a href="{% url 'product_wishlist' product.id %}" class="no-text-decoration" title="Wishlist">
+                                                {% if request.user in product.wishlist.all %}
+                                                    <i class="fa fa-heart atx-red" title="Added to Wishlist"></i>
+                                                {% else %}
+                                                    <i class="far fa-heart atx-red" title="Add to Wishlist"></i>
+                                                {% endif %}
+                                            </a>
+                                        </form>
+                                        {% endif %}
                                     </div>
                                     <div class="col-6">
                                         4.5 <i class="fa fa-star text-muted ml-2"></i>
                                     </div>
                                 </div>
-
                                 {% endif %}
                             </div>
+
                             <div class="d-flex justify-content-between bg-light border">
                                 <div class="col-6 p-2 text-center">
                                     <a href="{% url 'productdetailpage' product.id %}" class="btn btn-sm text-dark p-0">

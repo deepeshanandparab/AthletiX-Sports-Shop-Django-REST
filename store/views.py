@@ -1,8 +1,10 @@
 from multiprocessing import context
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.views import View
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from .models import Product, ProductType
+from .models import Product, ProductType, Wishlist
+from athletixsportsshop.supporting_functions import getWishlistCount
 
 class StorePage(View):
     def post(self, request):
@@ -69,6 +71,7 @@ class StorePage(View):
         category_english_willow_bat = request.GET.get('category_english_willow_bat')
         category_leather_ball = request.GET.get('category_leather_ball')
         category_batting_gloves = request.GET.get('category_batting_gloves')
+        category_kit_bag_junior = request.GET.get('category_kit_bag_junior')
         filter_dict = {}
 
         if keyword != None:
@@ -114,6 +117,9 @@ class StorePage(View):
             elif category_batting_gloves == 'on':
                 product_list = Product.objects.filter(type='batting_gloves', status=True).order_by('price')
                 filter_dict = { 'category_batting_gloves':'on'}
+            elif category_kit_bag_junior == 'on':
+                product_list = Product.objects.filter(type='kit_bag_junior', status=True).order_by('price')
+                filter_dict = { 'category_kit_bag_junior':'on'}
             #------------------------------------------------------------    
             else:
                 product_list = Product.objects.filter(name__contains=keyword, status=True)
@@ -160,6 +166,9 @@ class StorePage(View):
             elif category_batting_gloves == 'on':
                 product_list = Product.objects.filter(type='batting_gloves', status=True).order_by('price')
                 filter_dict = { 'category_batting_gloves':'on'}
+            elif category_kit_bag_junior == 'on':
+                product_list = Product.objects.filter(type='kit_bag_junior', status=True).order_by('price')
+                filter_dict = { 'category_kit_bag_junior':'on'}
             #------------------------------------------------------------  
             else:
                 product_list = Product.objects.filter(status=True)
@@ -186,16 +195,74 @@ class StorePage(View):
             'first_item_number': first_item_number,
             'search_keyword': keyword,
             'filter_dict': filter_dict,
-            'products_type_list': products_type_list
+            'products_type_list': products_type_list,
+            'wishlist_product_count': getWishlistCount(request)
             }
         return render(request, 'store.html', context)
 
 
-def ProductDetailPage(request, id):
+class ProductDetailPage(View):
+    def post(self, request, id):
+        product = request.POST.get('product')
+        remove = request.POST.get('remove')
+        cart = request.session.get('cart')
+
+        if cart:
+            quantity = cart.get(product)
+            if quantity:
+                if remove:
+                    if quantity <= 1:
+                        cart.pop(product)
+                    else:    
+                        cart[product] = quantity-1
+                else:
+                    cart[product] = quantity+1
+            else:
+                cart[product] = 1
+        else:
+            cart = {}
+            cart[product] = 1
+        request.session['cart'] = cart
+        return redirect('productdetailpage', product)
+
+    def get(self, request, id):
+        product_list = Product.objects.all()
+        product = Product.objects.get(id=id)
+        context = {
+                    'title':'Product Detail',
+                    'product': product,
+                    'product_list': product_list,
+                    'wishlist_product_count': getWishlistCount(request)
+                    }
+        return render(request, 'product-detail.html', context)
+
+
+@login_required
+def wishlistProduct(request, id):
     product = Product.objects.get(id=id)
-    context = {
-                'title':'Product Detail',
-                'product': product
-                }
-    return render(request, 'product-detail.html', context)
+    is_wishlist = False
+    if product.wishlist.filter(id=request.user.id).exists():
+        product.wishlist.remove(request.user)
+        Wishlist.objects.filter(product_id=product, user_id=request.user).delete()
+        is_wishlist = False
+    else:
+        product.wishlist.add(request.user)
+        Wishlist.objects.create(product_id=product, user_id=request.user)
+        is_wishlist = True
+    return redirect('storepage')
+
+
+@login_required
+def wishlistProductDetail(request, id):
+    product = Product.objects.get(id=id)
+    is_wishlist = False
+    if product.wishlist.filter(id=request.user.id).exists():
+        product.wishlist.remove(request.user)
+        Wishlist.objects.filter(product_id=product, user_id=request.user).delete()
+        is_wishlist = False
+    else:
+        product.wishlist.add(request.user)
+        Wishlist.objects.create(product_id=product, user_id=request.user)
+        is_wishlist = True
+    return redirect('productdetailpage', id)
 

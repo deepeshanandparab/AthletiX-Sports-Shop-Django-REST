@@ -35,6 +35,14 @@
 </head>
 
 <body>
+    <div class="loader-wrapper">
+        <span class="loader">
+            <span class="loader-inner">
+                <img src="{% static 'img/athletix_loader.gif'%}" width="70px">
+            </span>
+        </span>
+    </div>
+
     <!-- Topbar Start -->
     <div class="container-fluid">
         <div class="row bg-secondary py-2 px-xl-5">
@@ -87,7 +95,7 @@
             <div class="col-lg-3 col-5 text-right">
                 <a href="" class="btn border">
                     <i class="fas fa-heart atx-red"></i>
-                    <span class="badge">0</span>
+                    <span class="badge">{{wishlist_product_count}}</span>
                 </a>
                 <a href="" class="btn border">
                     <i class="fas fa-shopping-cart atx-red"></i>
@@ -145,7 +153,11 @@
                         <div class="navbar-nav ml-auto py-0">
                             {% if request.session.username %}
                             <a href="#" class="nav-item nav-link pr-0">
+                                {% if request.user.profile.profile_image %}
                                 <img src="{{request.user.profile.profile_image.url}}" class="profile-image">
+                                {% else %}
+                                <img src="{% static 'img/no_image.jpg' %}" class="profile-image">
+                                {% endif %}
                             </a>
                             <a href="#" class="nav-item nav-link mt-1">{{request.session.username}}</a>
                             <a href="{% url 'logoutpage' %}" class="nav-item nav-link mt-1">Logout</a>

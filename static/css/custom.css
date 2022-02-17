@@ -109,3 +109,40 @@
           background-position: right
       }
   }
+
+
+  /*-------------------------------Page Loader-----------------------*/
+.loader-wrapper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(161, 160, 160, 0.9);
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 20!important;
+  }
+  
+  .loader {
+    display: inline-block;
+    position: relative;
+    animation: loader 2s infinite ease;
+  }
+  
+  .loader-inner {
+    vertical-align: top;
+    display: inline-block;
+  }
+  
+  /*-------------------------------------------------------------*/
+
+  .brand{
+      height: 100px;
+  }
+
+  .modal-backdrop{
+      background-color:#0b2540!important;
+      opacity: 0.98!important;
+    }
