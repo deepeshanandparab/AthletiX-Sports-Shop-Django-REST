@@ -1,0 +1,68 @@
+{% load cart_filter %}
+{% load currency_filter %}
+
+
+<div class="panel panel-default">
+    <div class="panel-body">
+      <!-- Single button -->
+      <div class="btn-group pull-right top-head-dropdown">
+        <button type="button" class="btn btn-default border dropdown-toggle" data-toggle="dropdown" 
+        aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-shopping-cart atx-red"></i>
+            <span class="badge">{{request.session.cart|cart_count}}</span>
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right pt-0 pb-3">
+            <li>
+                <table class="table w-100 text-sm mb-0">
+                    {% for cart in cart_list %}
+                    <tr class="border-bottom">
+                        <td class="text-center py-2"><img src="{{cart.product.all.0.image.url}}" class="notification-cart-image"></td>
+                        <td class="py-2">{{cart.name}}</td>
+                        <td class="py-2 w-15">{{cart.price|discountedprice:cart.discount|inrcurrency|currency}}</td>
+                        <td><button class="btn no-border fa fa-trash atx-blue"></button></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </li>
+            <li>
+                <button class="btn bg-atx-red btn-sm my-2 float-right mr-2 text-white">View Cart</button>
+            </li></br>
+            <li class="mb-2"></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+          <!-- Single button -->
+          <div class="btn-group pull-right top-head-dropdown mr-1">
+            <button type="button" class="btn btn-default border dropdown-toggle" data-toggle="dropdown" 
+            aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-heart atx-red"></i>
+                <span class="badge">{{wishlist_products|length}}</span>
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right pt-0 pb-3">
+                <li>
+                    <table class="table w-100 text-sm mb-0">
+                        {% for product in wishlist_products %}
+                        <tr class="border-bottom">
+                            <td class="text-center py-2"><img src="{{product.product.all.0.image.url}}" class="notification-cart-image"></td>
+                            <td class="py-2">{{product.name}}</td>
+                            <td class="py-2 w-15">{{product.price|inrcurrency|currency}}</td>
+                            <td><button class="btn no-border fa fa-trash atx-blue"></button></td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </li>
+                <li>
+                    <button class="btn bg-atx-red btn-sm my-2 mb-4 float-right mr-2 text-white">View Wishlist</button>
+                </li></br>
+                <li class="mb-2"></li>
+              </ul>
+            </div>
+          </div>
+        </div>

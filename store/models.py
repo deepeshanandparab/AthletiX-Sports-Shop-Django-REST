@@ -30,7 +30,8 @@ TYPE_CHOICES = (
     ('english_willow_bat','english_willow_bat'),
     ('leather_ball','leather_ball'),
     ('batting_gloves','batting_gloves'),
-    ('kit_bag_junior','kit_bag_junior')
+    ('kit_bag_junior','kit_bag_junior'),
+    ('cricket_whites','cricket_whites')
 )
 
 class Product(models.Model):
@@ -89,5 +90,21 @@ class Wishlist(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.DO_NOTHING,  related_name='wishlist_user')
 
     def __str__(self):
-        return f'{self.user_id} wishlisted product number : {self.product_id.name}'
+        return f'{self.user_id} wishlisted product : {self.product_id.name}'
+        
+
+class RatingReview(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='rating_product')
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING,  related_name='rating_user')
+    rating = models.FloatField()
+    review = models.TextField(max_length=200, blank=True)
+    ip = models.CharField(max_length=20, null=True, blank=True)
+    status = models.BooleanField(default=True)
+    created_at = models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
+
+
+    def __str__(self):
+        return f'{self.user} rated {self.product.name} with {self.rating} stars'
+
 

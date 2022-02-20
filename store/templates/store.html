@@ -163,6 +163,17 @@
                         </form>
                         <span class="badge border font-weight-normal">{{all_products|filter_by_category:'kit_bag_junior'}}</span>
                     </div>
+                    
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                        <form method="get" action="#search-product-filter">
+                            <input type="checkbox" class="custom-control-input" name="category_cricket_whites" id="category_cricket_whites"
+                                {% if filter_dict.category_cricket_whites == 'on'  %}checked{% endif %}
+                                onChange="this.form.submit()">
+                            <label class="custom-control-label" for="category_cricket_whites">Cricket Whites</label>
+                        </form>
+                        <span class="badge border font-weight-normal">{{all_products|filter_by_category:'cricket_whites'}}</span>
+                    </div>
+        
                     <!----------------------------------------------------->
             </div>
             <!-- Size End -->
@@ -249,20 +260,23 @@
                                 <div class="row">
                                     <div class="col-6">
                                         {% if request.session.username %}
-                                        <form method="post" action="#product_{{product.id}}">
+                                        <form method="post">
                                             {% csrf_token %}
                                             <a href="{% url 'product_wishlist' product.id %}" class="no-text-decoration" title="Wishlist">
                                                 {% if request.user in product.wishlist.all %}
-                                                    <i class="fa fa-heart atx-red" title="Added to Wishlist"></i>
+                                                    <i class="fa fa-heart atx-red" title="Wishlisted"></i>
+                                                    <p class="text-sm text-dark">Wishlisted</p>
                                                 {% else %}
                                                     <i class="far fa-heart atx-red" title="Add to Wishlist"></i>
+                                                    <p class="text-sm text-dark">Add to Wishlist</p>
                                                 {% endif %}
                                             </a>
                                         </form>
                                         {% endif %}
                                     </div>
                                     <div class="col-6">
-                                        4.5 <i class="fa fa-star text-muted ml-2"></i>
+                                        {% include 'star_rating_list.html' %}
+                                        <p class="text-sm text-dark">{{ratings_list|overall_rating:product}}/5</p>
                                     </div>
                                 </div>
                                 {% endif %}

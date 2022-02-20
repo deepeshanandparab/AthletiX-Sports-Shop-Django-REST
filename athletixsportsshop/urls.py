@@ -21,7 +21,7 @@ from .views import HomePage
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', HomePage, name='homepage'),
+    path('', HomePage.as_view(), name='homepage'),
     path('account/', include('account.urls')),
     path('store/', include('store.urls'))
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

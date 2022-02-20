@@ -22,6 +22,10 @@
     cursor: pointer!important;
 }
 
+.disabled{
+    cursor: not-allowed!important;
+}
+
 .h-100{
     height: 100px!important;
 }
@@ -115,7 +119,7 @@
 .loader-wrapper {
     width: 100%;
     height: 100%;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     background-color: rgba(161, 160, 160, 0.9);
@@ -136,7 +140,7 @@
     display: inline-block;
   }
   
-  /*-------------------------------------------------------------*/
+/*-------------------------------------------------------------*/
 
   .brand{
       height: 100px;
@@ -146,3 +150,233 @@
       background-color:#0b2540!important;
       opacity: 0.98!important;
     }
+
+
+/* Hide Radio button */
+.rate > input{
+	display: none;
+  }
+  
+  .rate{
+	display: inline-block;;
+	border: 0;
+  }
+  
+  .rate > label{
+	float: right;
+  }
+  
+  /* Showing the stars */
+  .rate > label:before{
+	display: inline-block;
+	font-size: 1.1rem;
+	font-family: FontAwesome;
+	content: "\f005";
+	margin:0;
+	padding:0.3rem .2rem;
+	cursor: pointer;
+  }
+  
+  /* Half star */
+  .rate .half:before{
+	content: "\f089";
+	position: absolute;
+	padding-right: 0;
+  }
+  
+  /* Click and hover */
+  input:checked ~ label, label:hover ~ label{
+	color: #e9684d;
+  }
+  
+  /* hover hightlight */
+  input:checked + label:hover, input:checked ~ label:hover,input:checked ~ label:hover ~ label,
+  label:hover ~ input:checked ~ label{
+	color: #b33319;
+  }
+  
+  .rating-star i{
+	color: #e9684d !important;
+  }
+
+
+  .user-icon-text{
+      height: 40px!important;
+      width: 40px!important;
+      background-color: #e9684d!important;
+      text-align: center!important;
+      color: white!important;
+      padding-top: 8px;
+      margin-right: 10px;
+  }
+/*--------------------------------------------------------------------------------*/
+
+.product-img{
+    position:relative!important;
+    overflow:hidden!important;
+    padding-bottom:100%!important;
+}
+
+.product-img img{
+    position:absolute!important;
+}
+
+.no-review-section{
+  padding-top: 15%!important;
+}
+
+.size-chart td{
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.size-chart .header{
+  background-color: #e9684d;
+  color: #000;
+}
+
+.summary-points{
+  border: 1px solid #e9684d;
+  background: #e9684d;
+  margin-right: 10px;
+}
+
+.w-15{
+  width: 15%!important;
+}
+
+.fb-color{
+  color: #3b5998!important;
+}
+
+.twitter-color{
+  color: #1DA1F2!important;
+}
+
+.linkedin-color{
+  color: #0077b5!important;
+}
+
+.google-plus-color{
+  color:  #db4a39!important;
+}
+
+.reddit-color{
+  color:  #FF4500!important;
+}
+
+
+/*-------------------- Notification -----------------------*/
+.top-text-block{
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: 400;
+  line-height: 1.42857143;
+  color: #333;
+  white-space: inherit !important;
+  border-bottom:1px solid #f4f4f4;
+  position:relative;
+  &:hover {
+        &:before {
+        content: '';
+        width: 4px;
+        background: #f05a1a;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        position: absolute;
+    }
+  }
+  &.unread {
+    background:#ffc;
+  }
+  
+  .top-text-light {
+    color: #999;
+    font-size: 0.8em;
+  }
+}   
+
+.top-head-dropdown {
+  .dropdown-menu {
+   width: 350px;
+    height:300px;
+    overflow:auto;
+  }
+  
+  li:last-child{
+    .top-text-block {
+      border-bottom:0;
+    }
+  }
+}
+
+.topbar-align-center {
+  text-align: center;
+}
+.loader-topbar {
+  margin: 5px auto;
+  border: 3px solid #ddd;
+  border-radius: 50%;
+  border-top: 3px solid #666;
+  width: 22px;
+  height: 22px;
+  -webkit-animation: spin-topbar 1s linear infinite;
+  animation: spin-topbar 1s linear infinite;
+}
+
+
+.notification-cart-image{
+  height: 50px!important;
+}
+
+
+.top-head-dropdown ul{
+    width: 350px!important;;
+    position: absolute!important;;
+    will-change: transform!important;
+    top: 0px!important;
+    left: -190px!important;
+    transform: translate3d(-80px, 38px, 0px)!important;
+    overflow-y: scroll!important;
+    height: 300px!important;
+}
+
+.top-head-dropdown .fa-trash:hover{
+  color:#db4a39!important;
+}
+
+.text-sm{
+  font-size: 12px!important;
+}
+
+.top-head-dropdown td{
+  vertical-align:middle!important;
+  padding-right: 0px!important;
+}
+
+
+/*----------------------------Scroll Bar------------------------*/
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #db4a39!important;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #db4a39; 
+}

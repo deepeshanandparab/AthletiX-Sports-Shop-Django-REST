@@ -1,10 +1,13 @@
 from multiprocessing import context
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.views import View
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from .models import Product, ProductType, Wishlist
-from athletixsportsshop.supporting_functions import getWishlistCount
+from .models import Product, ProductType, Wishlist, RatingReview
+from .forms import ReviewForm
+from django.contrib import messages
+from athletixsportsshop.supporting_functions import getWishlist
 
 class StorePage(View):
     def post(self, request):
@@ -34,6 +37,8 @@ class StorePage(View):
     def get(self, request):
         all_products = Product.objects.all()
         cart = request.session.get('cart')
+        ids = list(request.session.get('cart').keys())
+        cart_list = Product.get_products_by_id(ids) 
         
         if not cart:
             request.session['cart'] = {}
@@ -72,6 +77,7 @@ class StorePage(View):
         category_leather_ball = request.GET.get('category_leather_ball')
         category_batting_gloves = request.GET.get('category_batting_gloves')
         category_kit_bag_junior = request.GET.get('category_kit_bag_junior')
+        category_cricket_whites = request.GET.get('category_cricket_whites')
         filter_dict = {}
 
         if keyword != None:
@@ -120,6 +126,9 @@ class StorePage(View):
             elif category_kit_bag_junior == 'on':
                 product_list = Product.objects.filter(type='kit_bag_junior', status=True).order_by('price')
                 filter_dict = { 'category_kit_bag_junior':'on'}
+            elif category_cricket_whites == 'on':
+                product_list = Product.objects.filter(type='cricket_whites', status=True).order_by('price')
+                filter_dict = { 'category_cricket_whites':'on'}
             #------------------------------------------------------------    
             else:
                 product_list = Product.objects.filter(name__contains=keyword, status=True)
@@ -169,6 +178,9 @@ class StorePage(View):
             elif category_kit_bag_junior == 'on':
                 product_list = Product.objects.filter(type='kit_bag_junior', status=True).order_by('price')
                 filter_dict = { 'category_kit_bag_junior':'on'}
+            elif category_cricket_whites == 'on':
+                product_list = Product.objects.filter(type='cricket_whites', status=True).order_by('price')
+                filter_dict = { 'category_cricket_whites':'on'}
             #------------------------------------------------------------  
             else:
                 product_list = Product.objects.filter(status=True)
@@ -185,9 +197,12 @@ class StorePage(View):
             response = paginator.page(paginator.num_pages)
 
         first_item_number = 15 * (response.number - 1) + 1 
+
+        ratings_list = RatingReview.objects.all()
         
         context = {
             'title':'Store',
+            'breadcrum': 'Store',
             'all_products': all_products,
             'product_list': response,
             'page_size': 15,
@@ -196,7 +211,9 @@ class StorePage(View):
             'search_keyword': keyword,
             'filter_dict': filter_dict,
             'products_type_list': products_type_list,
-            'wishlist_product_count': getWishlistCount(request)
+            'wishlist_products': getWishlist(request),
+            'cart_list':cart_list,
+            'ratings_list': ratings_list
             }
         return render(request, 'store.html', context)
 
@@ -227,14 +244,32 @@ class ProductDetailPage(View):
 
     def get(self, request, id):
         product_list = Product.objects.all()
+        rating_list = RatingReview.objects.filter(product=id)
+        overall_rating = overallrating(rating_list)
         product = Product.objects.get(id=id)
         context = {
                     'title':'Product Detail',
+                    'breadcrum': 'Store',
                     'product': product,
                     'product_list': product_list,
-                    'wishlist_product_count': getWishlistCount(request)
+                    'wishlist_products': getWishlist(request),
+                    'rating_list': rating_list,
+                    'overall_rating': overall_rating
                     }
         return render(request, 'product-detail.html', context)
+
+
+def overallrating(rating_list):
+    overall_rating = 0.0
+    count = 0
+    if len(rating_list) > 0:
+        count = len(rating_list)
+    else:
+        count = 1
+
+    for rating in rating_list:
+        overall_rating += rating.rating
+    return overall_rating/count
 
 
 @login_required
@@ -265,4 +300,42 @@ def wishlistProductDetail(request, id):
         Wishlist.objects.create(product_id=product, user_id=request.user)
         is_wishlist = True
     return redirect('productdetailpage', id)
+
+
+def submit_review(request, id):
+    if request.method == 'POST':
+        try:
+            reviews = RatingReview.objects.get(user__id=request.user.id, product__id=id)
+            form = ReviewForm(request.POST, instance=reviews)
+            form.save()
+            messages.success(request, 'Thank you! Your review has been updated.')
+            return redirect('productdetailpage', id)
+        except RatingReview.DoesNotExist:
+            form = ReviewForm(request.POST)
+            if form.is_valid():
+                data = RatingReview()
+                data.rating = form.cleaned_data['rating']
+                data.review = form.cleaned_data['review']
+                data.ip = request.META.get('REMOTE_ADDR')
+                data.product_id = id
+                data.user_id = request.user.id
+                data.save()
+                messages.success(request, 'Thank you! Your review has been submitted.')
+                return redirect('productdetailpage', id)
+
+
+def wishlistAjax(request, id):
+    product = Product.objects.get(id=id)
+    is_wishlist = False
+    if product.wishlist.filter(id=request.user.id).exists():
+        product.wishlist.remove(request.user)
+        Wishlist.objects.filter(product_id=product, user_id=request.user).delete()
+        is_wishlist = False
+    else:
+        product.wishlist.add(request.user)
+        Wishlist.objects.create(product_id=product, user_id=request.user)
+        is_wishlist = True
+    return JsonResponse({'status':'Wishlisted'})
+
+
 

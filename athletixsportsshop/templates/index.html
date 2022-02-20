@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load currency_filter %}
+{% load cart_filter %}
 
 {% block content %}
 <!-- Offer Start -->
@@ -11,7 +13,7 @@
                 <div class="position-relative">
                     <h5 class="text-uppercase text-primary mb-3">20% off on first order</h5>
                     <h2 class="mb-4 font-weight-semi-bold">AthletiX Juniors Kit</h2>
-                    <a href="" class="btn btn-outline-primary py-md-2 px-md-3">Shop Now</a>
+                    <a href="{% url 'productdetailpage' 6 %}" class="btn btn-outline-primary py-md-2 px-md-3">Shop Now</a>
                 </div>
             </div>
         </div>
@@ -21,7 +23,7 @@
                 <div class="position-relative">
                     <h5 class="text-uppercase text-primary mb-3">20% off the all order</h5>
                     <h2 class="mb-4 font-weight-semi-bold">AthletiX Cricket Wear</h2>
-                    <a href="" class="btn btn-outline-primary py-md-2 px-md-3">Shop Now</a>
+                    <a href="{% url 'productdetailpage' 7 %}" class="btn btn-outline-primary py-md-2 px-md-3">Shop Now</a>
                 </div>
             </div>
         </div>
@@ -138,40 +140,93 @@
         <h2 class="section-title px-5"><span class="px-2">Just Arrived</span></h2>
     </div>
     <div class="row px-xl-5 pb-3">
-        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+        {% for product in product_list %}
+        <div class="col-lg-3 col-md-6 col-sm-12 pb-1" id="product_{{product.id}}">
             <div class="card product-item border-0 mb-4">
                 <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                    <img class="img-fluid w-100 pointer" src="{% static 'img/AthletiX Sports Test Special Leather Ball .jpeg' %}" alt="">
+                    <a href="{% url 'productdetailpage' product.id %}">
+                        <img class="img-fluid w-100 pointer" src="{{product.product.all.0.image.url}}">
+                    </a>
                 </div>
                 <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                    <h6 class="mb-3 pointer">AthletiX Sports Test Special Leather Ball</h6>
+                    <a href="{% url 'productdetailpage' product.id %}">
+                        <h6 class="px-2 pointer product-name">{{product.name}}</h6>
+                    </a>
+                    {% if product.discounted_price %}
                     <div class="d-flex justify-content-center">
-                        <h6>Rs. 380</h6><h6 class="text-muted ml-2"><del>Rs. 450</del></h6>
+                        <h6>{{product.discounted_price|inrcurrency|currency}}</h6>
+                        <h6 class="text-muted ml-2"><del>{{product.price|inrcurrency|currency}}</del></h6>
                     </div>
+                    {% else %}
+                    <div class="d-flex justify-content-center">
+                        <h6 class="text-muted ml-2">{{product.price|inrcurrency|currency}}</h6>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            {% if request.session.username %}
+                            <form method="post" action="#product_{{product.id}}">
+                                {% csrf_token %}
+                                <a href="{% url 'product_wishlist' product.id %}" class="no-text-decoration" title="Wishlist">
+                                    {% if request.user in product.wishlist.all %}
+                                        <i class="fa fa-heart atx-red" title="Added to Wishlist"></i>
+                                    {% else %}
+                                        <i class="far fa-heart atx-red" title="Add to Wishlist"></i>
+                                    {% endif %}
+                                </a>
+                            </form>
+                            {% endif %}
+                        </div>
+                        <div class="col-6">
+                            4.5 <i class="fa fa-star text-muted ml-2"></i>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
-                <div class="card-footer d-flex justify-content-between bg-light border">
-                    <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                    <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+
+                <div class="d-flex justify-content-between bg-light border">
+                    <div class="col-6 p-2 text-center">
+                        <a href="{% url 'productdetailpage' product.id %}" class="btn btn-sm text-dark p-0">
+                            <i class="fas fa-eye text-primary mr-1"></i>View Detail
+                        </a>
+                    </div>
+                    
+                    {% if product|is_in_cart:request.session.cart %}
+                    <div class="col-6 input-group quantity px-0">
+                        <div class="input-group-btn">
+                            <form action="/store/?page={{page_number}}#product_{{product.id}}" method="post">
+                            {% csrf_token %}
+                                <input type="text" name="product" value="{{product.id}}" hidden> 
+                                <input type="text" name="remove" value="True" hidden>    
+                                <input type="submit" class="btn bg-atx-red text-white btn-minus py-2" value=" - ">
+                            </form>
+                        </div>
+
+                        <input type="text" class="form-control bg-secondary text-center bg-white border-0" 
+                            value="{{product|cart_quantity:request.session.cart}}">
+                        
+                        <div class="input-group-btn">
+                            <form action="/store/?page={{page_number}}#product_{{product.id}}" method="post">
+                                {% csrf_token %}
+                                <input type="text" name="product" value="{{product.id}}" hidden> 
+                                <input type="submit" class="btn bg-atx-red text-white btn-plus py-2" value=" + ">
+                            </form>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="col-6 p-2 text-center">
+                        <form method="post" action="/store/?page={{page_number}}#product_{{product.id}}">
+                            {% csrf_token %}
+                            <input type="text" name="product" value="{{product.id}}" hidden>
+                            <i class="fas fa-shopping-cart text-primary mr-1"></i>
+                            <input type="submit" class="btn btn-sm text-dark p-0" value="Add to Cart">
+                        </form>
+                    </div>
+                    {% endif %}
+
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
-            <div class="card product-item border-0 mb-4">
-                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                    <img class="img-fluid w-100 pointer" src="{% static 'img/AthletiX Sports Test Special Leather Ball .jpeg' %}" alt="">
-                </div>
-                <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                    <h6 class="mb-3 pointer">AthletiX Sports Test Special Leather Ball</h6>
-                    <div class="d-flex justify-content-center">
-                        <h6>Rs. 380</h6><h6 class="text-muted ml-2"><del>Rs. 450</del></h6>
-                    </div>
-                </div>
-                <div class="card-footer d-flex justify-content-between bg-light border">
-                    <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                    <a href="" class="btn btn-sm text-dark p-0"><i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
-                </div>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 </div>
 <!-- Products End -->

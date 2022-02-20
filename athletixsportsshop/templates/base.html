@@ -93,14 +93,15 @@
                 </form>
             </div>
             <div class="col-lg-3 col-5 text-right">
-                <a href="" class="btn border">
+                <!-- <a href="" class="btn border">
                     <i class="fas fa-heart atx-red"></i>
                     <span class="badge">{{wishlist_product_count}}</span>
-                </a>
-                <a href="" class="btn border">
+                </a> -->
+                {% include 'notifications.html' %}
+                <!-- <a href="" class="btn border">
                     <i class="fas fa-shopping-cart atx-red"></i>
                     <span class="badge">{{request.session.cart|cart_count}}</span>
-                </a>
+                </a> -->
             </div>
         </div>
     </div>
@@ -139,8 +140,8 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav mr-auto py-0">
-                            <a href="/" class="nav-item nav-link active">Home</a>
-                            <a href="{% url 'storepage' %}" class="nav-item nav-link">Shop</a>
+                            <a href="/" class="nav-item nav-link {% if breadcrum == 'Home' %}active{% endif %}">Home</a>
+                            <a href="{% url 'storepage' %}" class="nav-item nav-link {% if breadcrum == 'Store' %}active{% endif %}">Shop</a>
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages</a>
                                 <div class="dropdown-menu rounded-0 m-0">
@@ -291,7 +292,7 @@
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-
+    <script src="{% static 'js/notify.js' %}"></script>
     <!-- Contact Javascript File -->
 
     <!-- Template Javascript -->
@@ -305,6 +306,7 @@
     <script src="{% static 'js/main.js' %}"></script>
 
     <script src="{% static 'js/custom.js' %}"></script>
-    
+    <!-- <script src="{% static 'js/ajax_calls.js' %}"></script> -->
+    <script src="{% static 'js/wishlist_animate.js' %}"></script>
 </body>
 </html>
