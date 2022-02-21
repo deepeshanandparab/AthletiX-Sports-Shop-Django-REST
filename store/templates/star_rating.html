@@ -1,64 +1,64 @@
 <div class="text-primary mr-2">
     {% if overall_rating <= 0.5 and overall_rating > 0 %}
-        <small class="fas fa-star-half-alt" title="0.5"></small>
+        <small class="fas fa-star-half-alt" title="0.5 Star"></small>
         <small class="far fa-star"></small>
         <small class="far fa-star"></small>
         <small class="far fa-star"></small>
         <small class="far fa-star"></small>
-    {% elif overall_rating == 1 %}
-        <small class="fas fa-star" title="1"></small>
+    {% elif overall_rating <= 1 and overall_rating > 0.5  %}
+        <small class="fas fa-star" title="1 Star"></small>
         <small class="far fa-star"></small>
         <small class="far fa-star"></small>
         <small class="far fa-star"></small>
         <small class="far fa-star"></small>
     {% elif overall_rating <= 1.5 and overall_rating > 1 %}
-        <small class="fas fa-star" title="1.5"></small>
-        <small class="fas fa-star-half-alt" title="1.5"></small>
+        <small class="fas fa-star" title="1.5 Stars"></small>
+        <small class="fas fa-star-half-alt" title="1.5 Stars"></small>
         <small class="far fa-star"></small>
         <small class="far fa-star"></small>
         <small class="far fa-star"></small>
-    {% elif overall_rating == 2 %}
-        <small class="fas fa-star" title="2"></small>
-        <small class="fas fa-star" title="2"></small>
+    {% elif overall_rating <= 2 and overall_rating > 1.5  %}
+        <small class="fas fa-star" title="2 Stars"></small>
+        <small class="fas fa-star" title="2 Stars"></small>
         <small class="far fa-star"></small>
         <small class="far fa-star"></small>
         <small class="far fa-star"></small>
     {% elif overall_rating <= 2.5 and overall_rating > 2 %}
-        <small class="fas fa-star" title="2.5"></small>
-        <small class="fas fa-star" title="2.5"></small>
+        <small class="fas fa-star" title="2.5 Stars"></small>
+        <small class="fas fa-star" title="2.5 Stars"></small>
         <small class="fas fa-star-half-alt" title="2.5"></small>
         <small class="far fa-star"></small>
         <small class="far fa-star"></small>
-    {% elif overall_rating == 3 %}
-        <small class="fas fa-star" title="3"></small>
-        <small class="fas fa-star" title="3"></small>
-        <small class="fas fa-star" title="3"></small>
+    {% elif overall_rating <= 3 and overall_rating > 2.5  %}
+        <small class="fas fa-star" title="3 Stars"></small>
+        <small class="fas fa-star" title="3 Stars"></small>
+        <small class="fas fa-star" title="3 Stars"></small>
         <small class="far fa-star"></small>
         <small class="far fa-star"></small>
     {% elif overall_rating <= 3.5 and overall_rating > 3 %}
-        <small class="fas fa-star" title="3.5"></small>
-        <small class="fas fa-star" title="3.5"></small>
-        <small class="fas fa-star" title="3.5"></small>
-        <small class="fas fa-star-half-alt" title="3.5"></small>
+        <small class="fas fa-star" title="3.5 Stars"></small>
+        <small class="fas fa-star" title="3.5 Stars"></small>
+        <small class="fas fa-star" title="3.5 Stars"></small>
+        <small class="fas fa-star-half-alt" title="3.5 Stars"></small>
         <small class="far fa-star"></small>
-    {% elif overall_rating == 4 %}
-        <small class="fas fa-star" title="4"></small>
-        <small class="fas fa-star" title="4"></small>
-        <small class="fas fa-star" title="4"></small>
-        <small class="fas fa-star" title="4"></small>
+    {% elif overall_rating <= 4 and overall_rating > 3.5  %}
+        <small class="fas fa-star" title="4 Stars"></small>
+        <small class="fas fa-star" title="4 Stars"></small>
+        <small class="fas fa-star" title="4 Stars"></small>
+        <small class="fas fa-star" title="4 Stars"></small>
         <small class="far fa-star"></small>
     {% elif overall_rating <= 4.5 and overall_rating > 4 %}
-        <small class="fas fa-star" title="4.5"></small>
-        <small class="fas fa-star" title="4.5"></small>
-        <small class="fas fa-star" title="4.5"></small>
-        <small class="fas fa-star" title="4.5"></small>
-        <small class="fas fa-star-half-alt" title="4.5"></small>
-    {% elif overall_rating == 5 %}
-        <small class="fas fa-star" title="5"></small>
-        <small class="fas fa-star" title="5"></small>
-        <small class="fas fa-star" title="5"></small>
-        <small class="fas fa-star" title="5"></small>
-        <small class="fas fa-star" title="5"></small>
+        <small class="fas fa-star" title="4.5 Stars"></small>
+        <small class="fas fa-star" title="4.5 Stars"></small>
+        <small class="fas fa-star" title="4.5 Stars"></small>
+        <small class="fas fa-star" title="4.5 Stars"></small>
+        <small class="fas fa-star-half-alt" title="4.5 Stars"></small>
+    {% elif overall_rating <= 5 and overall_rating > 4.5  %}
+        <small class="fas fa-star" title="5 Stars"></small>
+        <small class="fas fa-star" title="5 Stars"></small>
+        <small class="fas fa-star" title="5 Stars"></small>
+        <small class="fas fa-star" title="5 Stars"></small>
+        <small class="fas fa-star" title="5 Stars"></small>
     {% else %}
         <small class="far fa-star"></small>
         <small class="far fa-star"></small>

@@ -378,5 +378,12 @@
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #db4a39; 
+  background: #db4a39;
+}
+
+
+.top-head-dropdown .empty-notification{
+  height: 100px!important;
+  padding-top: 20px!important;
+  text-align: center!important;
 }

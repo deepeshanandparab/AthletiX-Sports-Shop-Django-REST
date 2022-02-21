@@ -37,8 +37,12 @@ class StorePage(View):
     def get(self, request):
         all_products = Product.objects.all()
         cart = request.session.get('cart')
-        ids = list(request.session.get('cart').keys())
-        cart_list = Product.get_products_by_id(ids) 
+        cart_list = []
+        if cart:
+            ids = list(request.session.get('cart').keys())
+            cart_list = Product.get_products_by_id(ids)
+        else:
+            cart = {}
         
         if not cart:
             request.session['cart'] = {}
@@ -336,6 +340,5 @@ def wishlistAjax(request, id):
         Wishlist.objects.create(product_id=product, user_id=request.user)
         is_wishlist = True
     return JsonResponse({'status':'Wishlisted'})
-
 
 

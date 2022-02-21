@@ -1,5 +1,6 @@
 {% load cart_filter %}
 {% load currency_filter %}
+{% load static %}
 
 
 <div class="panel panel-default">
@@ -12,6 +13,8 @@
             <span class="badge">{{request.session.cart|cart_count}}</span>
             <span class="caret"></span>
         </button>
+
+        {% if request.session.cart|cart_count > 0 %}
         <ul class="dropdown-menu dropdown-menu-right pt-0 pb-3">
             <li>
                 <table class="table w-100 text-sm mb-0">
@@ -26,10 +29,17 @@
                 </table>
             </li>
             <li>
-                <button class="btn bg-atx-red btn-sm my-2 float-right mr-2 text-white">View Cart</button>
+                <a href="{% url 'cartpage' %}" class="btn bg-atx-red btn-sm my-2 float-right mr-2 text-white">View Cart</a>
             </li></br>
             <li class="mb-2"></li>
           </ul>
+        {% else %}
+          <ul class="dropdown-menu dropdown-menu-right pt-0 empty-notification">
+            <li>
+              <img src="{% static 'img/no products bag.png' %}" class="notification-cart-image">Cart is Empty
+            </li>
+          </ul>
+        {% endif %}
         </div>
       </div>
     </div>
@@ -45,6 +55,8 @@
                 <span class="badge">{{wishlist_products|length}}</span>
                 <span class="caret"></span>
             </button>
+            
+            {% if wishlist_products|length > 0 %}
             <ul class="dropdown-menu dropdown-menu-right pt-0 pb-3">
                 <li>
                     <table class="table w-100 text-sm mb-0">
@@ -62,7 +74,14 @@
                     <button class="btn bg-atx-red btn-sm my-2 mb-4 float-right mr-2 text-white">View Wishlist</button>
                 </li></br>
                 <li class="mb-2"></li>
+            </ul>
+            {% else %}
+              <ul class="dropdown-menu dropdown-menu-right pt-0 empty-notification">
+                <li>
+                  <img src="{% static 'img/no products bag.png' %}" class="notification-cart-image">Wishlist is Empty
+                </li>
               </ul>
+            {% endif %}
             </div>
           </div>
         </div>

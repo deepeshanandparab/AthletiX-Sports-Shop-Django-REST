@@ -262,7 +262,7 @@
                                         {% if request.session.username %}
                                         <form method="post">
                                             {% csrf_token %}
-                                            <a href="{% url 'product_wishlist' product.id %}" class="no-text-decoration" title="Wishlist">
+                                            <a href="{% url 'product_wishlist' product.id %}" class="no-text-decoration">
                                                 {% if request.user in product.wishlist.all %}
                                                     <i class="fa fa-heart atx-red" title="Wishlisted"></i>
                                                     <p class="text-sm text-dark">Wishlisted</p>
@@ -272,6 +272,16 @@
                                                 {% endif %}
                                             </a>
                                         </form>
+                                        {% else %}
+                                        <a href="{% url 'loginpage' %}?next={{ request.get_full_path|urlencode }}" class="no-text-decoration">
+                                            {% if request.user in product.wishlist.all %}
+                                                <i class="fa fa-heart atx-red" title="Wishlisted"></i>
+                                                <p class="text-sm text-dark">Wishlisted</p>
+                                            {% else %}
+                                                <i class="far fa-heart atx-red" title="Add to Wishlist"></i>
+                                                <p class="text-sm text-dark">Add to Wishlist</p>
+                                            {% endif %}
+                                        </a>
                                         {% endif %}
                                     </div>
                                     <div class="col-6">

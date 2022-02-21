@@ -68,6 +68,13 @@ def checkout_total(products , cart):
     return total
     
 
+@register.simple_tag
+def checkout_shipping_total(products , cart, shipping):
+    total = checkout_cart_price(products , cart) + shipping
+    price = inrcurrency(total)
+    return currency(price)
+
+
 @register.filter(name='cart_count')
 def cart_count(cart):
     return len(cart)

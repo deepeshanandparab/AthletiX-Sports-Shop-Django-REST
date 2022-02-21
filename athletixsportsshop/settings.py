@@ -127,6 +127,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 
-LOGIN_REDIRECT_URL = 'homepage'
-LOGOUT_REDIRECT_URL = 'loginpage'
+# LOGIN_REDIRECT_URL = request.get_full_path|urlencode
+# LOGOUT_REDIRECT_URL = request.get_full_path|urlencode
 
