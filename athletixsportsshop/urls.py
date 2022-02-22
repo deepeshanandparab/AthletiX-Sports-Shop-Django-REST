@@ -17,12 +17,13 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
-from .views import HomePage, CartPage
+from .views import HomePage, CartPage, WishlistPage
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', HomePage.as_view(), name='homepage'),
     path('account/', include('account.urls')),
     path('store/', include('store.urls')),
-    path('cart/', CartPage.as_view(), name='cartpage')
+    path('cart/', CartPage.as_view(), name='cartpage'),
+    path('wishlist/', WishlistPage.as_view(), name='wishlistpage')
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

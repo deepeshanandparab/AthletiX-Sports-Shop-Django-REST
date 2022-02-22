@@ -1,6 +1,6 @@
 import re
 from django.shortcuts import render, redirect
-from store.models import CouponCode, Product
+from store.models import CouponCode, Product, Wishlist
 from django.http import HttpResponse, JsonResponse
 from .supporting_functions import getWishlist
 from django.views import View
@@ -83,6 +83,7 @@ class CartPage(View):
         context = {
             'title': 'Cart',
             'cart_list': cart_list,
+            'wishlist_products': getWishlist(request),
             'coupon': coupon,
             'invalid_coupon': invalid_coupon,
             'shipping': shipping_charges,
@@ -90,4 +91,57 @@ class CartPage(View):
         }
 
         return render(request, 'cart.html', context)
+
+
+class WishlistPage(View):
+    def post(self, request):
+        product = request.POST.get('product')
+        remove = request.POST.get('remove')
+        cart = request.session.get('cart')
+        remove_wish = request.POST.get('delete')
+
+        if remove_wish:
+            product_id = request.POST.get('product')
+            product = Product.objects.get(id=product_id)
+            if product.wishlist.filter(id=request.user.id).exists():
+                product.wishlist.remove(request.user)
+                Wishlist.objects.filter(product_id=product, user_id=request.user).delete()
+            return redirect('wishlistpage')
+
+        if cart:
+            quantity = cart.get(product)
+            if quantity:
+                    if remove:
+                        if quantity <= 1:
+                            cart.pop(product)
+                        else:    
+                            cart[product] = quantity-1
+                    else:
+                        cart[product] = quantity+1
+            else:
+                cart[product] = 1
+        else:
+            cart = {}
+            cart[product] = 1
+        request.session['cart'] = cart
+        return redirect('wishlistpage')
+
+
+    def get(self, request):
+
+        cart = request.session.get('cart')
+        cart_list = []
+        if cart:
+            ids = list(request.session.get('cart').keys())
+            cart_list = Product.get_products_by_id(ids)
+        else:
+            cart = {}
+
+        context = {
+            'title': 'Wishlist',
+            'wishlist_products': getWishlist(request),
+            'cart_list': cart_list
+        }
+        return render(request, 'wishlist.html', context)
+
        
