@@ -2,65 +2,65 @@
 
 <div class="text-primary mr-2">
     {% if ratings_list|overall_rating:product <= 0.5 and ratings_list|overall_rating:product > 0 %}
-        <small class="fas fa-star-half-alt" title="0.5"></small>
+        <small class="fas fa-star-half-alt" title="0.5 star"></small>
         <small class="far fa-star"></small>
         <small class="far fa-star"></small>
         <small class="far fa-star"></small>
         <small class="far fa-star"></small>
-    {% elif ratings_list|overall_rating:product == 1 %}
-        <small class="fas fa-star" title="1"></small>
+    {% elif ratings_list|overall_rating:product <= 1 and ratings_list|overall_rating:product > 0.5 %}
+        <small class="fas fa-star" title="1 star"></small>
         <small class="far fa-star"></small>
         <small class="far fa-star"></small>
         <small class="far fa-star"></small>
         <small class="far fa-star"></small>
     {% elif ratings_list|overall_rating:product <= 1.5 and ratings_list|overall_rating:product > 1 %}
-        <small class="fas fa-star" title="1.5"></small>
-        <small class="fas fa-star-half-alt" title="1.5"></small>
+        <small class="fas fa-star" title="1.5 stars"></small>
+        <small class="fas fa-star-half-alt" title="1.5 stars"></small>
         <small class="far fa-star"></small>
         <small class="far fa-star"></small>
         <small class="far fa-star"></small>
-    {% elif ratings_list|overall_rating:product == 2 %}
-        <small class="fas fa-star" title="2"></small>
-        <small class="fas fa-star" title="2"></small>
+    {% elif ratings_list|overall_rating:product <= 2 and ratings_list|overall_rating:product > 1.5 %}
+        <small class="fas fa-star" title="2 stars"></small>
+        <small class="fas fa-star" title="2 stars"></small>
         <small class="far fa-star"></small>
         <small class="far fa-star"></small>
         <small class="far fa-star"></small>
     {% elif ratings_list|overall_rating:product <= 2.5 and ratings_list|overall_rating:product > 2 %}
-        <small class="fas fa-star" title="2.5"></small>
-        <small class="fas fa-star" title="2.5"></small>
-        <small class="fas fa-star-half-alt" title="2.5"></small>
+        <small class="fas fa-star" title="2.5 stars"></small>
+        <small class="fas fa-star" title="2.5 stars"></small>
+        <small class="fas fa-star-half-alt" title="2.5 stars"></small>
         <small class="far fa-star"></small>
         <small class="far fa-star"></small>
-    {% elif ratings_list|overall_rating:product == 3 %}
-        <small class="fas fa-star" title="3"></small>
-        <small class="fas fa-star" title="3"></small>
-        <small class="fas fa-star" title="3"></small>
+    {% elif ratings_list|overall_rating:product <= 3 and ratings_list|overall_rating:product > 2.5 %}
+        <small class="fas fa-star" title="3 stars"></small>
+        <small class="fas fa-star" title="3 stars"></small>
+        <small class="fas fa-star" title="3 stars"></small>
         <small class="far fa-star"></small>
         <small class="far fa-star"></small>
     {% elif ratings_list|overall_rating:product <= 3.5 and ratings_list|overall_rating:product > 3 %}
-        <small class="fas fa-star" title="3.5"></small>
-        <small class="fas fa-star" title="3.5"></small>
-        <small class="fas fa-star" title="3.5"></small>
-        <small class="fas fa-star-half-alt" title="3.5"></small>
+        <small class="fas fa-star" title="3.5 stars"></small>
+        <small class="fas fa-star" title="3.5 stars"></small>
+        <small class="fas fa-star" title="3.5 stars"></small>
+        <small class="fas fa-star-half-alt" title="3.5 stars"></small>
         <small class="far fa-star"></small>
-    {% elif ratings_list|overall_rating:product == 4 %}
-        <small class="fas fa-star" title="4"></small>
-        <small class="fas fa-star" title="4"></small>
-        <small class="fas fa-star" title="4"></small>
-        <small class="fas fa-star" title="4"></small>
+    {% elif ratings_list|overall_rating:product <= 4 and ratings_list|overall_rating:product > 3.5 %}
+        <small class="fas fa-star" title="4 stars"></small>
+        <small class="fas fa-star" title="4 stars"></small>
+        <small class="fas fa-star" title="4 stars"></small>
+        <small class="fas fa-star" title="4 stars"></small>
         <small class="far fa-star"></small>
     {% elif ratings_list|overall_rating:product <= 4.5 and ratings_list|overall_rating:product > 4 %}
-        <small class="fas fa-star" title="4.5"></small>
-        <small class="fas fa-star" title="4.5"></small>
-        <small class="fas fa-star" title="4.5"></small>
-        <small class="fas fa-star" title="4.5"></small>
-        <small class="fas fa-star-half-alt" title="4.5"></small>
-    {% elif ratings_list|overall_rating:product == 5 %}
-        <small class="fas fa-star" title="5"></small>
-        <small class="fas fa-star" title="5"></small>
-        <small class="fas fa-star" title="5"></small>
-        <small class="fas fa-star" title="5"></small>
-        <small class="fas fa-star" title="5"></small>
+        <small class="fas fa-star" title="4.5 stars"></small>
+        <small class="fas fa-star" title="4.5 stars"></small>
+        <small class="fas fa-star" title="4.5 stars"></small>
+        <small class="fas fa-star" title="4.5 stars"></small>
+        <small class="fas fa-star-half-alt" title="4.5 stars"></small>
+    {% elif ratings_list|overall_rating:product <= 5 and ratings_list|overall_rating:product > 4.5 %}
+        <small class="fas fa-star" title="5 stars"></small>
+        <small class="fas fa-star" title="5 stars"></small>
+        <small class="fas fa-star" title="5 stars"></small>
+        <small class="fas fa-star" title="5 stars"></small>
+        <small class="fas fa-star" title="5 stars"></small>
     {% else %}
         <small class="far fa-star"></small>
         <small class="far fa-star"></small>

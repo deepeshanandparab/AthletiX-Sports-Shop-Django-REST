@@ -61,9 +61,11 @@ def overall_rating(rating_list, product):
 
     if ratings_count > 0:
         ovr_rating = float(sum)/ratings_count
+        rating = round(ovr_rating * 2) / 2
     else:
         ovr_rating = float(sum)
-    return ovr_rating
+        rating = round(ovr_rating * 2) / 2
+    return rating
 
 
 @register.filter(name='multiply')
