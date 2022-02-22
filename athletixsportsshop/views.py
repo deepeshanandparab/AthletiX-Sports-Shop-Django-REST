@@ -1,6 +1,6 @@
 import re
 from django.shortcuts import render, redirect
-from store.models import Product
+from store.models import CouponCode, Product
 from django.http import HttpResponse, JsonResponse
 from .supporting_functions import getWishlist
 from django.views import View
@@ -59,16 +59,34 @@ class CartPage(View):
 
 
     def get(self, request):
+        coupon_code = request.GET.get('coupon')
+        coupon = []
+        invalid_coupon = {}
+        btn_disabled = False
+
+        if coupon_code != None:
+            coupon = CouponCode.objects.filter(code=coupon_code)
+            if len(coupon) == 0:
+                invalid_coupon = {'message':'Invalid coupon code or already expired coupon.'}
+
         cart = request.session.get('cart')
         cart_list = []
         if cart:
             ids = list(request.session.get('cart').keys())
             cart_list = Product.get_products_by_id(ids)
+            shipping_charges = 100
+            btn_disabled = False
         else:
             cart = {}
+            shipping_charges = 0
+            btn_disabled = True
         context = {
             'title': 'Cart',
-            'cart_list': cart_list
+            'cart_list': cart_list,
+            'coupon': coupon,
+            'invalid_coupon': invalid_coupon,
+            'shipping': shipping_charges,
+            'btn_disabled':btn_disabled
         }
 
         return render(request, 'cart.html', context)

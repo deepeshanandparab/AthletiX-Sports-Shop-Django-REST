@@ -1,3 +1,4 @@
+import re
 from django import template
 from .currency_filter import inrcurrency, currency
 
@@ -52,6 +53,50 @@ def checkout_cart_price(products , cart):
     return int(sum)
 
 
+#-------------------------- Cart Price with Coupon Code -----------------------#
+@register.simple_tag
+def checkout_cart_total(products , cart, coupon_code):
+    sum = 0 ;
+    for p in products:
+        sum += price_total(p , cart)
+
+    invalid = 'Invalid Coupon Code or already expired code.'
+    if coupon_code:
+        if invalid in coupon_code.values():
+            cart_total = inrcurrency(int(sum))
+            return currency(cart_total)
+        elif coupon_code:
+                sum = sum * (1 - coupon_code[0].discount/100)
+                cart_total = inrcurrency(int(sum))
+                return currency(cart_total)
+    else: 
+        cart_total = inrcurrency(int(sum))
+        return currency(cart_total)
+
+
+@register.simple_tag
+def checkout_coupon_cart_total(products , cart, coupon_code):
+    sum = 0 ;
+    for p in products:
+        sum += price_total(p , cart)
+
+    invalid = 'Invalid Coupon Code or already expired code.'
+    if coupon_code:
+        if invalid in coupon_code.values():
+            return int(sum)
+        elif coupon_code:
+                sum = sum * (1 - coupon_code[0].discount/100)
+                return int(sum)
+    else: 
+        return int(sum)
+
+#-------------------------------------------------------------------#
+        
+
+
+    
+
+
 @register.filter(name='checkout_taxes')
 def checkout_taxes(products , cart):
     cart_price = checkout_cart_price(products , cart)
@@ -69,8 +114,8 @@ def checkout_total(products , cart):
     
 
 @register.simple_tag
-def checkout_shipping_total(products , cart, shipping):
-    total = checkout_cart_price(products , cart) + shipping
+def checkout_shipping_total(products , cart, coupon_code, shipping):
+    total = checkout_coupon_cart_total(products , cart, coupon_code) + shipping
     price = inrcurrency(total)
     return currency(price)
 

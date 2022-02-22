@@ -1,7 +1,13 @@
+from re import M
 from unicodedata import category
 from django.db import models
 from django.contrib.auth.models import User
 
+
+COUPON_CODE_CHOICES = (
+    ('active','active'),
+    ('expired','expired')
+)
 
 def get_upload_path(instance, filename):
     model = getattr(instance, 'name')
@@ -106,5 +112,18 @@ class RatingReview(models.Model):
 
     def __str__(self):
         return f'{self.user} rated {self.product.name} with {self.rating} stars'
+
+
+class CouponCode(models.Model):
+    code = models.CharField(max_length=20, default='')
+    discount = models.IntegerField(default=0)
+    redeem_count = models.IntegerField(default=1)
+    starting_from = models.DateField()
+    expiring_on = models.DateField()
+    status = models.CharField(max_length=40, choices=COUPON_CODE_CHOICES, default='')
+
+
+    def __str__(self):
+        return f'{self.code} active duration between {self.starting_from} to {self.expiring_on}'
 
 
