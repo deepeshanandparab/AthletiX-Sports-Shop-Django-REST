@@ -1,5 +1,7 @@
 from traceback import print_tb
 from store.models import Product
+import random, string
+import datetime
 
 
 def getWishlistCount(request):
@@ -22,4 +24,11 @@ def getWishlist(request):
             wishlist_products.append(product)
     
     return wishlist_products
+
+def generateRandom():
+    date = datetime.datetime.now()
+    number = random.randint(1,1000)
+
+    random_number = f'ATX{date.day}{date.month}{date.year}_{date.hour}{date.minute}{date.second}_{number}'
+    return random_number
 

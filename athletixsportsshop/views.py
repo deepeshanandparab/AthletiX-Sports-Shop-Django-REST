@@ -2,7 +2,7 @@ import re
 from django.shortcuts import render, redirect
 from store.models import CouponCode, Product, Wishlist
 from django.http import HttpResponse, JsonResponse
-from .supporting_functions import getWishlist
+from .supporting_functions import getWishlist, generateRandom
 from django.views import View
 
 
@@ -175,13 +175,14 @@ class CheckoutPage(View):
             btn_disabled = True
 
         context = {
-            'title': 'CartPage',
+            'title': 'Checkout',
             'wishlist_products': getWishlist(request),
             'cart_list': cart_list,
             'shipping': shipping_charges,
             'invalid_coupon': invalid_coupon,
             'btn_disabled': btn_disabled,
-            'coupon': coupon
+            'coupon': coupon,
+            'random_number': generateRandom()
         }
         return render(request, 'checkout.html', context)
 

@@ -91,6 +91,32 @@ def checkout_coupon_cart_total(products , cart, coupon_code):
         return int(sum)
 
 #-------------------------------------------------------------------#
+
+@register.simple_tag
+def total_discount(products , cart, coupon_code):
+    sum = 0
+    discount = 0
+    for p in products:
+        sum += price_total(p , cart)
+    
+    total_cost = sum
+
+    invalid = 'Invalid Coupon Code or already expired code.'
+    if coupon_code:
+        if invalid in coupon_code.values():
+            saved = total_cost - sum
+            discount = inrcurrency(int(saved))
+            return currency(discount)
+        elif coupon_code:
+                sum = sum * (1 - coupon_code[0].discount/100)
+                saved = total_cost - sum
+                discount = inrcurrency(int(saved))
+                return currency(discount)
+    else: 
+        saved = total_cost - sum
+        discount = inrcurrency(int(saved))
+        return currency(discount)
+
         
 
 
