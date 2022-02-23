@@ -251,6 +251,18 @@ class ProductDetailPage(View):
         rating_list = RatingReview.objects.filter(product=id)
         overall_rating = overallrating(rating_list)
         product = Product.objects.get(id=id)
+
+        cart = request.session.get('cart')
+        cart_list = []
+        if cart:
+            ids = list(request.session.get('cart').keys())
+            cart_list = Product.get_products_by_id(ids)
+        else:
+            cart = {}
+        
+        if not cart:
+            request.session['cart'] = {}
+
         context = {
                     'title':'Product Detail',
                     'breadcrum': 'Store',
@@ -258,7 +270,8 @@ class ProductDetailPage(View):
                     'product_list': product_list,
                     'wishlist_products': getWishlist(request),
                     'rating_list': rating_list,
-                    'overall_rating': overall_rating
+                    'overall_rating': overall_rating,
+                    'cart_list':cart_list
                     }
         return render(request, 'product-detail.html', context)
 

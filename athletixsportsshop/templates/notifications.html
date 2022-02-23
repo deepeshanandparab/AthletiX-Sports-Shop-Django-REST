@@ -22,8 +22,7 @@
                     <tr class="border-bottom">
                         <td class="text-center py-2"><img src="{{cart.product.all.0.image.url}}" class="notification-cart-image"></td>
                         <td class="py-2">{{cart.name}}</td>
-                        <td class="py-2 w-15">{{cart.price|discountedprice:cart.discount|inrcurrency|currency}}</td>
-                        <td><button class="btn no-border fa fa-trash atx-blue"></button></td>
+                        <td class="py-2 w-15 pl-0">{{cart.price|discountedprice:cart.discount|inrcurrency|currency}}</td>
                     </tr>
                     {% endfor %}
                 </table>
@@ -64,8 +63,7 @@
                         <tr class="border-bottom">
                             <td class="text-center py-2"><img src="{{product.product.all.0.image.url}}" class="notification-cart-image"></td>
                             <td class="py-2">{{product.name}}</td>
-                            <td class="py-2 w-15">{{product.price|inrcurrency|currency}}</td>
-                            <td><button class="btn no-border fa fa-trash atx-blue"></button></td>
+                            <td class="py-2 w-15 pl-0">{{product.price|inrcurrency|currency}}</td>
                         </tr>
                         {% endfor %}
                     </table>

@@ -9,4 +9,14 @@ $(document).ready(function(){
       $('.removetoast').toast('show');
     });
   });
+
+
+
+function addWishlist() {
+    $('.addtoast').toast('show');
+  }
+
+function removeWishlist() {
+    $('.removetoast').toast('show');
+  }
   

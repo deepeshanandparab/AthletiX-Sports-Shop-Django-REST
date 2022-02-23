@@ -60,6 +60,7 @@ class CartPage(View):
 
     def get(self, request):
         coupon_code = request.GET.get('coupon')
+        request.session['coupon_code'] = coupon_code
         coupon = []
         invalid_coupon = {}
         btn_disabled = False
@@ -143,5 +144,45 @@ class WishlistPage(View):
             'cart_list': cart_list
         }
         return render(request, 'wishlist.html', context)
+
+
+class CheckoutPage(View):
+    def post(self, request):
+        pass
+
+
+    def get(self, request):
+        btn_disabled = False
+        coupon_code = request.session.get('coupon_code')
+        coupon = []
+        invalid_coupon = {}
+
+        if coupon_code != None:
+            coupon = CouponCode.objects.filter(code=coupon_code)
+            if len(coupon) == 0:
+                invalid_coupon = {'message':'Invalid coupon code or already expired coupon.'}
+
+        cart = request.session.get('cart')
+        cart_list = []
+        if cart:
+            ids = list(request.session.get('cart').keys())
+            cart_list = Product.get_products_by_id(ids)
+            shipping_charges = 100
+            btn_disabled = False
+        else:
+            cart = {}
+            shipping_charges = 0
+            btn_disabled = True
+
+        context = {
+            'title': 'CartPage',
+            'wishlist_products': getWishlist(request),
+            'cart_list': cart_list,
+            'shipping': shipping_charges,
+            'invalid_coupon': invalid_coupon,
+            'btn_disabled': btn_disabled,
+            'coupon': coupon
+        }
+        return render(request, 'checkout.html', context)
 
        
