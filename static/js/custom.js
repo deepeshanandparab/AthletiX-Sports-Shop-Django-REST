@@ -75,11 +75,11 @@ function changeShippingCostZero()
 function changeShippingCost()
 {
   cost = document.getElementById('shippingcost')
-  cost.innerText = '₹ 100';
+  cost.innerText = '₹ 200';
 
   subtotal = document.getElementById('subtotal').textContent
   total = document.getElementById('total')
-  subtotal = (parseInt(subtotal) + 100).toString()
+  subtotal = (parseInt(subtotal) + 200).toString()
   if(subtotal.length > 3 && subtotal.length == 4)
   {
     value = subtotal.substring(0, 1) + "," + subtotal.substring(1, subtotal.length);

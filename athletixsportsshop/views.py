@@ -1,9 +1,11 @@
+from itertools import product
 import re
 from django.shortcuts import render, redirect
 from store.models import CouponCode, Product, Wishlist
 from django.http import HttpResponse, JsonResponse
 from .supporting_functions import getWishlist, generateRandom
 from django.views import View
+from datetime import datetime
 
 
 class HomePage(View):
@@ -67,15 +69,31 @@ class CartPage(View):
 
         if coupon_code != None:
             coupon = CouponCode.objects.filter(code=coupon_code)
-            if len(coupon) == 0:
-                invalid_coupon = {'message':'Invalid coupon code or already expired coupon.'}
-
+            now = datetime.now().strftime('%Y-%m-%d')
+            
+            if not coupon:
+                invalid_coupon = {'message':'Invalid coupon code.','status':'Invalid'}
+            elif now >= str(coupon[0].expiring_on):
+                CouponCode.objects.filter(code=coupon_code).update(status = 'expired')
+                coupon = []
+                invalid_coupon = {'message':'Coupon code is expired.','status':'Invalid'}
+            elif now < str(coupon[0].starting_from):
+                CouponCode.objects.filter(code=coupon_code).update(status = 'inactive')        
+                coupon = []
+                invalid_coupon = {'message':'Coupon code not active yet.','status':'Invalid'}
+            elif coupon[0].redeem_count < 1:
+                coupon = []
+                invalid_coupon = {'message':'Coupon redeemed by other users.','status':'Invalid'}
+            elif coupon[0].redeem_by.filter(id=request.user.id).exists():
+                coupon = []
+                invalid_coupon = {'message':'Coupon is already used.','status':'Invalid'}
+                
         cart = request.session.get('cart')
         cart_list = []
         if cart:
             ids = list(request.session.get('cart').keys())
             cart_list = Product.get_products_by_id(ids)
-            shipping_charges = 100
+            shipping_charges = 200
             btn_disabled = False
         else:
             cart = {}
@@ -167,7 +185,7 @@ class CheckoutPage(View):
         if cart:
             ids = list(request.session.get('cart').keys())
             cart_list = Product.get_products_by_id(ids)
-            shipping_charges = 100
+            shipping_charges = 200
             btn_disabled = False
         else:
             cart = {}

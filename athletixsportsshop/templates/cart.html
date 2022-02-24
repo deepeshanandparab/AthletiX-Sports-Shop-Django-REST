@@ -119,9 +119,19 @@
                         <h6 class="font-weight-medium">Subtotal</h6>
                         <h6 class="font-weight-medium">{% checkout_cart_total cart_list request.session.cart coupon %}</h6>
                     </div>
-                    <div class="d-flex justify-content-between">
-                        <h6 class="font-weight-medium">Shipping</h6>
-                        <h6 class="font-weight-medium">{{shipping|currency}}</h6>
+                    {% if coupon %}
+                    <div class="d-flex justify-content-between mb-2 pt-1">
+                        <h6 class="font-weight-medium">Coupon Applied</h6>
+                        <h6 class="font-weight-medium" id="applied_coupon">{{coupon.0.code|upper}}</h6>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2 pt-1">
+                        <h6 class="font-weight-medium">Discount</h6>
+                        <h6 class="font-weight-medium" id="coupon_discount">{{coupon.0.discount}}%</h6>
+                    </div>
+                    {% endif %}
+                    <div class="d-flex justify-content-between mb-2 pt-1">
+                        <h6 class="font-weight-medium">Saved</h6>
+                        <h6 class="font-weight-medium text-success font-bold">- {% total_discount cart_list request.session.cart coupon %}</h6>
                     </div>
                 </div>
                 <div class="card-footer border-secondary bg-transparent">

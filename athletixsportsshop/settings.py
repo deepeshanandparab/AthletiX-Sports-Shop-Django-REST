@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'store',
     'account',
-    'mathfilters'
+    'mathfilters',
+    'schedule'
 ]
 
 MIDDLEWARE = [

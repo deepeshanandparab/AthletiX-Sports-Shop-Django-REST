@@ -1,5 +1,5 @@
 from traceback import print_tb
-from store.models import Product
+from store.models import Product, CouponCode, User
 import random, string
 import datetime
 
@@ -32,3 +32,4 @@ def generateRandom():
     random_number = f'ATX{date.day}{date.month}{date.year}_{date.hour}{date.minute}{date.second}_{number}'
     return random_number
 
+    

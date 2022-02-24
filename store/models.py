@@ -2,9 +2,13 @@ from re import M
 from unicodedata import category
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime
+import schedule
+import time
 
 
 COUPON_CODE_CHOICES = (
+    ('inactive','inactive'),
     ('active','active'),
     ('expired','expired')
 )
@@ -118,12 +122,38 @@ class CouponCode(models.Model):
     code = models.CharField(max_length=20, default='')
     discount = models.IntegerField(default=0)
     redeem_count = models.IntegerField(default=1)
+    redeem_by = models.ManyToManyField(User, blank=True)
+    applicable_on = models.ManyToManyField(Product, blank=True)
     starting_from = models.DateField()
     expiring_on = models.DateField()
     status = models.CharField(max_length=40, choices=COUPON_CODE_CHOICES, default='')
 
-
     def __str__(self):
-        return f'{self.code} active duration between {self.starting_from} to {self.expiring_on}'
+        return f'{self.code} active duration between {self.starting_from} to {self.expiring_on} - {self.status}'
+
+
+    # def __init__(self, *args, **kwargs):
+    #     now = datetime.now().strftime('%Y-%m-%d')
+    #     if now > str(self.expiring_on):
+    #         super(CouponCode, self).__init__(*args, **kwargs)
+
+
+    def update_coupon_status():
+        def save(self, *args, **kwargs):
+            now = datetime.now().strftime('%Y-%m-%d')
+            if now >= str(self.expiring_on):
+                self.status = 'expired'
+                print('COUPON EXPIRED')
+            if now < str(self.starting_from):
+                self.status = 'inactive'
+                print('COUPON INACTIVE')
+            else: 
+                self.status = 'active'
+                print('COUPON ACTIVE')
+            super(CouponCode, self).save(*args, **kwargs)
+    
+
+# schedule.every(5).seconds.do(CouponCode.update_coupon_status)
+# schedule.every(1).minute.do(CouponCode.update_coupon_status)
 
 

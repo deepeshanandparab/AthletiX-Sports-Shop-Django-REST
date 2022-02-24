@@ -101,7 +101,8 @@ def total_discount(products , cart, coupon_code):
     
     total_cost = sum
 
-    invalid = 'Invalid Coupon Code or already expired code.'
+    # invalid = 'Invalid Coupon Code or already expired code.'
+    invalid = 'Invalid'
     if coupon_code:
         if invalid in coupon_code.values():
             saved = total_cost - sum
