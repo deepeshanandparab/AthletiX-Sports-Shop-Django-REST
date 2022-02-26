@@ -1,0 +1,75 @@
+{% extends 'user_dashboard.html' %}
+{% load currency_filter %}
+{% load cart_filter %}
+{% load static %}
+
+{% block user-content %}
+
+<div class="row border profile-info pt-3">
+    <div class="col-lg-7 border-bottom">
+        <ul>
+            <li>
+                <h5 class="font-bold">{{request.user.first_name}} {{request.user.last_name}}</h5>
+            </li>
+            <li>
+                <b>Email:</b> {{request.user.email}}
+                <b class="ml-4">Contact:</b> {{request.user.contact}}
+            </li>
+            <li>
+                <b>Address:</b> {{request.user.email}}
+            </li>
+            <li>
+                <b>Shipping Address:</b> {{request.user.email}}
+            </li>
+        </ul>
+    </div>
+
+    <div class="col-lg-5 border-bottom">
+        <ul>
+            <li>
+                <b>Purchased Sum:</b> Rs. 110000
+            </li>
+            <li>
+                <b>Discount Received:</b> Rs. 10000
+            </li>
+        </ul>
+    </div>
+    
+    {% if order_list|length > 0 %}
+    <table class="table table-bordered text-center mb-0">
+        <thead class="bg-secondary text-dark">
+            <tr>
+                <th></th>
+                <th>Products</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Cancel Order</th>
+            </tr>
+        </thead>
+        <tbody class="align-middle">
+                {% for order in order_list %}
+                <tr>
+                    <td><img src="{{order.product.product.all.0.image.url}}" style="width: 50px;"></td>
+                    <td class="align-middle text-left">{{order.product.name}}</td>
+                    <td class="align-middle">{{order.price|inrcurrency|currency}}</td>
+                    <td class="align-middle">{{order.status}}</td>
+                    <td class="align-middle">
+                        <button class="btn btn-sm bg-atx-blue text-white">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <div class="col-12 text-center" style="height: 500px;">
+            <img src="{% static 'img/empty wishlist.png' %}" class="no-product">
+            <a class="atx-red" href="{% url 'storepage' %}">
+                <p>Go To Shop</p>
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

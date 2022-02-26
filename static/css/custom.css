@@ -399,3 +399,8 @@
 .font-bold{
   font-weight: bold!important;
 }
+
+.profile-info ul{
+  list-style: none;
+  padding-left: 0px;
+}

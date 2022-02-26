@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 200px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Dashboard</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="">Home</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Dashboard</p>
+            <p class="m-0 px-2">-</p>
+            {% if profile %}
+            <p class="m-0">Profile</p>
+            {% elif order %}
+            <p class="m-0">Orders</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Cart Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-lg-3">
+            <div class="navbar-nav w-100">
+                <a href="{% url 'profilepage' %}" class="nav-item nav-link pl-4 border {% if profile %}bg-secondary font-bold{% endif %}">Profile</a>
+                <a href="{% url 'orderspage' %}" class="nav-item nav-link pl-4 border {% if order %}bg-secondary font-bold{% endif %}">Order History</a>
+                <a href="" class="nav-item nav-link pl-4 border {% if transaction %}bg-secondary{% endif %}">Transactions</a>
+                <a href="" class="nav-item nav-link pl-4 border {% if refund %}bg-secondary{% endif %}">Return & Refunds</a>
+            </div>
+        </div>
+
+        <div class="col-lg-9 table-responsive mb-5">
+            {% block user-content %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+<!-- Cart End -->
+
+{% endblock %}

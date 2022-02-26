@@ -14,6 +14,16 @@ def getWishlistCount(request):
     
     return len(wishlist_products)
 
+def getCartProducts(request):
+    cart = request.session.get('cart')
+    cart_list = []
+    if cart:
+        ids = list(request.session.get('cart').keys())
+        cart_list = Product.get_products_by_id(ids)
+    else:
+        cart = {}
+    return cart_list
+
 
 def getWishlist(request):
     wishlist_product_list = Product.objects.all()

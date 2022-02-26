@@ -1,9 +1,10 @@
 from itertools import product
 import re
 from django.shortcuts import render, redirect
-from store.models import CouponCode, Product, Wishlist
+from store.models import CouponCode, Product, Wishlist, Order
 from django.http import HttpResponse, JsonResponse
 from .supporting_functions import getWishlist, generateRandom
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from datetime import datetime
 
@@ -164,9 +165,58 @@ class WishlistPage(View):
         return render(request, 'wishlist.html', context)
 
 
-class CheckoutPage(View):
+class CheckoutPage(LoginRequiredMixin, View):
+    login_url = '/login'
+    redirect_field_name = 'redirect_to'
+
     def post(self, request):
-        pass
+        username = request.session.get('username')
+        coupon_code = request.session.get('coupon_code')
+        discount_received = CouponCode.objects.get(code=coupon_code)
+        first_name = request.POST.get('order_first_name')
+        last_name = request.POST.get('order_last_name')
+        email = request.POST.get('order_email')
+        addr1 = request.POST.get('order_addr1')
+        addr2 = request.POST.get('order_addr2')
+        pincode = request.POST.get('order_pincode')
+        country = request.POST.get('order_country')
+        contact = request.POST.get('order_contact')
+        # alternate_contact = request.POST.get('order_alternate_contact')
+        # terms = request.POST.get('order_terms')
+        cart = request.session.get('cart')
+        products = Product.get_products_by_id(list(cart.keys()))
+        
+
+        for product in products:
+            order = Order(
+                order_id = 'testorder',
+                order_amount = 100,
+                product = product,
+                user = request.user,
+                quantity = cart.get(str(product.id)),
+                price = product.price,
+                coupon_used = coupon_code,
+                discount_received = discount_received.discount,
+                first_name = first_name,
+                last_name = last_name,
+                email = email,
+                addr1 = addr1,
+                addr2 = addr2,
+                pincode = pincode,
+                country = country,
+                contact = contact,
+                # alt_contact = alternate_contact,
+                # terms = terms
+            )
+            if product in products:
+                product = Product.objects.get(id=product.id)
+                product.sold_quantity = cart.get(str(product.id))
+                if product.stock_quantity > 0 and product.stock_quantity > product.sold_quantity:
+                    product.stock_quantity = product.stock_quantity - product.sold_quantity
+                product.save()
+            order.save()
+            request.session['cart'] = {}
+        return redirect('orderspage')
 
 
     def get(self, request):
@@ -203,5 +253,7 @@ class CheckoutPage(View):
             'random_number': generateRandom()
         }
         return render(request, 'checkout.html', context)
+
+
 
        

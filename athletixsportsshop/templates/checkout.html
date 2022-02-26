@@ -22,6 +22,8 @@
 
 <!-- Checkout Start -->
 <div class="container-fluid pt-5">
+    <form method="post">
+    {% csrf_token %}
     <div class="row px-xl-5">
         <div class="col-lg-8">
             <div class="mb-4">
@@ -29,27 +31,27 @@
                 <div class="row">
                     <div class="col-md-6 form-group">
                         <label>First Name</label>
-                        <input class="form-control" type="text" value="{{request.user.first_name}}">
+                        <input class="form-control" name="order_first_name" type="text" value="{{request.user.first_name}}">
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Last Name</label>
-                        <input class="form-control" type="text" value="{{request.user.last_name}}">
+                        <input class="form-control" name="order_last_name" type="text" value="{{request.user.last_name}}">
                     </div>
                     <div class="col-md-6 form-group">
                         <label>E-mail</label>
-                        <input class="form-control" type="text" placeholder="example@email.com" value="{{request.user.email}}">
+                        <input class="form-control" name="order_email" type="text" placeholder="example@email.com" value="{{request.user.email}}">
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Mobile No</label>
-                        <input class="form-control" type="text">
+                        <input class="form-control" name="order_contact" type="text">
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Address Line 1</label>
-                        <input class="form-control" type="text" placeholder="Flat/House, Apartment/ Society">
+                        <input class="form-control" name="order_addr1" type="text" placeholder="Flat/House, Apartment/ Society">
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Address Line 2</label>
-                        <input class="form-control" type="text" placeholder="Street/Road, Locality">
+                        <input class="form-control" name="order_addr2" type="text" placeholder="Street/Road, Locality">
                     </div>
                     <div class="col-md-6 form-group">
                         {% include 'country.html' %}
@@ -64,7 +66,7 @@
                     </div>
                     <div class="col-md-6 form-group">
                         <label>ZIP Code</label>
-                        <input class="form-control" type="text">
+                        <input class="form-control" name="order_pincode" type="text">
                     </div>
                     <div class="col-md-12 form-group">
                         <div class="custom-control custom-checkbox">
@@ -199,13 +201,14 @@
                     </div>
                 </div>
                 <div class="card-footer border-secondary bg-transparent">
-                    <button class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3" {% if btn_disabled %}disabled{% endif %}>
+                    <button type="submit" class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3" {% if btn_disabled %}disabled{% endif %}>
                         Place Order
                     </button>
                 </div>
             </div>
         </div>
     </div>
+    </form>
 </div>
 <!-- Checkout End -->
 

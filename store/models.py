@@ -3,14 +3,18 @@ from unicodedata import category
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
-import schedule
-import time
 
 
 COUPON_CODE_CHOICES = (
     ('inactive','inactive'),
     ('active','active'),
     ('expired','expired')
+)
+
+ORDER_STATUS_CHOICES = (
+    ('pending','pending'),
+    ('complete','complete'),
+    ('cancelled','cancelled')
 )
 
 def get_upload_path(instance, filename):
@@ -69,7 +73,7 @@ class Product(models.Model):
 
 
     def __str__(self):
-        return f'({self.id}) {self.name} {self.price}'
+        return f'({self.id}) {self.name} at MRP {self.price} in Stock {self.stock_quantity}'
 
 
 class BuyingPrice(models.Model):
@@ -132,28 +136,36 @@ class CouponCode(models.Model):
         return f'{self.code} active duration between {self.starting_from} to {self.expiring_on} - {self.status}'
 
 
-    # def __init__(self, *args, **kwargs):
-    #     now = datetime.now().strftime('%Y-%m-%d')
-    #     if now > str(self.expiring_on):
-    #         super(CouponCode, self).__init__(*args, **kwargs)
+
+class Order(models.Model):
+    order_id = models.CharField(max_length=10, default='')
+    order_amount = models.FloatField()
+    product = models.ForeignKey(Product, related_name='order_product', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='order_user', on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    price = models.IntegerField()
+    coupon_used = models.CharField(max_length=10, default='', null=True, blank=True)
+    discount_received = models.IntegerField(null=True, blank=True)
+    first_name = models.CharField(max_length=20, default='')
+    last_name = models.CharField(max_length=20, default='')
+    email = models.EmailField(max_length=30, default='')
+    addr1 = models.TextField(max_length=100, default='')
+    addr2 = models.TextField(max_length=100, default='')
+    pincode = models.CharField(max_length=10, default='')
+    country = models.CharField(max_length=20, default='')
+    delivery_method = models.CharField(max_length=10, default='standard')
+    contact = models.CharField(max_length=10, default='')
+    alt_contact = models.CharField(max_length=10, null=True, blank=True)
+    terms = models.CharField(max_length=10, default='accepted')
+    date = models.DateField(default=datetime.today)
+    status = models.CharField(max_length=15, choices=ORDER_STATUS_CHOICES, default='pending')
+
+    def __str__(self):
+        return f'Order: {self.product.name}({self.quantity}) - {self.price} \
+                        by {self.first_name} {self.last_name} {self.date}'
 
 
-    def update_coupon_status():
-        def save(self, *args, **kwargs):
-            now = datetime.now().strftime('%Y-%m-%d')
-            if now >= str(self.expiring_on):
-                self.status = 'expired'
-                print('COUPON EXPIRED')
-            if now < str(self.starting_from):
-                self.status = 'inactive'
-                print('COUPON INACTIVE')
-            else: 
-                self.status = 'active'
-                print('COUPON ACTIVE')
-            super(CouponCode, self).save(*args, **kwargs)
-    
-
-# schedule.every(5).seconds.do(CouponCode.update_coupon_status)
-# schedule.every(1).minute.do(CouponCode.update_coupon_status)
+    def __unicode__(self):
+        return u'%s %s' % (self.price, self.date)
 
 

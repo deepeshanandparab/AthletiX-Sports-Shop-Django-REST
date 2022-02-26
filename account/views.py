@@ -1,10 +1,14 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import View
 from django.shortcuts import render, redirect
 from django.contrib import auth, messages
 from .forms import RegistrationForm
 from .models import Profile
+from store.models import Order
 import re
+from athletixsportsshop.supporting_functions import getCartProducts, getWishlist
 
 def RegisterPage(request):
     regex = re.compile('[@_!#$%^&*()<>?/\|}{~:]')
@@ -77,3 +81,48 @@ def LoginPage(request):
 def LogoutPage(request):
         auth.logout(request)
         return redirect('homepage')
+
+
+
+class ProfilePage(LoginRequiredMixin, View):
+    login_url = '/login'
+    redirect_field_name = 'redirect_to'
+
+    
+    def post(self, request):
+        pass
+
+
+    def get(self, request):
+        order_list = Order.objects.filter(user=request.user).order_by('-date')
+
+        context = {
+                'title':'Profile',
+                'order_list':order_list,
+                'profile': True,
+                'wishlist_products': getWishlist(request),
+                'cart_list': getCartProducts(request)
+                }
+        return render(request, 'profile.html', context)
+
+
+
+class OrdersPage(LoginRequiredMixin, View):
+    login_url = '/login'
+    redirect_field_name = 'redirect_to'
+
+    
+    def post(self, request):
+        pass
+
+
+    def get(self, request):
+        order_list = Order.objects.filter(user=request.user).order_by('-date')
+        context = {
+                'title':'Orders',
+                'order_list':order_list,
+                'order': True,
+                'wishlist_products': getWishlist(request),
+                'cart_list': getCartProducts(request)
+                }
+        return render(request, 'orders.html', context)

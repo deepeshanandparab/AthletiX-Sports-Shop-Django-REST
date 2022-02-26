@@ -60,7 +60,7 @@
                 </div>
             </div>
             <div class="col-lg-4 text-center">
-                <p>Free domestic shipping on all orders over ₹ 2000</p>
+                <p class="mb-0">Free domestic shipping on all orders over ₹ 2000</p>
             </div>
             
             <div class="col-lg-4 text-center text-lg-right">
@@ -154,14 +154,14 @@
                         </div>
                         <div class="navbar-nav ml-auto py-0">
                             {% if request.session.username %}
-                            <a href="#" class="nav-item nav-link pr-0">
+                            <a href="{% url 'profilepage' %}" class="nav-item nav-link pr-0">
                                 {% if request.user.profile.profile_image %}
                                 <img src="{{request.user.profile.profile_image.url}}" class="profile-image">
                                 {% else %}
                                 <img src="{% static 'img/no_image.jpg' %}" class="profile-image">
                                 {% endif %}
                             </a>
-                            <a href="#" class="nav-item nav-link mt-1">{{request.session.username}}</a>
+                            <a href="{% url 'profilepage' %}" class="nav-item nav-link mt-1">{{request.session.username}}</a>
                             <a href="{% url 'logoutpage' %}" class="nav-item nav-link mt-1">Logout</a>
                             {% else %}
                             <a href="{% url 'loginpage' %}" class="nav-item nav-link">Login</a>
