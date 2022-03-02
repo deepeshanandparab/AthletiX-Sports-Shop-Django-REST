@@ -134,15 +134,17 @@
                         <h6 class="font-weight-medium text-success font-bold">- {% total_discount cart_list request.session.cart coupon %}</h6>
                     </div>
                 </div>
-                <div class="card-footer border-secondary bg-transparent">
-                    <div class="d-flex justify-content-between mt-2">
-                        <h5 class="font-weight-bold">Total</h5>
-                        <h5 class="font-weight-bold">{% checkout_shipping_total cart_list request.session.cart coupon shipping %}</h5>
+                    <div class="card-footer border-secondary bg-transparent">
+                        <div class="d-flex justify-content-between mt-2">
+                            <h5 class="font-weight-bold">Total</h5>
+                            <h5 class="font-weight-bold">{% checkout_shipping_total cart_list request.session.cart coupon shipping %}</h5>
+                            <input type="hidden" name="order_amount" value="{% checkout_order_total cart_list request.session.cart coupon shipping %}">
+                            {% checkout_order_total cart_list request.session.cart coupon shipping as order_value %}
+                        </div>
+                        <a href="{% url 'checkoutpage' %}" class="btn btn-block btn-primary my-3 py-3" {% if btn_disabled %} disabled {% endif %}>
+                            Proceed To Checkout
+                        </a>
                     </div>
-                    <a href="{% url 'checkoutpage' %}" class="btn btn-block btn-primary my-3 py-3" {% if btn_disabled %} disabled {% endif %}>
-                        Proceed To Checkout
-                    </a>
-                </div>
             </div>
         </div>
     </div>

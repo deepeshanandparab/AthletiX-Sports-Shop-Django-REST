@@ -146,22 +146,13 @@ class Order(models.Model):
     price = models.IntegerField()
     coupon_used = models.CharField(max_length=10, default='', null=True, blank=True)
     discount_received = models.IntegerField(null=True, blank=True)
-    first_name = models.CharField(max_length=20, default='')
-    last_name = models.CharField(max_length=20, default='')
-    email = models.EmailField(max_length=30, default='')
-    addr1 = models.TextField(max_length=100, default='')
-    addr2 = models.TextField(max_length=100, default='')
-    pincode = models.CharField(max_length=10, default='')
-    country = models.CharField(max_length=20, default='')
     delivery_method = models.CharField(max_length=10, default='standard')
-    contact = models.CharField(max_length=10, default='')
-    alt_contact = models.CharField(max_length=10, null=True, blank=True)
     terms = models.CharField(max_length=10, default='accepted')
     date = models.DateField(default=datetime.today)
     status = models.CharField(max_length=15, choices=ORDER_STATUS_CHOICES, default='pending')
 
     def __str__(self):
-        return f'Order: {self.product.name}({self.quantity}) - {self.price} \
+        return f'Order: ({self.order_id}) {self.product.name}({self.quantity}) - {self.price} \
                         by {self.first_name} {self.last_name} {self.date}'
 
 

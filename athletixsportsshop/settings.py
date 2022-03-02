@@ -131,3 +131,8 @@ MEDIA_URL = '/media/'
 # LOGIN_REDIRECT_URL = request.get_full_path|urlencode
 # LOGOUT_REDIRECT_URL = request.get_full_path|urlencode
 
+
+# RazorPay Credentials
+RAZOR_KEY_ID = 'rzp_test_BuXdq8nwonupUF'
+RAZOR_KEY_SECRET = 'su3weJ3QxWx2BqCdgHFqfAf3'
+

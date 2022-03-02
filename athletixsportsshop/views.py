@@ -2,11 +2,17 @@ from itertools import product
 import re
 from django.shortcuts import render, redirect
 from store.models import CouponCode, Product, Wishlist, Order
+from account.models import User, Profile, Address 
 from django.http import HttpResponse, JsonResponse
 from .supporting_functions import getWishlist, generateRandom
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from datetime import datetime
+import razorpay
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponseBadRequest
+from django.contrib import auth, messages
 
 
 class HomePage(View):
@@ -94,7 +100,7 @@ class CartPage(View):
         if cart:
             ids = list(request.session.get('cart').keys())
             cart_list = Product.get_products_by_id(ids)
-            shipping_charges = 200
+            shipping_charges = 0
             btn_disabled = False
         else:
             cart = {}
@@ -165,61 +171,113 @@ class WishlistPage(View):
         return render(request, 'wishlist.html', context)
 
 
+# authorize razorpay client with API Keys.
+razorpay_client = razorpay.Client(auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
+
+
 class CheckoutPage(LoginRequiredMixin, View):
     login_url = '/login'
     redirect_field_name = 'redirect_to'
 
     def post(self, request):
-        username = request.session.get('username')
-        coupon_code = request.session.get('coupon_code')
-        discount_received = CouponCode.objects.get(code=coupon_code)
-        first_name = request.POST.get('order_first_name')
-        last_name = request.POST.get('order_last_name')
-        email = request.POST.get('order_email')
-        addr1 = request.POST.get('order_addr1')
-        addr2 = request.POST.get('order_addr2')
-        pincode = request.POST.get('order_pincode')
-        country = request.POST.get('order_country')
-        contact = request.POST.get('order_contact')
-        # alternate_contact = request.POST.get('order_alternate_contact')
-        # terms = request.POST.get('order_terms')
-        cart = request.session.get('cart')
-        products = Product.get_products_by_id(list(cart.keys()))
-        
+        request.session['first_name'] = request.POST.get('order_first_name')
+        request.session['last_name'] = request.POST.get('order_last_name')
+        request.session['email'] = request.POST.get('order_email')
+        request.session['addr1'] = request.POST.get('order_addr1')
+        request.session['addr2'] = request.POST.get('order_addr2')
+        request.session['pincode'] = request.POST.get('order_pincode')
+        request.session['country'] = request.POST.get('order_country')
+        request.session['city'] = request.POST.get('order_city')
+        request.session['state'] = request.POST.get('order_state')
+        request.session['zipcode'] = request.POST.get('order_zipcode')
+        request.session['contact'] = request.POST.get('order_contact')
+        request.session['terms'] = request.POST.get('order_terms')
+        request.session['order_amount'] = request.POST.get('order_amount')
 
-        for product in products:
-            order = Order(
-                order_id = 'testorder',
-                order_amount = 100,
-                product = product,
-                user = request.user,
-                quantity = cart.get(str(product.id)),
-                price = product.price,
-                coupon_used = coupon_code,
-                discount_received = discount_received.discount,
-                first_name = first_name,
-                last_name = last_name,
-                email = email,
-                addr1 = addr1,
-                addr2 = addr2,
-                pincode = pincode,
-                country = country,
-                contact = contact,
-                # alt_contact = alternate_contact,
-                # terms = terms
-            )
-            if product in products:
-                product = Product.objects.get(id=product.id)
-                product.sold_quantity = cart.get(str(product.id))
-                if product.stock_quantity > 0 and product.stock_quantity > product.sold_quantity:
-                    product.stock_quantity = product.stock_quantity - product.sold_quantity
-                product.save()
-            order.save()
-            request.session['cart'] = {}
-        return redirect('orderspage')
+        return redirect('placeorderpage')
 
 
     def get(self, request):
+        coupon_code = request.session.get('coupon_code')
+        coupon = []
+        invalid_coupon = {}
+
+        if coupon_code != None:
+            coupon = CouponCode.objects.filter(code=coupon_code)
+            if len(coupon) == 0:
+                invalid_coupon = {'message':'Invalid coupon code or already expired coupon.'}
+
+        cart = request.session.get('cart')
+        cart_list = []
+        if cart:
+            ids = list(request.session.get('cart').keys())
+            cart_list = Product.get_products_by_id(ids)
+            shipping_charges = 0
+            btn_disabled = False
+        else:
+            cart = {}
+            shipping_charges = 0
+            btn_disabled = True
+
+        context = {
+            'title': 'Checkout',
+            'wishlist_products': getWishlist(request),
+            'cart_list': cart_list,
+            'shipping': shipping_charges,
+            'invalid_coupon': invalid_coupon,
+            'btn_disabled': btn_disabled,
+            'coupon': coupon
+        }
+        return render(request, 'checkout.html', context)
+
+
+class PlaceOrder(LoginRequiredMixin, View):
+    login_url = '/login'
+    redirect_field_name = 'redirect_to'
+
+
+    def post(self, request):
+        pass
+
+    def get(self, request):
+        username = request.session.get('username')
+        coupon_code = request.session.get('coupon_code')
+        discount_received = CouponCode.objects.filter(code=coupon_code)
+        order_amount = int(request.session.get('order_amount'))
+        cart = request.session.get('cart')
+        products = Product.get_products_by_id(list(cart.keys()))
+
+        first_name = request.session.get('first_name')
+        last_name = request.session.get('last_name')
+        email = request.session.get('email')
+        addr1 = request.session.get('addr1')
+        addr2 = request.session.get('addr2')
+        pincode = request.session.get('pincode')
+        country = request.session.get('country')
+        city = request.session.get('city')
+        state = request.session.get('state')
+        zipcode = request.session.get('zipcode')
+        contact = request.session.get('contact')
+        terms = request.session.get('terms')
+
+        customer_data = {
+            first_name
+        }
+
+        currency = 'INR'
+        amount = order_amount*100
+        request.session['order_amount'] = amount
+    
+        # Create a Razorpay Order
+        razorpay_order = razorpay_client.order.create(dict(amount=amount,
+                                                        currency=currency,
+                                                        payment_capture='0'))
+    
+        # order id of newly created order.
+        razorpay_order_id = razorpay_order['id']
+        callback_url = 'paymenthandler/'    
+
+
         btn_disabled = False
         coupon_code = request.session.get('coupon_code')
         coupon = []
@@ -235,7 +293,7 @@ class CheckoutPage(LoginRequiredMixin, View):
         if cart:
             ids = list(request.session.get('cart').keys())
             cart_list = Product.get_products_by_id(ids)
-            shipping_charges = 200
+            shipping_charges = 0
             btn_disabled = False
         else:
             cart = {}
@@ -243,17 +301,164 @@ class CheckoutPage(LoginRequiredMixin, View):
             btn_disabled = True
 
         context = {
-            'title': 'Checkout',
+            'title': 'Place Order',
             'wishlist_products': getWishlist(request),
             'cart_list': cart_list,
             'shipping': shipping_charges,
             'invalid_coupon': invalid_coupon,
             'btn_disabled': btn_disabled,
             'coupon': coupon,
-            'random_number': generateRandom()
+            'razorpay_order_id': razorpay_order_id,
+            'razorpay_merchant_key': settings.RAZOR_KEY_ID,
+            'razorpay_amount': amount,
+            'currency': currency,
+            'callback_url': callback_url,
+            'first_name': first_name,
+            'last_name': last_name,
+            'email': email,
+            'addr1':addr1,
+            'addr2':addr2,
+            'pincode':pincode,
+            'country':country,
+            'city':city,
+            'state':state,
+            'zipcode':zipcode,
+            'contact':contact,
+            'order_amount': order_amount
         }
-        return render(request, 'checkout.html', context)
+        return render(request, 'placeorder.html', context)
 
 
+@csrf_exempt
+def paymenthandler(request):
+ 
+    # only accept POST request.
+    if request.method == 'POST':
+            coupon_code = request.session.get('coupon_code')
+            discount_received = CouponCode.objects.filter(code=coupon_code)
+            cart_discount = 0
+            if len(discount_received)>0:
+                cart_discount = discount_received[0].discount
+            else:
+                cart_discount = 0
+            cart = request.session.get('cart')
+            products = Product.get_products_by_id(list(cart.keys()))
 
-       
+            # first_name = request.session.get('first_name')
+            # last_name = request.session.get('last_name')
+            # email = request.session.get('email')
+            addr1 = request.session.get('addr1')
+            addr2 = request.session.get('addr2')
+            country = request.session.get('country')
+            city = request.session.get('city')
+            state = request.session.get('state')
+            zipcode = request.session.get('zipcode')
+            contact = request.session.get('contact')
+            terms = request.session.get('terms')
+            
+            payment_id = request.POST.get('razorpay_payment_id')
+            razorpay_order_id = request.POST.get('razorpay_order_id')
+            signature = request.POST.get('razorpay_signature')
+            params_dict = {
+                'razorpay_order_id': razorpay_order_id,
+                'razorpay_payment_id': payment_id,
+                'razorpay_signature': signature
+            }
+
+            print('params_dict', params_dict)
+
+            result = razorpay_client.utility.verify_payment_signature(params_dict)
+
+            if result:
+                amount = int(request.session.get('order_amount'))
+
+                profile = Profile.objects.get(user=request.user)
+                if profile.contact_number is not None:
+                    Profile.objects.filter(user=request.user).update(alt_contact = contact)
+                else:
+                    Profile.objects.filter(user=request.user).update(contact_number = contact)
+
+                # address = Address.objects.filter(user=request.user)
+                # print('len', len(address))
+                # if len(address) < 1:
+                #     address = Address(
+                #         address = 'Primary Address',
+                #         user = request.user,
+                #         addr1 = addr1,
+                #         addr2 = addr2,
+                #         zipcode = zipcode,
+                #         city = city,
+                #         state = state,
+                #         country = country,
+                #         contact = contact
+                #     )
+                #     address.save()
+                # else:
+                #     address = Address(
+                #         address = 'Other Address',
+                #         user = request.user,
+                #         addr1 = addr1,
+                #         addr2 = addr2,
+                #         zipcode = zipcode,
+                #         city = city,
+                #         state = state,
+                #         country = country,
+                #         contact = contact
+                #     )
+                #     address.save()
+
+            
+                for product in products:
+                    order = Order(
+                            order_id = razorpay_order_id,
+                            order_amount = amount,
+                            product = product,
+                            user = request.user,
+                            quantity = cart.get(str(product.id)),
+                            price = product.price,
+                            coupon_used = coupon_code,
+                            discount_received = cart_discount,
+                            terms = terms,
+                            status = 'paid'
+                        )
+                    if product in products:
+                        product = Product.objects.get(id=product.id)
+                        product.sold_quantity = cart.get(str(product.id))
+                        if product.stock_quantity > 0 and product.stock_quantity > product.sold_quantity:
+                            product.stock_quantity = product.stock_quantity - product.sold_quantity
+                        product.save()
+
+                    order.save()
+
+                request.session['cart'] = {}
+                request.session['first_name'] = {}
+                request.session['last_name'] = {}
+                request.session['email'] = {}
+                request.session['addr1'] = {}
+                request.session['addr2'] = {}
+                request.session['pincode'] = {}
+                request.session['country'] = {}
+                request.session['city'] = {}
+                request.session['state'] = {}
+                request.session['zipcode'] = {}
+                request.session['contact'] = {}
+                request.session['terms'] = {}
+                request.session['order_amount'] = {}
+
+                try:
+                    razorpay_client.payment.capture(payment_id, amount)
+                    print('Try block entered')
+                    print('order id', razorpay_order_id)                    
+                    messages.success(request, f'Order placed successfully')
+                    return redirect('orderspage')
+                except:
+                    print('Order Failed')
+                    messages.error(request, f'Failed to place an order')
+                    return render(request, 'paymentfail.html')
+            else:
+                print('Signature Verification Failed')
+                messages.error(request, f'Failed to place an order')
+                return render(request, 'paymentfail.html')
+    else:
+        print('No Post request')
+        return HttpResponseBadRequest()

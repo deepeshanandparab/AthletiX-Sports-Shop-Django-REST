@@ -22,7 +22,8 @@
 
 <!-- Checkout Start -->
 <div class="container-fluid pt-5">
-    <form method="post">
+    {{placeorder}}
+    <form method="post" id="checkout_form">
     {% csrf_token %}
     <div class="row px-xl-5">
         <div class="col-lg-8">
@@ -31,7 +32,7 @@
                 <div class="row">
                     <div class="col-md-6 form-group">
                         <label>First Name</label>
-                        <input class="form-control" name="order_first_name" type="text" value="{{request.user.first_name}}">
+                        <input class="form-control" id="first_name" name="order_first_name" type="text" value="{{request.user.first_name}}">
                     </div>
                     <div class="col-md-6 form-group">
                         <label>Last Name</label>
@@ -58,20 +59,26 @@
                     </div>
                     <div class="col-md-6 form-group">
                         <label>City</label>
-                        <input class="form-control" type="text">
+                        <input class="form-control" name="order_city" type="text">
                     </div>
                     <div class="col-md-6 form-group">
                         <label>State</label>
-                        <input class="form-control" type="text">
+                        <input class="form-control" name="order_state" type="text">
                     </div>
                     <div class="col-md-6 form-group">
                         <label>ZIP Code</label>
-                        <input class="form-control" name="order_pincode" type="text">
+                        <input class="form-control" name="order_zipcode" type="text">
                     </div>
                     <div class="col-md-12 form-group">
                         <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" id="profile_information">
-                            <label class="custom-control-label" for="profile_information">Save Information</label>
+                            <input type="checkbox" class="custom-control-input" id="order_terms" name="order_terms">
+                            <label class="custom-control-label" for="order_terms" data-toggle="collapse" data-target="#place_order_button">Accept Terms and Conditions</label>
+                        </div>
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="save_information">
+                            <label class="custom-control-label" for="save_information">Save Information</label>
                         </div>
                     </div>
                     <div class="col-md-12 form-group">
@@ -138,7 +145,7 @@
             <div class="card border-secondary mb-5">
                 <div class="card-header bg-secondary border-0">
                     <h4 class="font-weight-semi-bold m-0 inline">Order Total</h4>
-                    <span class="font-12">(Order Id: {{random_number}})</span>
+                    <span class="font-12">(Order Id: {{ razorpay_order_id }})</span>
                 </div>
                 <div class="card-body">
                     <h5 class="font-weight-medium mb-3">Products</h5>
@@ -179,11 +186,12 @@
                     <div class="d-flex justify-content-between mt-2">
                         <h5 class="font-weight-bold">Total</h5>
                         <h5 class="font-weight-bold" id="total">{% checkout_shipping_total cart_list request.session.cart coupon shipping %}</h5>
+                        <input type="text" name="order_amount" value="{% checkout_order_total cart_list request.session.cart coupon shipping %}" hidden>
                     </div>
                 </div>
             </div>
-            <div class="card border-secondary mb-5">
-                <div class="card-header bg-secondary border-0">
+            <div class="card no-border mb-5">
+                <!-- <div class="card-header bg-secondary border-0">
                     <h4 class="font-weight-semi-bold m-0">Payment</h4>
                 </div>
                 <div class="card-body">
@@ -199,10 +207,10 @@
                             <label class="custom-control-label" for="onlp">Online Payment <small>(Free Shipping)</small></label>
                         </div>
                     </div>
-                </div>
-                <div class="card-footer border-secondary bg-transparent">
-                    <button type="submit" class="btn btn-lg btn-block btn-primary font-weight-bold my-3 py-3" {% if btn_disabled %}disabled{% endif %}>
-                        Place Order
+                </div> -->
+                <div class="collapse bg-transparent p-0" id="place_order_button">
+                    <button type="submit" class="btn btn-lg btn-block btn-primary font-weight-bold">
+                        Proceed to Pay
                     </button>
                 </div>
             </div>

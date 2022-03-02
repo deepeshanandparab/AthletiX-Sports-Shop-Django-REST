@@ -147,6 +147,12 @@ def checkout_shipping_total(products , cart, coupon_code, shipping):
     return currency(price)
 
 
+@register.simple_tag
+def checkout_order_total(products , cart, coupon_code, shipping):
+    total = checkout_coupon_cart_total(products , cart, coupon_code) + shipping
+    return int(total)
+
+
 @register.filter(name='cart_count')
 def cart_count(cart):
     return len(cart)
