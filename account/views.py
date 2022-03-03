@@ -28,13 +28,13 @@ def RegisterPage(request):
         'username': username,
         'email': email,
         'contact': contact
-        
     }
+
+    print('value', value)
 
 
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
-    
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
@@ -46,6 +46,8 @@ def RegisterPage(request):
             messages.error(request, 'Last name field is empty')
         elif request.POST['contact'] == '':
             messages.error(request, 'Contact field is empty')
+        elif len(request.POST['contact']) != 10:
+            messages.error(request, 'Enter a valid 10 digit contact number')
         elif request.POST['email'] == '':
             messages.error(request, 'Email field is empty')
         elif atr not in request.POST['email']:

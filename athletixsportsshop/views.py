@@ -378,34 +378,38 @@ def paymenthandler(request):
                 else:
                     Profile.objects.filter(user=request.user).update(contact_number = contact)
 
-                # address = Address.objects.filter(user=request.user)
-                # print('len', len(address))
-                # if len(address) < 1:
-                #     address = Address(
-                #         address = 'Primary Address',
-                #         user = request.user,
-                #         addr1 = addr1,
-                #         addr2 = addr2,
-                #         zipcode = zipcode,
-                #         city = city,
-                #         state = state,
-                #         country = country,
-                #         contact = contact
-                #     )
-                #     address.save()
-                # else:
-                #     address = Address(
-                #         address = 'Other Address',
-                #         user = request.user,
-                #         addr1 = addr1,
-                #         addr2 = addr2,
-                #         zipcode = zipcode,
-                #         city = city,
-                #         state = state,
-                #         country = country,
-                #         contact = contact
-                #     )
-                #     address.save()
+                address = Address.objects.filter(user=request.user, title='Primary Address')
+                if len(address) > 0:
+                    if address[0].addr1 == '':
+                        Address.objects.filter(user=request.user).update(
+                            title = 'Primary Address',
+                            addr1 = addr1,
+                            addr2 = addr2,
+                            zipcode = zipcode,
+                            city = city,
+                            state = state,
+                            country = country
+                            )
+                    else:
+                        Address.objects.filter(user=request.user).update(
+                            title = 'Other Address',
+                            addr1 = addr1,
+                            addr2 = addr2,
+                            zipcode = zipcode,
+                            city = city,
+                            state = state,
+                            country = country
+                            )
+                else:
+                    Address.objects.filter(user=request.user).update(
+                            title = 'Primary Address',
+                            addr1 = addr1,
+                            addr2 = addr2,
+                            zipcode = zipcode,
+                            city = city,
+                            state = state,
+                            country = country
+                            )
 
             
                 for product in products:

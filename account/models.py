@@ -20,11 +20,21 @@ post_save.connect(create_user_profile, sender=User)
 
 
 class Address(models.Model):
-    address_title = models.CharField(max_length=20)
+    title = models.CharField(max_length=20, default='Home')
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    addr1 = models.CharField(max_length=200)
+    addr1 = models.CharField(max_length=200, default='')
     addr2 = models.CharField(max_length=200, blank=True, null=True)
-    zipcode = models.CharField(max_length=200)
-    city = models.CharField(max_length=200)
-    state = models.CharField(max_length=200)
-    country = models.CharField(max_length=200)
+    zipcode = models.IntegerField(default=0)
+    city = models.CharField(max_length=200, default='')
+    state = models.CharField(max_length=200, default='')
+    country = models.CharField(max_length=200, default='')
+
+    def __str__(self):
+        return f'{self.user.username}\'s {self.title} Address'
+
+
+def create_user_address(sender, instance, created, **kwargs):
+    if created:
+        Address.objects.create(user=instance)
+
+post_save.connect(create_user_address, sender=User)

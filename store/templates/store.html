@@ -264,14 +264,16 @@
                                 </a>
                                 {% if product.discounted_price %}
                                 <div class="d-flex justify-content-center">
-                                    <h6>{{product.discounted_price|inrcurrency|currency}}</h6>
-                                    <h6 class="text-muted ml-2"><del>{{product.price|inrcurrency|currency}}</del></h6>
+                                    <h6 class="mb-0">{{product.discounted_price|inrcurrency|currency}}</h6>
+                                    <h6 class="text-muted ml-2 mb-0"><del>{{product.price|inrcurrency|currency}}</del></h6>
+                                    <small class="ml-2 badge badge-success">{{product.discount}}% off</small>
                                 </div>
                                 {% else %}
                                 <div class="d-flex justify-content-center">
-                                    <h6 class="text-muted ml-2">{{product.price|inrcurrency|currency}}</h6>
+                                    <h6 class="text-muted ml-2 mb-0">{{product.price|inrcurrency|currency}}</h6>
                                 </div>
-                                <div class="row">
+                                {% endif %}
+                                <div class="row mt-3">
                                     <div class="col-6">
                                         {% if request.session.username %}
                                         <form method="post">
@@ -303,7 +305,6 @@
                                         <p class="text-sm text-dark">{{ratings_list|overall_rating:product}}/5</p>
                                     </div>
                                 </div>
-                                {% endif %}
                             </div>
 
                             <div class="d-flex justify-content-between bg-light border">

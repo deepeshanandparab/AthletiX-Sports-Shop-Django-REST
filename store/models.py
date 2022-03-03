@@ -153,7 +153,7 @@ class Order(models.Model):
 
     def __str__(self):
         return f'Order: ({self.order_id}) {self.product.name}({self.quantity}) - {self.price} \
-                        by {self.first_name} {self.last_name} {self.date}'
+                        on {self.date}'
 
 
     def __unicode__(self):

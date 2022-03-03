@@ -15,6 +15,16 @@
 </div>
 <!-- Page Header End -->
 
+<div class="row w-80 mx-auto">
+    <div class="col-md-12 text-center no-padding-left-lg no-padding-right-lg">
+          {% for message in messages %}
+              <div class="text-center alert alert-{% if message.level == 40 %}danger{% else %}{{message.tags}}{% endif %}" role="alert" id="message-container">
+                {{ message }}
+              </div>
+          {% endfor %}
+     </div>
+</div>
+
 <div class="container-fluid pt-5">
     <div class="row px-xl-5">
         <div class="col-lg-5 col-md-12 mx-auto">
