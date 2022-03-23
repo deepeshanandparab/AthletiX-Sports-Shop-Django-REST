@@ -89,7 +89,7 @@
                 </a>
             </div>
             <div class="col-lg-6 col-7 text-left">
-                <form action="">
+                <!-- <form action="">
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Search for products">
                         <div class="input-group-append">
@@ -98,18 +98,10 @@
                             </span>
                         </div>
                     </div>
-                </form>
+                </form> -->
             </div>
             <div class="col-lg-3 col-5 text-right">
-                <!-- <a href="" class="btn border">
-                    <i class="fas fa-heart atx-red"></i>
-                    <span class="badge">{{wishlist_product_count}}</span>
-                </a> -->
                 {% include 'notifications.html' %}
-                <!-- <a href="" class="btn border">
-                    <i class="fas fa-shopping-cart atx-red"></i>
-                    <span class="badge">{{request.session.cart|cart_count}}</span>
-                </a> -->
             </div>
         </div>
     </div>
@@ -124,17 +116,31 @@
                     <h6 class="m-0">Categories</h6>
                     <i class="fa fa-angle-down text-dark"></i>
                 </a>
-                <nav class="position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light collapse" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 1;">
+                <nav class="position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light collapse {% if title == 'Home' %}show{% endif %}" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 1;">
                     <div class="navbar-nav w-100 overflow-hidden">
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link" data-toggle="dropdown">Bats <i class="fa fa-angle-down float-right mt-1"></i></a>
                             <div class="dropdown-menu position-absolute bg-white border-0 rounded-0 w-100 m-0">
-                                <a href="" class="dropdown-item">English Willow Bats</a>
-                                <a href="" class="dropdown-item">Kashmir Willow Bats</a>
+                                <a href="{% url 'storepage' %}?category_english_willow_bat=on#search-product-filter" class="dropdown-item">English Willow Bats</a>
+                                <a href="{% url 'storepage' %}?category_kashmir_willow_bat=on#search-product-filter" class="dropdown-item">Kashmir Willow Bats</a>
                             </div>
                         </div>
-                        <a href="" class="nav-item nav-link">Batting Gloves</a>
-                        <a href="" class="nav-item nav-link">Leather Balls</a>
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link" data-toggle="dropdown">Clothing <i class="fa fa-angle-down float-right mt-1"></i></a>
+                            <div class="dropdown-menu bg-white border-0 rounded-0 w-100 m-0">
+                                <a href="{% url 'storepage' %}?category_tshirt=on#search-product-filter" class="dropdown-item">Tshirt</a>
+                                <a href="{% url 'storepage' %}?category_track_pant=on#search-product-filter" class="dropdown-item">Track Pant</a>
+                            </div>
+                        </div>
+                        <a href="{% url 'storepage' %}?category_batting_gloves=on#search-product-filter" class="nav-item nav-link">Batting Gloves</a>
+                        <a href="{% url 'storepage' %}?category_leather_balls=on#search-product-filter" class="nav-item nav-link">Leather Balls</a>
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link" data-toggle="dropdown">Clothing <i class="fa fa-angle-down float-right mt-1"></i></a>
+                            <div class="dropdown-menu bg-white border-0 rounded-0 w-100 m-0">
+                                <a href="{% url 'storepage' %}?category_tshirt=on#search-product-filter" class="dropdown-item">Tshirt</a>
+                                <a href="{% url 'storepage' %}?category_track_pant=on#search-product-filter" class="dropdown-item">Track Pant</a>
+                            </div>
+                        </div>
                     </div>
                 </nav>
             </div>
@@ -174,33 +180,35 @@
                 {% if title == 'Home' %}
                 <div id="header-carousel" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
-                        <div class="carousel-item active" style="height: 410px; background-color: #0b2540;">
-                            <img class="img-fluid" src="{% static 'img/slider1.jpg' %}" style="opacity:0.4">
-                            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                                <div class="p-3" style="max-width: 700px;">
-                                    <h4 class="text-light text-uppercase font-weight-medium mb-3">AthletiX Kashmir Willow Bats</h4>
-                                    <h3 class="display-4 text-white font-weight-semi-bold mb-4">Top Quality and Long Lasting</h3>
-                                    <a href="" class="btn bg-atx-red py-2 px-3 text-white">Shop Now</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="carousel-item" style="height: 410px; background-color: #0b2540;">
-                            <img class="img-fluid" src="{% static 'img/slider2.jpg' %}" style="opacity:0.4">
-                            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                                <div class="p-3" style="max-width: 700px;">
-                                    <h4 class="text-light text-uppercase font-weight-medium mb-3">AthletiX English Willow Bats</h4>
-                                    <h3 class="display-4 text-white font-weight-semi-bold mb-4">Premium Willow at Reasonable Price</h3>
-                                    <a href="" class="btn bg-atx-red py-2 px-3 text-white">Shop Now</a>
-                                </div>
-                            </div>
-                        </div>
                         <div class="carousel-item" style="height: 410px; background-color: #0b2540;">
                             <img class="img-fluid" src="{% static 'img/slider3.jpg' %}" style="opacity:0.4">
                             <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                                 <div class="p-3" style="max-width: 700px;">
                                     <h4 class="text-light text-uppercase font-weight-medium mb-3">AthletiX Cricket Equipments</h4>
                                     <h3 class="display-4 text-white font-weight-semi-bold mb-4">Professional Gear for Professionals</h3>
-                                    <a href="" class="btn bg-atx-red py-2 px-3 text-white">Shop Now</a>
+                                    <a href="{% url 'storepage' %}" class="btn bg-atx-red py-2 px-3 text-white">Shop Now</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="carousel-item" style="height: 410px; background-color: #0b2540;">
+                            <img class="img-fluid" src="{% static 'img/slider2.jpg' %}" style="opacity:0.4">
+                            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                                <div class="p-3" style="max-width: 700px;">
+                                    <h4 class="text-light text-uppercase font-weight-medium mb-3">AthletiX English Willow Bats</h4>
+                                    <h3 class="display-4 text-white font-weight-semi-bold mb-4">Premium Willow at Reasonable Price</h3>
+                                    <a href="{% url 'storepage' %}?category_english_willow_bat=on#search-product-filter" class="btn bg-atx-red py-2 px-3 text-white">Shop Now</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="carousel-item active" style="height: 410px; background-color: #0b2540;">
+                            <img class="img-fluid" src="{% static 'img/slider1.jpg' %}" style="opacity:0.4">
+                            <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                                <div class="p-3" style="max-width: 700px;">
+                                    <h4 class="text-light text-uppercase font-weight-medium mb-3">AthletiX Kashmir Willow Bats</h4>
+                                    <h3 class="display-4 text-white font-weight-semi-bold mb-4">Top Quality and Long Lasting</h3>
+                                    <a href="{% url 'storepage' %}?category_kashmir_willow_bat=on#search-product-filter" class="btn bg-atx-red py-2 px-3 text-white">Shop Now</a>
                                 </div>
                             </div>
                         </div>
