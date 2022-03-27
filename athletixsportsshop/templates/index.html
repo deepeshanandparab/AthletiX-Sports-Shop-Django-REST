@@ -23,7 +23,7 @@
                 <div class="position-relative">
                     <h5 class="text-uppercase text-primary mb-3">20% off the all order</h5>
                     <h2 class="mb-4 font-weight-semi-bold">AthletiX Cricket Wear</h2>
-                    <a href="{% url 'productdetailpage' 7 %}" class="btn btn-outline-primary py-md-2 px-md-3">Shop Now</a>
+                    <a href="{% url 'storepage' %}?category_cricket_whites=on#search-product-filter" class="btn btn-outline-primary py-md-2 px-md-3">Shop Now</a>
                 </div>
             </div>
         </div>
@@ -38,7 +38,7 @@
         <h2 class="section-title px-5 atx-blue"><span class="px-2">Trendy Products</span></h2>
     </div>
     <div class="row px-xl-5 pb-3">
-        {% for product in product_list %}
+        {% for product in trendy_products %}
         <div class="col-lg-3 col-md-6 col-sm-12 pb-1" id="product_{{product.id}}">
             <div class="card product-item border-0 mb-4">
                 <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">

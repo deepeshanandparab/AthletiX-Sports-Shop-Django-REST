@@ -1,29 +1,22 @@
+{% load currency_filter %}
+{% load custom_filter %}
+{% load cart_filter %}
+
 <div class="d-flex align-items-center mb-3">
     <p class="text-dark font-weight-medium mb-0 mr-3 w-15">Size:</p>
-    <form class="row pl-5">
-        <div class="custom-control custom-radio custom-control-inline col-3">
-            <input type="radio" class="custom-control-input" id="shoes-7" name="shoe-size">
-            <label class="custom-control-label" for="shoes-7">UK 7/US 8</label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline col-3">
-            <input type="radio" class="custom-control-input" id="shoes-8" name="shoe-size">
-            <label class="custom-control-label" for="shoes-8">UK 8/US 9</label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline col-3">
-            <input type="radio" class="custom-control-input" id="shoes-9" name="shoe-size">
-            <label class="custom-control-label" for="shoes-9">UK 9/US 10</label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline col-3">
-            <input type="radio" class="custom-control-input" id="shoes-10" name="shoe-size">
-            <label class="custom-control-label" for="shoes-10">UK 10/US 11</label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline col-3">
-            <input type="radio" class="custom-control-input" id="shoes-11" name="shoe-size">
-            <label class="custom-control-label" for="shoes-11">UK 11/US 12</label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline col-3">
-            <input type="radio" class="custom-control-input" id="shoes-12" name="shoe-size">
-            <label class="custom-control-label" for="shoes-12">UK 12/US 13</label>
+
+    <form class="row" method="post">
+        {% csrf_token %}
+        <input type="text" name="product" value="{{product.id}}" hidden>
+        <div class="form-group">
+            <select class="form-control " name="shoe_size" id="shoe_size_select" onchange="this.form.submit()">
+                <option value="None">Select Size</option>
+                <option value="uk7_us8" {% if shoe_size == 'uk7_us8' %}selected{% endif %}>UK 7/US 8</option>
+                <option value="uk8_us9" {% if shoe_size == 'uk8_us9' %}selected{% endif %}>UK 8/US 9</option>
+                <option value="uk9_us10" {% if shoe_size == 'uk9_us10' %}selected{% endif %}>UK 9/US 10</option>
+                <option value="uk10_us11" {% if shoe_size == 'uk10_us11' %}selected{% endif %}>UK 10/US 11</option>
+                <option value="uk11_us12" {% if shoe_size == 'uk11_us12' %}selected{% endif %}>UK 11/US 12</option>
+            </select>
         </div>
     </form>
 </div>
@@ -93,5 +86,49 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+</div>
+
+<div class="row mb-3 mx-auto">
+    {% if product|is_in_cart:request.session.cart %}
+    <div class="col-3 input-group quantity px-0">
+        <div class="input-group-btn">
+            <form method="post">
+            {% csrf_token %}
+                <input type="text" name="product" value="{{product.id}}" hidden> 
+                <input type="text" name="remove" value="True" hidden>    
+                <input type="submit" class="btn bg-atx-red text-white btn-minus py-2" value=" - ">
+            </form>
+        </div>
+
+        <input type="text" class="form-control bg-secondary text-center bg-white border-0" 
+            value="{{product|cart_quantity:request.session.cart}}">
+        
+        <div class="input-group-btn">
+            <form method="post">
+                {% csrf_token %}
+                <input type="text" name="product" value="{{product.id}}" hidden> 
+                <input type="submit" class="btn bg-atx-red text-white btn-plus py-2" value=" + ">
+            </form>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-3 p-2 text-center bg-atx-red">
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="product" value="{{product.id}}" hidden>
+            <i class="fas fa-shopping-cart text-dark mr-1"></i>
+            <input type="submit" class="btn btn-sm text-dark p-0" value="Add to Cart">
+        </form>
+    </div>
+    {% endif %}
+
+    <div class="col-3 p-2 text-center bg-atx-red ml-3">
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="product" value="{{product.id}}" hidden>
+            <i class="fas fa-shopping-cart text-dark mr-1"></i>
+            <input type="submit" class="btn btn-sm text-dark p-0" value="Buy">
+        </form>
     </div>
 </div>

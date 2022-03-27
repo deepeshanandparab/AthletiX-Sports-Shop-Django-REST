@@ -1,0 +1,65 @@
+{% load currency_filter %}
+{% load custom_filter %}
+{% load cart_filter %}
+
+<div class="d-flex align-items-center mb-3">
+    <p class="text-dark font-weight-medium mb-0 mr-3 w-15">Size:</p>
+    <form class="row" method="post">
+        {% csrf_token %}
+        <input type="text" name="product" value="{{product.id}}" hidden>
+        <div class="form-group">
+            <select class="form-control form-control-sm" name="bat_size" onchange="this.form.submit()">
+                <option value="None">Select Size</option>
+                <option value="men" {% if bat_size == 'men' %}selected{% endif %}>Men (7)</option>
+                <option value="harrow" {% if bat_size == 'harrow' %}selected{% endif %}>Harrow (6)</option>
+                <option value="size_5" {% if bat_size == 'size_5' %}selected{% endif %}>Size 5</option>
+                <option value="size_4" {% if bat_size == 'size_4' %}selected{% endif %}>size 4</option>
+                <option value="size_3" {% if bat_size == 'size_3' %}selected{% endif %}>Size 3</option>
+            </select>
+        </div>
+    </form>
+</div>
+
+<div class="row mb-3 mx-auto">
+    {% if product|is_in_cart:request.session.cart %}
+    <div class="col-3 input-group quantity px-0">
+        <div class="input-group-btn">
+            <form method="post">
+            {% csrf_token %}
+                <input type="text" name="product" value="{{product.id}}" hidden> 
+                <input type="text" name="remove" value="True" hidden>    
+                <input type="submit" class="btn bg-atx-red text-white btn-minus py-2" value=" - ">
+            </form>
+        </div>
+
+        <input type="text" class="form-control bg-secondary text-center bg-white border-0" 
+            value="{{product|cart_quantity:request.session.cart}}">
+        
+        <div class="input-group-btn">
+            <form method="post">
+                {% csrf_token %}
+                <input type="text" name="product" value="{{product.id}}" hidden> 
+                <input type="submit" class="btn bg-atx-red text-white btn-plus py-2" value=" + ">
+            </form>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-3 p-2 text-center bg-atx-red">
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="product" value="{{product.id}}" hidden>
+            <i class="fas fa-shopping-cart text-dark mr-1"></i>
+            <input type="submit" class="btn btn-sm text-dark p-0" value="Add to Cart">
+        </form>
+    </div>
+    {% endif %}
+
+    <div class="col-3 p-2 text-center bg-atx-red ml-3">
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="product" value="{{product.id}}" hidden>
+            <i class="fas fa-shopping-cart text-dark mr-1"></i>
+            <input type="submit" class="btn btn-sm text-dark p-0" value="Buy">
+        </form>
+    </div>
+</div>

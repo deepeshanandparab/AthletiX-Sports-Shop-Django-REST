@@ -412,3 +412,23 @@
 .no-border{
   border: 0px!important;
 }
+
+.no-border-radius{
+  border-radius: 0px!important;
+}
+
+.text-grey{
+  color: #6F6F6F!important;
+}
+
+.mt-10px{
+  margin-top: 10px!important;
+}
+
+#shoe_size_select{
+  border-radius: 0!important;
+}
+
+#cart_table th, #cart_table td {
+  vertical-align: middle!important;
+}

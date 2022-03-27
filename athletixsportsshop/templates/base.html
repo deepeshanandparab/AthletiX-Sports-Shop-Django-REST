@@ -54,9 +54,7 @@
                 <div class="d-inline-flex align-items-center">
                     <a class="text-dark" href="">FAQs</a>
                     <span class="text-muted px-2">|</span>
-                    <a class="text-dark" href="">Help</a>
-                    <span class="text-muted px-2">|</span>
-                    <a class="text-dark" href="">Support</a>
+                    <a class="text-dark" href="">Help & Support</a>
                 </div>
             </div>
             <div class="col-lg-4 text-center">
@@ -123,24 +121,22 @@
                             <div class="dropdown-menu position-absolute bg-white border-0 rounded-0 w-100 m-0">
                                 <a href="{% url 'storepage' %}?category_english_willow_bat=on#search-product-filter" class="dropdown-item">English Willow Bats</a>
                                 <a href="{% url 'storepage' %}?category_kashmir_willow_bat=on#search-product-filter" class="dropdown-item">Kashmir Willow Bats</a>
-                            </div>
-                        </div>
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link" data-toggle="dropdown">Clothing <i class="fa fa-angle-down float-right mt-1"></i></a>
-                            <div class="dropdown-menu bg-white border-0 rounded-0 w-100 m-0">
-                                <a href="{% url 'storepage' %}?category_tshirt=on#search-product-filter" class="dropdown-item">Tshirt</a>
-                                <a href="{% url 'storepage' %}?category_track_pant=on#search-product-filter" class="dropdown-item">Track Pant</a>
+                                <a href="{% url 'storepage' %}?category_tennis_bat=on#search-product-filter" class="dropdown-item">Tennis Bats</a>
                             </div>
                         </div>
                         <a href="{% url 'storepage' %}?category_batting_gloves=on#search-product-filter" class="nav-item nav-link">Batting Gloves</a>
-                        <a href="{% url 'storepage' %}?category_leather_balls=on#search-product-filter" class="nav-item nav-link">Leather Balls</a>
+                        <a href="{% url 'storepage' %}?category_leather_ball=on#search-product-filter" class="nav-item nav-link">Leather Balls</a>
+                        
                         <div class="nav-item dropdown">
-                            <a href="#" class="nav-link" data-toggle="dropdown">Clothing <i class="fa fa-angle-down float-right mt-1"></i></a>
+                            <a href="#" class="nav-link" data-toggle="dropdown">Apparel <i class="fa fa-angle-down float-right mt-1"></i></a>
                             <div class="dropdown-menu bg-white border-0 rounded-0 w-100 m-0">
                                 <a href="{% url 'storepage' %}?category_tshirt=on#search-product-filter" class="dropdown-item">Tshirt</a>
                                 <a href="{% url 'storepage' %}?category_track_pant=on#search-product-filter" class="dropdown-item">Track Pant</a>
+                                <a href="{% url 'storepage' %}?category_cap=on#search-product-filter" class="dropdown-item">Cap</a>
                             </div>
                         </div>
+
+                        <a href="{% url 'storepage' %}?category_shoes=on#search-product-filter" class="nav-item nav-link">Shoes</a>
                     </div>
                 </nav>
             </div>
@@ -262,7 +258,9 @@
                         <div class="d-flex flex-column justify-content-start">
                             <a class="text-dark mb-2" href="/"><i class="fa fa-home text-primary mr-3"></i>Home</a>
                             <a class="text-dark mb-2" href="{% url 'storepage' %}"><i class="fas fa-store text-primary mr-3 font-12"></i>Our Shop</a>
-                            <a class="text-dark" href="contact.html"><i class="fa fa-phone text-primary mr-3"></i>Contact Us</a>
+                            <a class="text-dark mb-2" href="#"><i class="fa fa-phone text-primary mr-3"></i>Contact Us</a>
+                            <a class="text-dark mb-2" href="#"><i class="fa fa-question text-primary mr-4"></i>FAQs</a>
+                            <a class="text-dark mb-2" href="#"><i class="fas fa-headset text-primary mr-3"></i>Help & Support</a>
                         </div>
                     </div>
                     <div class="col-md-4 mb-5">

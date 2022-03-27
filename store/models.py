@@ -42,10 +42,14 @@ class ProductType(models.Model):
 TYPE_CHOICES = (
     ('kashmir_willow_bat','kashmir_willow_bat'),
     ('english_willow_bat','english_willow_bat'),
+    ('tennis_bat','tennis_bat'),
     ('leather_ball','leather_ball'),
     ('batting_gloves','batting_gloves'),
     ('kit_bag_junior','kit_bag_junior'),
-    ('cricket_whites','cricket_whites')
+    ('tshirt','tshirt'),
+    ('track_pant','track_pant'),
+    ('cap','cap'),
+    ('shoes','shoes')
 )
 
 class Product(models.Model):
@@ -57,7 +61,7 @@ class Product(models.Model):
     description = models.CharField(max_length=5000)
     brand = models.ForeignKey(Brand, related_name='brand', on_delete = models.CASCADE)
     status = models.BooleanField(default=False)
-    category = models.CharField(max_length=10, default='', null=True, blank=True)
+    category = models.CharField(max_length=50, default='', null=True, blank=True)
     type = models.CharField(max_length=40, choices=TYPE_CHOICES, default='')
     wishlist = models.ManyToManyField(User, related_name='wishlist', blank=True)
     sold_quantity = models.IntegerField(default=0)

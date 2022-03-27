@@ -150,6 +150,16 @@
 
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
                         <form method="get" action="#search-product-filter">
+                            <input type="checkbox" class="custom-control-input" name="category_tennis_bat" id="category_tennis_bat"
+                                {% if filter_dict.category_tennis_bat == 'on'  %}checked{% endif %}
+                                onChange="this.form.submit()">
+                            <label class="custom-control-label" for="category_tennis_bat">Tennis Bat</label>
+                        </form>
+                        <span class="badge border font-weight-normal">{{all_products|filter_by_category:'tennis_bat'}}</span>
+                    </div>
+
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                        <form method="get" action="#search-product-filter">
                             <input type="checkbox" class="custom-control-input" name="category_leather_ball" id="category_leather_ball"
                                 {% if filter_dict.category_leather_ball == 'on'  %}checked{% endif %}
                                 onChange="this.form.submit()">
@@ -180,12 +190,42 @@
                     
                     <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
                         <form method="get" action="#search-product-filter">
-                            <input type="checkbox" class="custom-control-input" name="category_cricket_whites" id="category_cricket_whites"
-                                {% if filter_dict.category_cricket_whites == 'on'  %}checked{% endif %}
+                            <input type="checkbox" class="custom-control-input" name="category_tshirt" id="category_tshirt"
+                                {% if filter_dict.category_tshirt == 'on'  %}checked{% endif %}
                                 onChange="this.form.submit()">
-                            <label class="custom-control-label" for="category_cricket_whites">Cricket Whites</label>
+                            <label class="custom-control-label" for="category_tshirt">Tshirt</label>
                         </form>
-                        <span class="badge border font-weight-normal">{{all_products|filter_by_category:'cricket_whites'}}</span>
+                        <span class="badge border font-weight-normal">{{all_products|filter_by_category:'tshirt'}}</span>
+                    </div>
+
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                        <form method="get" action="#search-product-filter">
+                            <input type="checkbox" class="custom-control-input" name="category_track_pant" id="category_track_pant"
+                                {% if filter_dict.category_track_pant == 'on'  %}checked{% endif %}
+                                onChange="this.form.submit()">
+                            <label class="custom-control-label" for="category_track_pant">Track Pant</label>
+                        </form>
+                        <span class="badge border font-weight-normal">{{all_products|filter_by_category:'track_pant'}}</span>
+                    </div>
+
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                        <form method="get" action="#search-product-filter">
+                            <input type="checkbox" class="custom-control-input" name="category_cap" id="category_cap"
+                                {% if filter_dict.category_cap == 'on'  %}checked{% endif %}
+                                onChange="this.form.submit()">
+                            <label class="custom-control-label" for="category_cap">Caps and Hats</label>
+                        </form>
+                        <span class="badge border font-weight-normal">{{all_products|filter_by_category:'cap'}}</span>
+                    </div>
+
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                        <form method="get" action="#search-product-filter">
+                            <input type="checkbox" class="custom-control-input" name="category_shoes" id="category_shoes"
+                                {% if filter_dict.category_shoes == 'on'  %}checked{% endif %}
+                                onChange="this.form.submit()">
+                            <label class="custom-control-label" for="category_shoes">Shoes</label>
+                        </form>
+                        <span class="badge border font-weight-normal">{{all_products|filter_by_category:'shoes'}}</span>
                     </div>
         
                     <!----------------------------------------------------->

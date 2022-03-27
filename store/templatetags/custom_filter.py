@@ -33,6 +33,12 @@ def new_line(value):
     return value
 
 
+@register.filter(name='desc_new_line')
+def desc_new_line(value):
+    value = value.replace(';', '\n\n')
+    return value
+
+
 @register.filter(name='split')
 def split(value, key):
   return value.split(key)

@@ -53,10 +53,10 @@
                     </div>
                 </div>
                 <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
-                    <i class="fa fa-2x fa-angle-left text-dark"></i>
+                    <i class="fa fa-2x fa-angle-left text-primary"></i>
                 </a>
                 <a class="carousel-control-next" href="#product-carousel" data-slide="next">
-                    <i class="fa fa-2x fa-angle-right text-dark"></i>
+                    <i class="fa fa-2x fa-angle-right text-primary"></i>
                 </a>
             </div>
 
@@ -132,131 +132,22 @@
                     {% endfor %}
                 {% endwith %}
             </p>
+
             {% if product.type == 'shoes' %}
                 {% include 'shoes_size_chart.html' %}
             {% elif product.type == 'leather_ball' %}
-            <div class="d-flex align-items-center mb-3">
-                <p class="text-dark font-weight-medium mb-0 mr-3 w-15">Ball Size:</p>
-                <form class="row pl-5">
-                    <div class="custom-control custom-radio custom-control-inline col-6">
-                        <input type="radio" class="custom-control-input" id="junior" name="ball_size">
-                        <label class="custom-control-label" for="junior">Youth (5.0 Oz)</label>
-                    </div>
-                    <div class="custom-control custom-radio custom-control-inline col-6">
-                        <input type="radio" class="custom-control-input" id="senior" name="ball_size">
-                        <label class="custom-control-label" for="senior">Senior (5.2 Oz)</label>
-                    </div>
-                </form>
-            </div>
+                {% include 'leather_ball_size.html' %}
+            {% elif product.type == 'kashmir_willow_bat' or  product.type == 'english_willow_bat' %}
+                {% include 'bat_size.html' %}
+            {% elif product.type == 'cricket_whites' or product.type == 'tshirt' %}
+                {% include 'tshirt_size.html' %}
+            {% elif product.type == 'cricket_whites' or product.type == 'track_pant' %}
+                {% include 'track_size.html' %}
             {% else %}
-                <div class="d-flex align-items-center mb-3">
-                    <p class="text-dark font-weight-medium mb-0 mr-3 w-15">Size:</p>
-                    <form class="row pl-5">
-                        <div class="custom-control custom-radio custom-control-inline col-3">
-                            <input type="radio" class="custom-control-input" id="size-1" name="size">
-                            <label class="custom-control-label" for="size-1">XS</label>
-                        </div>
-                        <div class="custom-control custom-radio custom-control-inline col-3">
-                            <input type="radio" class="custom-control-input" id="size-2" name="size">
-                            <label class="custom-control-label" for="size-2">S</label>
-                        </div>
-                        <div class="custom-control custom-radio custom-control-inline col-3">
-                            <input type="radio" class="custom-control-input" id="size-3" name="size">
-                            <label class="custom-control-label" for="size-3">M</label>
-                        </div>
-                        <div class="custom-control custom-radio custom-control-inline col-3">
-                            <input type="radio" class="custom-control-input" id="size-4" name="size">
-                            <label class="custom-control-label" for="size-4">YTH</label>
-                        </div>
-                        <div class="custom-control custom-radio custom-control-inline col-3">
-                            <input type="radio" class="custom-control-input" id="size-5" name="size">
-                            <label class="custom-control-label" for="size-4">Men</label>
-                        </div>
-                        <div class="custom-control custom-radio custom-control-inline col-3">
-                            <input type="radio" class="custom-control-input" id="size-6" name="size">
-                            <label class="custom-control-label" for="size-4">Large Men</label>
-                        </div>
-                    </form>
-                </div>
-                <div class="d-flex align-items-center mb-4">
-                    <p class="text-dark font-weight-medium mb-0 mr-3 w-15">Colors:</p>
-                    <form class="row pl-5">
-                        <div class="custom-control custom-radio custom-control-inline col-4
-                        d-flex align-items-center justify-content-between">
-                            <input type="radio" class="custom-control-input" id="color-1" name="color">
-                            <label class="custom-control-label mr-2" for="color-1">Red/Orange</label>
-                            <div style="display:inline-block;
-                                        border-top:20px solid red;
-                                        border-right:20px solid orange;">
-                            </div>
-                        </div>
-                        <div class="custom-control custom-radio custom-control-inline col-4
-                        d-flex align-items-center justify-content-between">
-                            <input type="radio" class="custom-control-input" id="color-2" name="color">
-                            <label class="custom-control-label mr-2" for="color-2">Blue/White</label>
-                            <div style="display:inline-block;
-                                        border-top:20px solid blue;
-                                        border-right:20px solid beige;">
-                            </div>
-                        </div>
-                        <div class="custom-control custom-radio custom-control-inline col-4
-                        d-flex align-items-center justify-content-between">
-                            <input type="radio" class="custom-control-input" id="color-3" name="color">
-                            <label class="custom-control-label mr-2" for="color-3">Black/White</label>
-                            <div style="display:inline-block;
-                                        border-top:20px solid black;
-                                        border-right:20px solid beige;">
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                
             {% endif %}
-
             
             
-            <div class="row mb-3 mx-auto">
-                {% if product|is_in_cart:request.session.cart %}
-                <div class="col-3 input-group quantity px-0">
-                    <div class="input-group-btn">
-                        <form method="post">
-                        {% csrf_token %}
-                            <input type="text" name="product" value="{{product.id}}" hidden> 
-                            <input type="text" name="remove" value="True" hidden>    
-                            <input type="submit" class="btn bg-atx-red text-white btn-minus py-2" value=" - ">
-                        </form>
-                    </div>
-
-                    <input type="text" class="form-control bg-secondary text-center bg-white border-0" 
-                        value="{{product|cart_quantity:request.session.cart}}">
-                    
-                    <div class="input-group-btn">
-                        <form method="post">
-                            {% csrf_token %}
-                            <input type="text" name="product" value="{{product.id}}" hidden> 
-                            <input type="submit" class="btn bg-atx-red text-white btn-plus py-2" value=" + ">
-                        </form>
-                    </div>
-                </div>
-                {% else %}
-                <div class="col-3 p-2 text-center bg-atx-red">
-                    <form method="post">
-                        {% csrf_token %}
-                        <input type="text" name="product" value="{{product.id}}" hidden>
-                        <i class="fas fa-shopping-cart text-dark mr-1"></i>
-                        <input type="submit" class="btn btn-sm text-dark p-0" value="Add to Cart">
-                    </form>
-                </div>
-                {% endif %}
-
-                <div class="col-3 p-2 text-center bg-atx-red ml-3">
-                    <form method="post">
-                        {% csrf_token %}
-                        <input type="text" name="product" value="{{product.id}}" hidden>
-                        <i class="fas fa-shopping-cart text-dark mr-1"></i>
-                        <input type="submit" class="btn btn-sm text-dark p-0" value="Buy">
-                    </form>
-                </div>
-            </div>
 
             <div class="d-flex pt-2">
                 <p class="text-dark font-weight-medium mb-0 mr-4">Category:</p>
@@ -297,42 +188,13 @@
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="description">
                     <h4 class="mb-3">Additional Information</h4>
-                    <img src="{{product.brand.logo.url}}" class="brand mb-3">
-                    <p>{{product.description}}</p>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item px-0">
-                                    Sit erat duo lorem duo ea consetetur, et eirmod takimata.
-                                </li>
-                                <li class="list-group-item px-0">
-                                    Amet kasd gubergren sit sanctus et lorem eos sadipscing at.
-                                </li>
-                                <li class="list-group-item px-0">
-                                    Duo amet accusam eirmod nonumy stet et et stet eirmod.
-                                </li>
-                                <li class="list-group-item px-0">
-                                    Takimata ea clita labore amet ipsum erat justo voluptua. Nonumy.
-                                </li>
-                              </ul> 
-                        </div>
-                        <div class="col-md-6">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item px-0">
-                                    Sit erat duo lorem duo ea consetetur, et eirmod takimata.
-                                </li>
-                                <li class="list-group-item px-0">
-                                    Amet kasd gubergren sit sanctus et lorem eos sadipscing at.
-                                </li>
-                                <li class="list-group-item px-0">
-                                    Duo amet accusam eirmod nonumy stet et et stet eirmod.
-                                </li>
-                                <li class="list-group-item px-0">
-                                    Takimata ea clita labore amet ipsum erat justo voluptua. Nonumy.
-                                </li>
-                              </ul> 
-                        </div>
-                    </div>
+                    <img src="{{product.brand.logo.url}}" class="brand mb-3"></br>
+
+                    {% with product.description|split:";" as description %}
+                        {% for i in description %}
+                        {{i}}</br>
+                        {% endfor %}
+                    {% endwith %}
                 </div>
                 <div class="tab-pane fade" id="reviews">
                     <div class="row">
