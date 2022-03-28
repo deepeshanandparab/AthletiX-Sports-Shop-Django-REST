@@ -9,10 +9,10 @@
         {% csrf_token %}
         <input type="text" name="product" value="{{product.id}}" hidden>
         <div class="form-group">
-            <select class="form-control" name="ball_size" id="ball_size_select" onchange="this.form.submit()">
+            <select class="form-control" name="size" id="size_select" onchange="this.form.submit()">
                 <option value="None">Select Size</option>
-                <option value="men" {% if ball_size == 'men' %}selected{% endif %}>Men (5.2 Oz)</option>
-                <option value="youth" {% if ball_size == 'youth' %}selected{% endif %}>Youth (5.0 Oz)</option>
+                <option value="men" {% if size == 'men' %}selected{% endif %}>Men (5.2 Oz)</option>
+                <option value="youth" {% if size == 'youth' %}selected{% endif %}>Youth (5.0 Oz)</option>
             </select>
         </div>
     </form>
@@ -24,11 +24,11 @@
         {% csrf_token %}
         <input type="text" name="product" value="{{product.id}}" hidden>
         <div class="form-group">
-            <select class="form-control" name="ball_color" id="ball_color_select" onchange="this.form.submit()">
+            <select class="form-control" name="color" id="color_select" onchange="this.form.submit()">
                 <option value="None">Select Color</option>
-                <option value="red" {% if ball_color == 'red' %}selected{% endif %}>Red</option>
-                <option value="white" {% if ball_color == 'white' %}selected{% endif %}>White</option>
-                <option value="pink" {% if ball_color == 'pink' %}selected{% endif %}>Pink</option>
+                <option value="red" {% if color == 'red' %}selected{% endif %}>Red</option>
+                <option value="white" {% if color == 'white' %}selected{% endif %}>White</option>
+                <option value="pink" {% if color == 'pink' %}selected{% endif %}>Pink</option>
             </select>
         </div>
     </form>

@@ -432,3 +432,7 @@
 #cart_table th, #cart_table td {
   vertical-align: middle!important;
 }
+
+.product_link a:hover{
+  color:#db4a39!important;
+}

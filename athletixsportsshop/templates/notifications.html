@@ -21,10 +21,10 @@
                     {% for cart in cart_list %}
                     <tr class="border-bottom">
                         <td class="text-center py-2"><img src="{{cart.product.all.0.image.url}}" class="notification-cart-image"></td>
-                        <td class="py-2">
+                        <td class="py-2 product_link">
                           <a href="{% url 'productdetailpage' cart.id %}" class="no-text-decoration text-grey">{{cart.name}}</a>
                         </td>
-                        <td class="py-2 w-20 pl-0">{{cart.price|discountedprice:cart.discount|inrcurrency|currency}}</td>
+                        <td class="py-2 w-20 pl-0 text-center">{{cart.price|discountedprice:cart.discount|inrcurrency|currency}}</td>
                     </tr>
                     {% endfor %}
                 </table>
@@ -64,8 +64,10 @@
                         {% for product in wishlist_products %}
                         <tr class="border-bottom">
                             <td class="text-center py-2"><img src="{{product.product.all.0.image.url}}" class="notification-cart-image"></td>
-                            <td class="py-2">{{product.name}}</td>
-                            <td class="py-2 w-20 pl-0">{{product.price|inrcurrency|currency}}</td>
+                            <td class="py-2 product_link">
+                              <a href="{% url 'productdetailpage' product.id %}" class="no-text-decoration text-grey">{{product.name}}</a>
+                            </td>
+                            <td class="py-2 w-20 pl-0 text-center">{{product.price|inrcurrency|currency}}</td>
                         </tr>
                         {% endfor %}
                     </table>

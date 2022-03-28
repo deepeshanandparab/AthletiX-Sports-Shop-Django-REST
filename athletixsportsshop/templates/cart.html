@@ -39,29 +39,38 @@
                         <tr>
                             <td><img src="{{cart.product.all.0.image.url}}" style="width: 50px;"></td>
                             <td class="align-middle text-left">
-                                <p class="font-bold">{{cart.name}}</p>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <p class="font-bold">{{cart.name}}</span>
+                                    </div>
+                                </div>
                                 {% if cart.type == 'leather_ball' %}
                                     <div class="row">
                                         <div class="col-4 mt-10px">
                                             <b>Ball Size:</b>
                                         </div>
-                                        {% if ball_size == 'None' or ball_size == None %}
+                                        
+                                        {% if product_options.items|size_lookup:cart.id == 'None' or product_options.items|size_lookup:cart.id == None %}
                                         <div class="col-8">
                                             <form class="row" method="post">
                                                 {% csrf_token %}
                                                 <input type="text" name="product" value="{{cart.id}}" hidden>
                                                 <div class="form-group">
-                                                    <select class="form-control" name="ball_size" id="ball-size_select" onchange="this.form.submit()">
+                                                    <select class="form-control" name="size" id="ball-size_select" onchange="this.form.submit()">
                                                         <option value="None">Select Size</option>
-                                                        <option value="men" {% if ball_size == 'men' %}selected{% endif %}>Men (5.2 Oz)</option>
-                                                        <option value="youth" {% if ball_size == 'youth' %}selected{% endif %}>Youth (5.0 Oz)</option>
+                                                        <option value="men" {% if size == 'men' %}selected{% endif %}>Men (5.2 Oz)</option>
+                                                        <option value="youth" {% if size == 'youth' %}selected{% endif %}>Youth (5.0 Oz)</option>
                                                     </select>
                                                 </div>
                                             </form>
                                         </div>
                                         {% else %}
                                         <div class="col-8 mt-10px">
-                                            {{ball_size|upper}}
+                                            {% for key, value in product_options.items %}
+                                                {% if key|toString == cart.id|toString %}
+                                                    {{value.size|title}}
+                                                {% endif %}
+                                            {% endfor %}
                                         </div>
                                         {% endif %}
                                     </div>
@@ -70,30 +79,39 @@
                                         <div class="col-4 mt-10px">
                                             <b>Ball Color:</b>
                                         </div>
-                                        {% if ball_color == 'None' or ball_color == None %}
+                                        
+                                        {% if product_options.items|color_lookup:cart.id == 'None' or product_options.items|color_lookup:cart.id == None %}
                                         <div class="col-8">
                                             <form class="row" method="post">
                                                 {% csrf_token %}
                                                 <input type="text" name="product" value="{{cart.id}}" hidden>
                                                 <div class="form-group">
-                                                    <select class="form-control" name="ball_color" id="ball_color_select" onchange="this.form.submit()">
+                                                    <select class="form-control" name="color" id="color_select" onchange="this.form.submit()">
                                                         <option value="None">Select Color</option>
-                                                        <option value="red" {% if ball_color == 'red' %}selected{% endif %}>Red</option>
-                                                        <option value="white" {% if ball_color == 'white' %}selected{% endif %}>White</option>
-                                                        <option value="pink" {% if ball_color == 'pink' %}selected{% endif %}>Pink</option>
+                                                        <option value="red" {% if color == 'red' %}selected{% endif %}>Red</option>
+                                                        <option value="white" {% if color == 'white' %}selected{% endif %}>White</option>
+                                                        <option value="pink" {% if color == 'pink' %}selected{% endif %}>Pink</option>
                                                     </select>
                                                 </div>
                                             </form>
                                         </div>
                                         {% else %}
                                         <div class="col-8 mt-10px">
-                                            {{ball_color|upper}}
+                                            {% for key, value in product_options.items %}
+                                                {% if key|toString == cart.id|toString %}
+                                                    {{value.color|title}}
+                                                {% endif %}
+                                            {% endfor %}
                                         </div>
                                         {% endif %}
                                     </div>
                                     
-                                    {% if ball_size == None or ball_color == None %} 
+                                    {% if product_options.items|size_lookup:cart.id == None and product_options.items|color_lookup:cart.id == None %}
                                         <span class="text-danger">Please mention ball size and color</span>
+                                    {% elif product_options.items|size_lookup:cart.id == 'None' or product_options.items|size_lookup:cart.id == None %}
+                                        <span class="text-danger">Please mention ball size</span>
+                                    {% elif product_options.items|color_lookup:cart.id == 'None' or product_options.items|color_lookup:cart.id == None %}
+                                        <span class="text-danger">Please mention ball color</span>
                                     {% endif %}
                                 {% endif %}
 
@@ -102,13 +120,14 @@
                                         <div class="col-4 mt-10px">
                                             <b>Bat Size:</b>
                                         </div>
-                                        {% if bat_size == 'None' or bat_size == None %}
+
+                                        {% if product_options.items|size_lookup:cart.id == 'None' or product_options.items|size_lookup:cart.id == None %}
                                         <div class="col-8">
                                             <form class="row" method="post">
                                                 {% csrf_token %}
                                                 <input type="text" name="product" value="{{cart.id}}" hidden>
                                                 <div class="form-group">
-                                                    <select class="form-control form-control-sm" name="bat_size" onchange="this.form.submit()">
+                                                    <select class="form-control" name="size" id="bat_size_select" onchange="this.form.submit()">
                                                         <option value="None">Select Size</option>
                                                         <option value="men" {% if bat_size == 'men' %}selected{% endif %}>Men (7)</option>
                                                         <option value="harrow" {% if bat_size == 'harrow' %}selected{% endif %}>Harrow (6)</option>
@@ -121,20 +140,53 @@
                                         </div>
                                         {% else %}
                                         <div class="col-8 mt-10px">
-                                            {{bat_size|readable_text}}
+                                            {% for key, value in product_options.items %}
+                                                {% if key|toString == cart.id|toString %}
+                                                    {{value.size|readable_text|title}}
+                                                {% endif %}
+                                            {% endfor %}
                                         </div>
                                         {% endif %}
                                     </div>
                                     
-                                    </br>
-                                    {% if bat_size == None or bat_size == '' %} 
+                                    {% if product_options.items|size_lookup:cart.id == 'None' or product_options.items|size_lookup:cart.id == None %}
                                         <span class="text-danger">Please mention bat size</span>
                                     {% endif %}
                                 {% endif %}
 
-                                {% if cart.type == 'batting_gloves' %}
-                                    <b>Gloves Size:</b> {{gloves_size|title}}</br>
-                                    {% if gloves_size == None %} 
+                                {% if cart.type == 'batting_gloves' or cart.type == 'keeping_gloves' %}
+                                    <div class="row">
+                                        <div class="col-4 mt-10px">
+                                            <b>Gloves Size:</b>
+                                        </div>
+                                        
+                                        {% if product_options.items|size_lookup:cart.id == 'None' or product_options.items|size_lookup:cart.id == None %}
+                                        <div class="col-8">
+                                            <form class="row" method="post">
+                                                {% csrf_token %}
+                                                <input type="text" name="product" value="{{cart.id}}" hidden>
+                                                <div class="form-group">
+                                                    <select class="form-control" name="size" id="gloves_size_select" onchange="this.form.submit()">
+                                                        <option value="None">Select Size</option>
+                                                        <option value="men" {% if size == 'men' %}selected{% endif %}>Men</option>
+                                                        <option value="youth" {% if size == 'youth' %}selected{% endif %}>Youth</option>
+                                                        <option value="boys" {% if size == 'boys' %}selected{% endif %}>boys</option>
+                                                    </select>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        {% else %}
+                                        <div class="col-8 mt-10px">
+                                            {% for key, value in product_options.items %}
+                                                {% if key|toString == cart.id|toString %}
+                                                    {{value.size|title}}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+
+                                    {% if product_options.items|size_lookup:cart.id == 'None' or product_options.items|size_lookup:cart.id == None %}
                                         <span class="text-danger">Please mention gloves size</span>
                                     {% endif %}
                                 {% endif %}
@@ -144,46 +196,124 @@
                                         <div class="col-4 mt-10px">
                                             <b>Shoes Size:</b>
                                         </div>
-                                        {% if shoe_size == 'None' or shoe_size == None %}
+
+                                        {% if product_options.items|size_lookup:cart.id == 'None' or product_options.items|size_lookup:cart.id == None %}
                                         <div class="col-8">
                                             <form class="row" method="post">
                                                 {% csrf_token %}
                                                 <input type="text" name="product" value="{{cart.id}}" hidden>
                                                 <div class="form-group">
-                                                    <select class="form-control form-control-sm" name="shoe_size" onchange="this.form.submit()">
-                                                        <option value="None">Select Size</option>
-                                                        <option value="uk7" {% if shoe_size == 'uk7' %}selected{% endif %}>UK 7/US 8</option>
-                                                        <option value="uk8" {% if shoe_size == 'uk8' %}selected{% endif %}>UK 8/US 9</option>
-                                                        <option value="uk9" {% if shoe_size == 'uk9' %}selected{% endif %}>UK 9/US 10</option>
-                                                        <option value="uk10" {% if shoe_size == 'uk10' %}selected{% endif %}>UK 10/US 11</option>
-                                                        <option value="uk11" {% if shoe_size == 'uk11' %}selected{% endif %}>UK 11/US 12</option>
+                                                    <select class="form-control" name="size" id="shoe_size_select" onchange="this.form.submit()">
+                                                        <option value="uk7_us8" {% if size == 'uk7_us8' %}selected{% endif %}>UK 7/US 8</option>
+                                                        <option value="uk8_us9" {% if size == 'uk8_us9' %}selected{% endif %}>UK 8/US 9</option>
+                                                        <option value="uk9_us10" {% if size == 'uk9_us10' %}selected{% endif %}>UK 9/US 10</option>
+                                                        <option value="uk10_us11" {% if size == 'uk10_us11' %}selected{% endif %}>UK 10/US 11</option>
+                                                        <option value="uk11_us12" {% if size == 'uk11_us12' %}selected{% endif %}>UK 11/US 12</option>
                                                     </select>
                                                 </div>
                                             </form>
                                         </div>
                                         {% else %}
                                         <div class="col-8 mt-10px">
-                                            {{shoe_size|upper}}
+                                            {% for key, value in product_options.items %}
+                                                {% if key|toString == cart.id|toString %}
+                                                    {{value.size|or_sign|upper}}
+                                                {% endif %}
+                                            {% endfor %}
                                         </div>
                                         {% endif %}
                                     </div>
                                     
-                                    </br>
-                                    {% if shoe_size == None or shoe_size == '' %} 
-                                        <span class="text-danger">Please mention shoes size</span>
+                                    {% if product_options.items|size_lookup:cart.id == 'None' or product_options.items|size_lookup:cart.id == None %}
+                                        <span class="text-danger">Please mention bat size</span>
                                     {% endif %}
                                 {% endif %}
 
                                 {% if cart.type == 'tshirt' %}
-                                    <b>Tshirt Size:</b> {{tshirt_size|title}}</br>
-                                    {% if tshirt_size == None %} 
-                                        <span class="text-danger">Please mention tshisrt size</span>
+                                    <div class="row">
+                                        <div class="col-4 mt-10px">
+                                            <b>Tshirt Size:</b>
+                                        </div>
+                                        
+                                        {% if product_options.items|size_lookup:cart.id == 'None' or product_options.items|size_lookup:cart.id == None %}
+                                        <div class="col-8">
+                                            <form class="row" method="post">
+                                                {% csrf_token %}
+                                                <input type="text" name="product" value="{{cart.id}}" hidden>
+                                                <div class="form-group">
+                                                    <select class="form-control" name="size" id="tshirt_size_select" onchange="this.form.submit()">
+                                                        <option value="None">Select Size</option>
+                                                        <option value="kids_24" {% if size == 'kids_24' %}selected{% endif %}>Kids (24)</option>
+                                                        <option value="kids_26" {% if size == 'kids_26' %}selected{% endif %}>Kids (26)</option>
+                                                        <option value="kids_28" {% if size == 'kids_28' %}selected{% endif %}>Kids (28)</option>
+                                                        <option value="xxxs_30" {% if size == 'xxxs_30' %}selected{% endif %}>XXXS (30)</option>
+                                                        <option value="xxs_32" {% if size == 'xxs_32' %}selected{% endif %}>XXS (32)</option>
+                                                        <option value="xs_34" {% if size == 'xs_34' %}selected{% endif %}>XS (34)</option>
+                                                        <option value="s_36" {% if size == 's_36' %}selected{% endif %}>S (36)</option>
+                                                        <option value="m_38" {% if size == 'm_38' %}selected{% endif %}>M (38)</option>
+                                                        <option value="l_40" {% if size == 'l_40' %}selected{% endif %}>L (40)</option>
+                                                        <option value="xl_42" {% if size == 'xl_42' %}selected{% endif %}>XL (42)</option>
+                                                        <option value="xxl_44" {% if size == 'xxl_44' %}selected{% endif %}>XXL (44)</option>
+                                                        <option value="xxxl_46" {% if size == 'xxxl_46' %}selected{% endif %}>XXXL (46)</option>
+                                                    </select>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        {% else %}
+                                        <div class="col-8 mt-10px">
+                                            {% for key, value in product_options.items %}
+                                                {% if key|toString == cart.id|toString %}
+                                                    {{value.size|readable_text|title}}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+
+                                    {% if product_options.items|size_lookup:cart.id == 'None' or product_options.items|size_lookup:cart.id == None %}
+                                        <span class="text-danger">Please mention tshirt size</span>
                                     {% endif %}
                                 {% endif %}
 
                                 {% if cart.type == 'track_pant' %}
-                                <b>Track Pant Size:</b> {{track_size|title}}</br>
-                                    {% if track_size == None %} 
+                                    <div class="row">
+                                        <div class="col-4 mt-10px">
+                                            <b>Waist Size:</b>
+                                        </div>
+                                        
+                                        {% if product_options.items|size_lookup:cart.id == 'None' or product_options.items|size_lookup:cart.id == None %}
+                                        <div class="col-8">
+                                            <form class="row" method="post">
+                                                {% csrf_token %}
+                                                <input type="text" name="product" value="{{cart.id}}" hidden>
+                                                <div class="form-group">
+                                                    <select class="form-control" name="size" id="tshirt_size_select" onchange="this.form.submit()">
+                                                        <option value="None">Select Waist Size</option>
+                                                        <option value="22_inches" {% if size == '22_inches' %}selected{% endif %}>22 inches</option>
+                                                        <option value="24_inches" {% if size == '24_inches' %}selected{% endif %}>24 inches</option>
+                                                        <option value="26_inches" {% if size == '26_inches' %}selected{% endif %}>26 inches</option>
+                                                        <option value="28_inches" {% if size == '28_inches' %}selected{% endif %}>28 inches</option>
+                                                        <option value="30_inches" {% if size == '30_inches' %}selected{% endif %}>30 inches</option>
+                                                        <option value="32_inches" {% if size == '32_inches' %}selected{% endif %}>32 inches</option>
+                                                        <option value="34_inches" {% if size == '34_inches' %}selected{% endif %}>34 inches</option>
+                                                        <option value="36_inches" {% if size == '36_inches' %}selected{% endif %}>36 inches</option>
+                                                        <option value="38_inches" {% if size == '38_inches' %}selected{% endif %}>38 inches</option>
+                                                    </select>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        {% else %}
+                                        <div class="col-8 mt-10px">
+                                            {% for key, value in product_options.items %}
+                                                {% if key|toString == cart.id|toString %}
+                                                    {{value.size|readable_text|title}}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                        {% endif %}
+                                    </div>
+
+                                    {% if product_options.items|size_lookup:cart.id == 'None' or product_options.items|size_lookup:cart.id == None %}
                                         <span class="text-danger">Please mention track pant size</span>
                                     {% endif %}
                                 {% endif %}
@@ -295,7 +425,7 @@
                         <a href="{% url 'checkoutpage' %}" class="btn btn-block btn-primary my-3 py-3 
                         {% if btn_disabled %}
                         disabled
-                        {% elif ball_size == None and ball_color == None %} 
+                        {% elif ball_size == None and color == None %} 
                         disabled 
                         {% endif %}">
                             Proceed To Checkout

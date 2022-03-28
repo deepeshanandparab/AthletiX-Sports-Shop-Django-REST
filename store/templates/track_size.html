@@ -1,37 +1,69 @@
+{% load currency_filter %}
+{% load custom_filter %}
+{% load cart_filter %}
+
 <div class="d-flex align-items-center mb-3">
     <p class="text-dark font-weight-medium mb-0 mr-3 w-15">Waist Size:</p>
-    <form class="row pl-5">
-        <div class="custom-control custom-radio custom-control-inline col-3">
-            <input type="radio" class="custom-control-input" id="size_22" name="waist_size">
-            <label class="custom-control-label" for="size_22">22 inch</label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline col-3">
-            <input type="radio" class="custom-control-input" id="size_24" name="waist_size">
-            <label class="custom-control-label" for="size_24">24 inch</label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline col-3">
-            <input type="radio" class="custom-control-input" id="size_26" name="waist_size">
-            <label class="custom-control-label" for="size_26">26 inch</label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline col-3">
-            <input type="radio" class="custom-control-input" id="size_28" name="waist_size">
-            <label class="custom-control-label" for="size_28">28 inch</label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline col-3">
-            <input type="radio" class="custom-control-input" id="size_30" name="waist_size">
-            <label class="custom-control-label" for="size_30">30 inch</label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline col-3">
-            <input type="radio" class="custom-control-input" id="size_32" name="waist_size">
-            <label class="custom-control-label" for="size_32">32 inch</label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline col-3">
-            <input type="radio" class="custom-control-input" id="size_34" name="waist_size">
-            <label class="custom-control-label" for="size_34">34 inch</label>
-        </div>
-        <div class="custom-control custom-radio custom-control-inline col-3">
-            <input type="radio" class="custom-control-input" id="size_36" name="waist_size">
-            <label class="custom-control-label" for="size_36">36 inch</label>
+    <form class="row" method="post">
+        {% csrf_token %}
+        <input type="text" name="product" value="{{product.id}}" hidden>
+        <div class="form-group">
+            <select class="form-control" name="size" id="tshirt_size_select" onchange="this.form.submit()">
+                <option value="None">Select Waist Size</option>
+                <option value="22_inches" {% if size == '22_inches' %}selected{% endif %}>22 inches</option>
+                <option value="24_inches" {% if size == '24_inches' %}selected{% endif %}>24 inches</option>
+                <option value="26_inches" {% if size == '26_inches' %}selected{% endif %}>26 inches</option>
+                <option value="28_inches" {% if size == '28_inches' %}selected{% endif %}>28 inches</option>
+                <option value="30_inches" {% if size == '30_inches' %}selected{% endif %}>30 inches</option>
+                <option value="32_inches" {% if size == '32_inches' %}selected{% endif %}>32 inches</option>
+                <option value="34_inches" {% if size == '34_inches' %}selected{% endif %}>34 inches</option>
+                <option value="36_inches" {% if size == '36_inches' %}selected{% endif %}>36 inches</option>
+                <option value="38_inches" {% if size == '38_inches' %}selected{% endif %}>38 inches</option>
+            </select>
         </div>
     </form>
+</div>
+
+<div class="row mb-3 mx-auto">
+    {% if product|is_in_cart:request.session.cart %}
+    <div class="col-3 input-group quantity px-0">
+        <div class="input-group-btn">
+            <form method="post">
+            {% csrf_token %}
+                <input type="text" name="product" value="{{product.id}}" hidden> 
+                <input type="text" name="remove" value="True" hidden>    
+                <input type="submit" class="btn bg-atx-red text-white btn-minus py-2" value=" - ">
+            </form>
+        </div>
+
+        <input type="text" class="form-control bg-secondary text-center bg-white border-0" 
+            value="{{product|cart_quantity:request.session.cart}}">
+        
+        <div class="input-group-btn">
+            <form method="post">
+                {% csrf_token %}
+                <input type="text" name="product" value="{{product.id}}" hidden> 
+                <input type="submit" class="btn bg-atx-red text-white btn-plus py-2" value=" + ">
+            </form>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-3 p-2 text-center bg-atx-red">
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="product" value="{{product.id}}" hidden>
+            <i class="fas fa-shopping-cart text-dark mr-1"></i>
+            <input type="submit" class="btn btn-sm text-dark p-0" value="Add to Cart">
+        </form>
+    </div>
+    {% endif %}
+
+    <div class="col-3 p-2 text-center bg-atx-red ml-3">
+        <form method="post">
+            {% csrf_token %}
+            <input type="text" name="product" value="{{product.id}}" hidden>
+            <i class="fas fa-shopping-cart text-dark mr-1"></i>
+            <input type="submit" class="btn btn-sm text-dark p-0" value="Buy">
+        </form>
+    </div>
 </div>

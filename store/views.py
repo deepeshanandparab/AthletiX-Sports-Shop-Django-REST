@@ -13,24 +13,38 @@ class StorePage(View):
     def post(self, request):
         product = request.POST.get('product')
         remove = request.POST.get('remove')
+        delete = request.POST.get('delete')
         cart = request.session.get('cart')
-
+        
         if cart:
-            quantity = cart.get(product)
-            if quantity:
-                if remove:
-                    if quantity <= 1:
+            if product in cart:
+                quantity = cart[product]['quantity']
+                if 'size' in cart[product]:
+                    cart[product]['size'] = cart[product]['size']
+                    if 'color' in cart[product]:
+                        cart[product]['color'] = cart[product]['color']
+                elif 'color' in cart[product]:
+                        cart[product]['color'] = cart[product]['color']
+                elif quantity > 0:
+                    if not delete:
+                        if remove:
+                            if quantity <= 1:
+                                cart.pop(product)
+                            else:
+                                cart[product]['quantity'] = quantity - 1
+                        else:
+                            cart[product]['quantity'] = quantity + 1
+                    else:
                         cart.pop(product)
-                    else:    
-                        cart[product] = quantity-1
                 else:
-                    cart[product] = quantity+1
+                    cart[product] = {'quantity':1,'size':None, 'color': None}
             else:
-                cart[product] = 1
+                cart[product] = {'quantity':1,'size':None, 'color': None}
         else:
             cart = {}
-            cart[product] = 1
+            cart[product] = {'quantity':1,'size':None, 'color': None}
         request.session['cart'] = cart
+        print(cart)
         
         return redirect('storepage')
 
@@ -252,180 +266,44 @@ class StorePage(View):
 
 class ProductDetailPage(View):
     def post(self, request, id):
-        ball_size = request.POST.get('ball_size')
-        ball_color = request.POST.get('ball_color')
-        bat_size = request.POST.get('bat_size')
-        glove_size = request.POST.get('glove_size')
-        shoe_size = request.POST.get('shoe_size')
-        tshirt_size = request.POST.get('tshirt_size')
-        track_size = request.POST.get('track_size')
+        size = request.POST.get('size')
+        color = request.POST.get('color')
 
         product = request.POST.get('product')
         product_type = Product.objects.get(id=product)
         remove = request.POST.get('remove')
+        delete = request.POST.get('delete')
         cart = request.session.get('cart')
-
+        
         if cart:
-            if ball_size:
-                request.session['ball_size'] = ball_size
-                if ball_color:
-                    request.session['ball_color'] = ball_color
-                    if bat_size:
-                        request.session['bat_size'] = bat_size
-                        if glove_size:
-                            request.session['glove_size'] = glove_size
-                            if shoe_size:
-                                request.session['shoe_size'] = shoe_size
-                                if tshirt_size:
-                                    request.session['tshirt_size'] = tshirt_size
-                                    if track_size:
-                                        request.session['track_size'] = track_size
-
-            elif ball_color:
-                request.session['ball_color'] = ball_color
-                if bat_size:
-                    request.session['bat_size'] = bat_size
-                    if glove_size:
-                        request.session['glove_size'] = glove_size
-                        if shoe_size:
-                            request.session['shoe_size'] = shoe_size
-                            if tshirt_size:
-                                request.session['tshirt_size'] = tshirt_size
-                                if track_size:
-                                    request.session['track_size'] = track_size
-
-            elif bat_size:
-                request.session['bat_size'] = bat_size
-                if glove_size:
-                    request.session['glove_size'] = glove_size
-                    if shoe_size:
-                        request.session['shoe_size'] = shoe_size
-                        if tshirt_size:
-                            request.session['tshirt_size'] = tshirt_size
-                            if track_size:
-                                request.session['track_size'] = track_size
-
-            elif glove_size:
-                request.session['glove_size'] = glove_size
-                if shoe_size:
-                    request.session['shoe_size'] = shoe_size
-                    if tshirt_size:
-                        request.session['tshirt_size'] = tshirt_size
-                        if track_size:
-                            request.session['track_size'] = track_size
-
-            elif shoe_size:
-                request.session['shoe_size'] = shoe_size
-                if tshirt_size:
-                    request.session['tshirt_size'] = tshirt_size
-                    if track_size:
-                        request.session['track_size'] = track_size
-
-            elif tshirt_size:
-                request.session['tshirt_size'] = tshirt_size
-                if track_size:
-                    request.session['track_size'] = track_size
-
-            elif track_size:
-                request.session['track_size'] = track_size
-
-            else:
-                quantity = cart.get(product)
-                if quantity:
-                    if remove:
-                        if quantity <= 1:
-                            cart.pop(product)
-                            if product_type.type == 'leather_ball':
-                                request.session['ball_size'] = None
-                                request.session['ball_color'] = None
-                            
-                            elif product_type.type == 'kashmir_willow_bat' or product_type == 'english_willow_bat' or product_type == 'tennis_bat':
-                                request.session['bat_size'] = None
-                            
-                            elif product_type.type == 'batting_gloves':
-                                request.session['glove_size'] = None
-                            
-                            elif product_type.type == 'shoes':
-                                request.session['shoe_size'] = None
-                            
-                            elif product_type.type == 'tshirt':
-                                request.session['tshirt_size'] = None
-                            
-                            elif product_type.type == 'track_pant':
-                                request.session['track_size'] = None
-                        else:    
-                            cart[product] = quantity-1
+            if product in cart:
+                quantity = cart[product]['quantity']
+                if size:
+                    cart[product]['size'] = size
+                    if color:
+                        cart[product]['color'] = color
+                elif color:
+                    cart[product]['color'] = color
+                elif quantity > 0:
+                    if not delete:
+                        if remove:
+                            if quantity <= 1:
+                                cart.pop(product)
+                            else:
+                                cart[product]['quantity'] = quantity - 1
+                        else:
+                            cart[product]['quantity'] = quantity + 1
                     else:
-                        cart[product] = quantity+1
+                        cart.pop(product)
                 else:
-                    cart[product] = 1
+                    cart[product] = {'quantity':1,'size':size, 'color': color}
+            else:
+                cart[product] = {'quantity':1,'size':size, 'color': color}
         else:
             cart = {}
-            if ball_size:
-                request.session['ball_size'] = ball_size
-                if ball_color:
-                    request.session['ball_color'] = ball_color
-                    if bat_size:
-                        request.session['bat_size'] = bat_size
-                        if glove_size:
-                            request.session['glove_size'] = glove_size
-                            if shoe_size:
-                                request.session['shoe_size'] = shoe_size
-                                if tshirt_size:
-                                    request.session['tshirt_size'] = tshirt_size
-                                    if track_size:
-                                        request.session['track_size'] = track_size
-
-            elif ball_color:
-                request.session['ball_color'] = ball_color
-                if bat_size:
-                    request.session['bat_size'] = bat_size
-                    if glove_size:
-                        request.session['glove_size'] = glove_size
-                        if shoe_size:
-                            request.session['shoe_size'] = shoe_size
-                            if tshirt_size:
-                                request.session['tshirt_size'] = tshirt_size
-                                if track_size:
-                                    request.session['track_size'] = track_size
-
-            elif bat_size:
-                request.session['bat_size'] = bat_size
-                if glove_size:
-                    request.session['glove_size'] = glove_size
-                    if shoe_size:
-                        request.session['shoe_size'] = shoe_size
-                        if tshirt_size:
-                            request.session['tshirt_size'] = tshirt_size
-                            if track_size:
-                                request.session['track_size'] = track_size
-
-            elif glove_size:
-                request.session['glove_size'] = glove_size
-                if shoe_size:
-                    request.session['shoe_size'] = shoe_size
-                    if tshirt_size:
-                        request.session['tshirt_size'] = tshirt_size
-                        if track_size:
-                            request.session['track_size'] = track_size
-
-            elif shoe_size:
-                request.session['shoe_size'] = shoe_size
-                if tshirt_size:
-                    request.session['tshirt_size'] = tshirt_size
-                    if track_size:
-                        request.session['track_size'] = track_size
-
-            elif tshirt_size:
-                request.session['tshirt_size'] = tshirt_size
-                if track_size:
-                    request.session['track_size'] = track_size
-
-            elif track_size:
-                request.session['track_size'] = track_size
-            else:
-                cart[product] = 1
+            cart[product] = {'quantity':1,'size':size, 'color': color}
         request.session['cart'] = cart
+        print(cart)
         return redirect('productdetailpage', product)
 
     def get(self, request, id):
@@ -435,14 +313,21 @@ class ProductDetailPage(View):
         product = Product.objects.get(id=id)
 
         cart = request.session.get('cart')
+
         cart_list = []
         if cart:
             ids = list(request.session.get('cart').keys())
             cart_list = Product.get_products_by_id(ids)
+            if id in cart:
+                size = request.session.get('cart')[id]['size']
+                color = request.session.get('cart')[id]['color']
+            else: 
+                size = None
+                color = None
         else:
             cart = {}
-        
-        if not cart:
+            size = None
+            color = None
             request.session['cart'] = {}
 
         context = {
@@ -454,10 +339,8 @@ class ProductDetailPage(View):
                     'rating_list': rating_list,
                     'overall_rating': overall_rating,
                     'cart_list':cart_list,
-                    'ball_size': request.session.get('ball_size'),
-                    'ball_color': request.session.get('ball_color'),
-                    'shoe_size': request.session.get('shoe_size'),
-                    'bat_size': request.session.get('bat_size')
+                    'size': size,
+                    'color': color
                     }
         return render(request, 'product-detail.html', context)
 

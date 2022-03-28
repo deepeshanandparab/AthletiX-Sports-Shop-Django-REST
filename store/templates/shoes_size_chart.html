@@ -9,13 +9,13 @@
         {% csrf_token %}
         <input type="text" name="product" value="{{product.id}}" hidden>
         <div class="form-group">
-            <select class="form-control " name="shoe_size" id="shoe_size_select" onchange="this.form.submit()">
+            <select class="form-control " name="size" id="shoe_size_select" onchange="this.form.submit()">
                 <option value="None">Select Size</option>
-                <option value="uk7_us8" {% if shoe_size == 'uk7_us8' %}selected{% endif %}>UK 7/US 8</option>
-                <option value="uk8_us9" {% if shoe_size == 'uk8_us9' %}selected{% endif %}>UK 8/US 9</option>
-                <option value="uk9_us10" {% if shoe_size == 'uk9_us10' %}selected{% endif %}>UK 9/US 10</option>
-                <option value="uk10_us11" {% if shoe_size == 'uk10_us11' %}selected{% endif %}>UK 10/US 11</option>
-                <option value="uk11_us12" {% if shoe_size == 'uk11_us12' %}selected{% endif %}>UK 11/US 12</option>
+                <option value="uk7_us8" {% if size == 'uk7_us8' %}selected{% endif %}>UK 7/US 8</option>
+                <option value="uk8_us9" {% if size == 'uk8_us9' %}selected{% endif %}>UK 8/US 9</option>
+                <option value="uk9_us10" {% if size == 'uk9_us10' %}selected{% endif %}>UK 9/US 10</option>
+                <option value="uk10_us11" {% if size == 'uk10_us11' %}selected{% endif %}>UK 10/US 11</option>
+                <option value="uk11_us12" {% if size == 'uk11_us12' %}selected{% endif %}>UK 11/US 12</option>
             </select>
         </div>
     </form>
