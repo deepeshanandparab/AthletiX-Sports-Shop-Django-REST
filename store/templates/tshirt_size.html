@@ -46,7 +46,7 @@
             <form method="post">
                 {% csrf_token %}
                 <input type="text" name="product" value="{{product.id}}" hidden> 
-                <input type="submit" class="btn bg-atx-red text-white btn-plus py-2" value=" + ">
+                <input type="submit" class="btn bg-atx-red text-white btn-plus py-2" value=" + " {% if product|cart_quantity:request.session.cart >= stock %}disabled{% endif %}>
             </form>
         </div>
     </div>
@@ -70,3 +70,7 @@
         </form>
     </div>
 </div>
+
+{% if product|cart_quantity:request.session.cart >= stock or stock <= 5 %}
+    <span class="text-success">Only {{stock}} Tshirts available in stock</span>
+{% endif %}

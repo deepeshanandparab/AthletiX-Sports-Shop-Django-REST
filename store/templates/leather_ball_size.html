@@ -2,10 +2,11 @@
 {% load custom_filter %}
 {% load cart_filter %}
 
+{% if product|cart_quantity:request.session.cart > 0 %}
 <div class="d-flex align-items-center mb-3">
     <p class="text-dark font-weight-medium mb-0 mr-3 w-15">Size:</p>
 
-    <form class="row" method="post">
+    <form class="row" method="post" action="#product_name">
         {% csrf_token %}
         <input type="text" name="product" value="{{product.id}}" hidden>
         <div class="form-group">
@@ -20,7 +21,7 @@
 
 <div class="d-flex align-items-center mb-3">
     <p class="text-dark font-weight-medium mb-0 mr-3 w-15">Color:</p>
-    <form class="row" method="post">
+    <form class="row" method="post" action="#product_name">
         {% csrf_token %}
         <input type="text" name="product" value="{{product.id}}" hidden>
         <div class="form-group">
@@ -33,33 +34,57 @@
         </div>
     </form>
 </div>
+{% endif %}
 
 <div class="row mb-3 mx-auto">
     {% if product|is_in_cart:request.session.cart %}
     <div class="col-3 input-group quantity px-0">
-        <div class="input-group-btn">
-            <form method="post">
-            {% csrf_token %}
-                <input type="text" name="product" value="{{product.id}}" hidden> 
-                <input type="text" name="remove" value="True" hidden>    
-                <input type="submit" class="btn bg-atx-red text-white btn-minus py-2" value=" - ">
-            </form>
-        </div>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <form method="post" action="#product_name">
+                    {% csrf_token %}
+                        <input type="text" name="product" value="{{product.id}}" hidden> 
+                        <input type="text" name="remove" value="True" hidden>    
+                        <input type="submit" class="btn bg-atx-red text-white btn-minus py-2" value=" - ">
+                    </form>
+            </div>
 
-        <input type="text" class="form-control bg-secondary text-center bg-white border-0" 
-            value="{{product|cart_quantity:request.session.cart}}">
-        
-        <div class="input-group-btn">
-            <form method="post">
-                {% csrf_token %}
-                <input type="text" name="product" value="{{product.id}}" hidden> 
-                <input type="submit" class="btn bg-atx-red text-white btn-plus py-2" value=" + ">
-            </form>
-        </div>
+            <div class="custom-file">
+                <form method="post" action="#product_name">
+                    {% csrf_token %}
+                    <input type="text" name="product" value="{{product.id}}" hidden>
+                    <input type="text" name="available_stock" value="{{stock.stock_quantity}}" hidden>
+                    <input type="text" name="gross_quantity" 
+                    class="form-control bg-secondary text-center bg-white border-0" 
+                    
+                    {% if product|cart_quantity:request.session.cart > stock.stock_quantity %}
+                    value="{{stock.stock_quantity}}"
+                    {% else %}
+                    value="{{product|cart_quantity:request.session.cart}}"
+                    {% endif %}
+
+                    onchange="this.form.submit()"
+
+                    {% if not stock.size and not stock.color %}
+                        disabled
+                    {% endif %}>
+                </form>
+            </div>
+
+            <div class="input-group-append">
+                <form method="post" action="#product_name">
+                    {% csrf_token %}
+                    <input type="text" name="product" value="{{product.id}}" hidden> 
+                    <input type="submit" class="btn bg-atx-red text-white btn-plus py-2" value=" + "
+                    {% if product|cart_quantity:request.session.cart >= stock.stock_quantity %}disabled{% endif %}>
+                </form>
+            </div>
+          </div>
     </div>
+
     {% else %}
     <div class="col-3 p-2 text-center bg-atx-red">
-        <form method="post">
+        <form method="post" action="#product_name">
             {% csrf_token %}
             <input type="text" name="product" value="{{product.id}}" hidden>
             <i class="fas fa-shopping-cart text-dark mr-1"></i>
@@ -69,11 +94,29 @@
     {% endif %}
 
     <div class="col-3 p-2 text-center bg-atx-red ml-3">
-        <form method="post">
+        <form method="post" action="#product_name">
             {% csrf_token %}
             <input type="text" name="product" value="{{product.id}}" hidden>
             <i class="fas fa-shopping-cart text-dark mr-1"></i>
-            <input type="submit" class="btn btn-sm text-dark p-0" value="Buy">
+            {% if not stock.size and not stock.color %} 
+                <input type="submit" class="btn btn-sm text-dark p-0 disabled" value="Buy" 
+                title="Select ball size and color" disabled>
+            {% else %}
+                <input type="submit" class="btn btn-sm text-dark p-0 " value="Buy">
+            {% endif %}
         </form>
     </div>
 </div>
+
+{% if product|cart_quantity:request.session.cart >= stock.stock_quantity or stock.stock_quantity <= 5 %}
+    {% if stock.stock_quantity < 1 %}
+        <span class="text-danger titlecase">
+            <b>{{stock.size|title}} {{stock.color|title}}</b> leather ball is out of stock.
+        </span></br>
+        <a href='#' class="text-success">Click here</a> to get notified for new stock updates.
+    {% else %}
+        <span class="text-success">
+            Only <b>{{stock.stock_quantity}} {{stock.size|title}} {{stock.color|title}}</b> leather balls available in stock
+        </span>
+    {% endif %}
+{% endif %}

@@ -52,6 +52,12 @@ TYPE_CHOICES = (
     ('shoes','shoes')
 )
 
+SLEEVES_CHOICES = (
+    ('half_sleeves', 'half_sleeves'),
+    ('full_sleeves', 'full_sleeves'),
+    ('sleeveless', 'sleeveless')
+)
+
 class Product(models.Model):
     name = models.CharField(max_length=200)
     price = models.IntegerField()
@@ -78,6 +84,18 @@ class Product(models.Model):
 
     def __str__(self):
         return f'({self.id}) {self.name} at MRP {self.price} in Stock {self.stock_quantity}'
+
+
+class Stock(models.Model):
+    product = models.ForeignKey(Product, related_name='stock_product', on_delete=models.CASCADE)
+    size = models.CharField(max_length=20, null=True, blank=True)
+    color = models.CharField(max_length=20, null=True, blank=True)
+    sleeves = models.CharField(max_length=20, choices=SLEEVES_CHOICES, default='', null=True, blank=True)
+    stock_quantity = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f'{self.product.name} size {self.size}, color {self.color}, \
+        sleeves {self.sleeves} - {self.stock_quantity} stock left'  
 
 
 class BuyingPrice(models.Model):

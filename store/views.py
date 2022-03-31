@@ -4,7 +4,7 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.views import View
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from .models import Product, ProductType, Wishlist, RatingReview
+from .models import Product, ProductType, Stock, Wishlist, RatingReview
 from .forms import ReviewForm
 from django.contrib import messages
 from athletixsportsshop.supporting_functions import getWishlist
@@ -270,7 +270,15 @@ class ProductDetailPage(View):
         color = request.POST.get('color')
 
         product = request.POST.get('product')
-        product_type = Product.objects.get(id=product)
+        gross_quantity = 0
+        if request.POST.get('gross_quantity'):
+            gross_quantity = int(request.POST.get('gross_quantity'))
+            if request.POST.get('available_stock'):
+                available_stock = int(request.POST.get('available_stock'))
+                if gross_quantity > available_stock:
+                    gross_quantity = available_stock
+        else:
+            gross_quantity = 0
         remove = request.POST.get('remove')
         delete = request.POST.get('delete')
         cart = request.session.get('cart')
@@ -278,14 +286,14 @@ class ProductDetailPage(View):
         if cart:
             if product in cart:
                 quantity = cart[product]['quantity']
-                if size:
-                    cart[product]['size'] = size
-                    if color:
+                if quantity > 0:
+                    if size:
+                        cart[product]['size'] = size
+                    elif color:
                         cart[product]['color'] = color
-                elif color:
-                    cart[product]['color'] = color
-                elif quantity > 0:
-                    if not delete:
+                    elif gross_quantity:
+                        cart[product]['quantity'] = gross_quantity
+                    elif not delete:
                         if remove:
                             if quantity <= 1:
                                 cart.pop(product)
@@ -296,14 +304,14 @@ class ProductDetailPage(View):
                     else:
                         cart.pop(product)
                 else:
-                    cart[product] = {'quantity':1,'size':size, 'color': color}
+                    cart[product]['quantity'] = 1
             else:
                 cart[product] = {'quantity':1,'size':size, 'color': color}
         else:
             cart = {}
             cart[product] = {'quantity':1,'size':size, 'color': color}
+                    
         request.session['cart'] = cart
-        print(cart)
         return redirect('productdetailpage', product)
 
     def get(self, request, id):
@@ -329,6 +337,17 @@ class ProductDetailPage(View):
             size = None
             color = None
             request.session['cart'] = {}
+        
+        stock_list = Stock.objects.filter(product=id)
+        stock = 0
+        for product_stock in stock_list:
+            if size:
+                if color:
+                    if product_stock.size == size and product_stock.color == color:
+                        stock = product_stock
+                else:
+                    if product_stock.size == size and not product_stock.product.type == 'leather_ball':
+                        stock = product_stock
 
         context = {
                     'title':'Product Detail',
@@ -340,7 +359,8 @@ class ProductDetailPage(View):
                     'overall_rating': overall_rating,
                     'cart_list':cart_list,
                     'size': size,
-                    'color': color
+                    'color': color,
+                    'stock': stock
                     }
         return render(request, 'product-detail.html', context)
 
