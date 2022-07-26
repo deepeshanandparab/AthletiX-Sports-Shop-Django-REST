@@ -13,29 +13,19 @@ class StorePage(View):
     def post(self, request):
         product = request.POST.get('product')
         remove = request.POST.get('remove')
-        delete = request.POST.get('delete')
         cart = request.session.get('cart')
         
         if cart:
             if product in cart:
                 quantity = cart[product]['quantity']
-                if 'size' in cart[product]:
-                    cart[product]['size'] = cart[product]['size']
-                    if 'color' in cart[product]:
-                        cart[product]['color'] = cart[product]['color']
-                elif 'color' in cart[product]:
-                        cart[product]['color'] = cart[product]['color']
-                elif quantity > 0:
-                    if not delete:
-                        if remove:
-                            if quantity <= 1:
-                                cart.pop(product)
-                            else:
-                                cart[product]['quantity'] = quantity - 1
+                if quantity > 0:
+                    if remove:
+                        if quantity <= 1:
+                            cart.pop(product)
                         else:
-                            cart[product]['quantity'] = quantity + 1
+                            cart[product]['quantity'] = quantity - 1
                     else:
-                        cart.pop(product)
+                        cart[product]['quantity'] = quantity + 1
                 else:
                     cart[product] = {'quantity':1,'size':None, 'color': None}
             else:
@@ -44,7 +34,6 @@ class StorePage(View):
             cart = {}
             cart[product] = {'quantity':1,'size':None, 'color': None}
         request.session['cart'] = cart
-        print(cart)
         
         return redirect('storepage')
 
@@ -78,6 +67,7 @@ class StorePage(View):
         best_rating = request.GET.get('best_rating')
         low_price = request.GET.get('low_price')
         high_price = request.GET.get('high_price')
+        sort_label = ''
 
         #--------------------------Filter By Price------------------------------#
         price_all = request.GET.get('price-all')
@@ -105,14 +95,19 @@ class StorePage(View):
         if keyword != None:
             if latest != None:
                 product_list = Product.objects.filter(name__contains=keyword, status=True).order_by('-created_at')
+                sort_label = 'Latest'
             elif popularity != None:
-                product_list = Product.objects.filter(name__contains=keyword, status=True).order_by('-created_at')
+                product_list = Product.objects.filter(name__contains=keyword, status=True).order_by('-sold_quantity')
+                sort_label = 'Popularity'
             elif best_rating != None:
                 product_list = Product.objects.filter(name__contains=keyword, status=True).order_by('-created_at')
+                sort_label = 'Best Rating'
             elif low_price != None:
                 product_list = Product.objects.filter(name__contains=keyword, status=True).order_by('price')
+                sort_label = 'Price (Low to High)'
             elif high_price != None:
                 product_list = Product.objects.filter(name__contains=keyword, status=True).order_by('-price')
+                sort_label = 'Price (High to Low)'
             #------------------------------------------------------------
             elif price_50_100 == 'on':
                 product_list = Product.objects.filter(price__gte=50, price__lte=100, status=True).order_by('price')
@@ -170,14 +165,19 @@ class StorePage(View):
         else:
             if latest != None:
                 product_list = Product.objects.filter(status=True).order_by('-created_at')
+                sort_label = 'Latest'
             elif popularity != None:
-                product_list = Product.objects.filter(status=True).order_by('-created_at')
+                product_list = Product.objects.filter(status=True).order_by('-sold_quantity')
+                sort_label = 'Popularity'
             elif best_rating != None:
                 product_list = Product.objects.filter(status=True).order_by('-created_at')
+                sort_label = 'Best Rating'
             elif low_price != None:
                 product_list = Product.objects.filter(status=True).order_by('price')
+                sort_label = 'Price (Low to High)'
             elif high_price != None:
                 product_list = Product.objects.filter(status=True).order_by('-price')
+                sort_label = 'Price (High to Low)'
             elif price_50_100 == 'on':
                 product_list = Product.objects.filter(price__gte=50, price__lte=100, status=True).order_by('price')
                 filter_dict = { 'price_50_100':'on'} 
@@ -259,7 +259,8 @@ class StorePage(View):
             'products_type_list': products_type_list,
             'wishlist_products': getWishlist(request),
             'cart_list':cart_list,
-            'ratings_list': ratings_list
+            'ratings_list': ratings_list,
+            'sort_label': sort_label
             }
         return render(request, 'store.html', context)
 

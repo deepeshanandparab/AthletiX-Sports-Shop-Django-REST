@@ -1,7 +1,7 @@
 from itertools import product
 import re
 from django.shortcuts import render, redirect
-from store.models import CouponCode, Product, Wishlist, Order
+from store.models import CouponCode, Product, Wishlist, Order, RatingReview
 from account.models import User, Profile, Address 
 from django.http import HttpResponse, JsonResponse
 from .supporting_functions import getWishlist, generateRandom
@@ -29,13 +29,16 @@ class HomePage(View):
             cart_list = Product.get_products_by_id(ids)
         else:
             cart = {}
+
+        ratings_list = RatingReview.objects.all()
         context = {
             'title':'Home',
             'breadcrum': 'Home',
             'wishlist_products': getWishlist(request),
             'cart_list':cart_list,
             'product_list':product_list,
-            'trendy_products': trendy_products
+            'trendy_products': trendy_products,
+            'ratings_list': ratings_list
         }
         return render(request, 'index.html', context)  
 
@@ -117,10 +120,14 @@ class CartPage(View):
             cart_list = Product.get_products_by_id(ids)
             shipping_charges = 0
             btn_disabled = False
+            print('cart', cart)
+            print('btn_disabled', btn_disabled)
         else:
             cart = {}
             shipping_charges = 0
             btn_disabled = True
+            print('cart', cart)
+            print('btn_disabled', btn_disabled)
         context = {
             'title': 'Cart',
             'cart_list': cart_list,
@@ -151,20 +158,23 @@ class WishlistPage(View):
             return redirect('wishlistpage')
 
         if cart:
-            quantity = cart.get(product)
-            if quantity:
+            if product in cart:
+                quantity = cart[product]['quantity']
+                if quantity > 0:
                     if remove:
                         if quantity <= 1:
                             cart.pop(product)
-                        else:    
-                            cart[product] = quantity-1
+                        else:
+                            cart[product]['quantity'] = quantity - 1
                     else:
-                        cart[product] = quantity+1
+                        cart[product]['quantity'] = quantity + 1
+                else:
+                    cart[product] = {'quantity':1,'size':None, 'color': None}
             else:
-                cart[product] = 1
+                cart[product] = {'quantity':1,'size':None, 'color': None}
         else:
             cart = {}
-            cart[product] = 1
+            cart[product] = {'quantity':1,'size':None, 'color': None}
         request.session['cart'] = cart
         return redirect('wishlistpage')
 
@@ -429,23 +439,29 @@ def paymenthandler(request):
 
             
                 for product in products:
+                    print('Quantity', cart.get(str(product.id)))
                     order = Order(
                             order_id = razorpay_order_id,
                             order_amount = amount,
                             product = product,
                             user = request.user,
-                            quantity = cart.get(str(product.id)),
+                            quantity = cart.get(str(product.id)).get('quantity'),
                             price = product.price,
                             coupon_used = coupon_code,
                             discount_received = cart_discount,
                             terms = terms,
                             status = 'paid'
                         )
+
                     if product in products:
                         product = Product.objects.get(id=product.id)
                         product.sold_quantity = cart.get(str(product.id))
-                        if product.stock_quantity > 0 and product.stock_quantity > product.sold_quantity:
-                            product.stock_quantity = product.stock_quantity - product.sold_quantity
+                        stock = product.stock_quantity
+                        sold = product.sold_quantity.get('quantity')
+                        print('stock', stock , 'sold', sold)
+                        if stock > 0 and stock >= sold:
+                            product.stock_quantity = stock - sold
+                            product.sold_quantity = sold
                         product.save()
 
                     order.save()
@@ -482,3 +498,28 @@ def paymenthandler(request):
     else:
         print('No Post request')
         return HttpResponseBadRequest()
+
+
+
+class Faqs(View):
+    def get(self, request):
+        context = {'title': 'FAQs'}
+        return render(request, 'faq.html', context)
+
+
+class Aboutus(View):
+    def get(self, request):
+        context = {'title': 'About Us'}
+        return render(request, 'about_us.html', context)
+
+
+class Help(View):
+    def get(self, request):
+        context = {'title': 'Help & Support'}
+        return render(request, 'help.html', context)
+
+
+class Terms(View):
+    def get(self, request):
+        context = {'title': 'Terms and Conditions'}
+        return render(request, 'terms.html', context)

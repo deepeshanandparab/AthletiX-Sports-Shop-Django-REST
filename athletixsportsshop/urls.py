@@ -17,7 +17,8 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
-from .views import HomePage, CartPage, WishlistPage, CheckoutPage, PlaceOrder, paymenthandler
+from .views import HomePage, CartPage, WishlistPage, CheckoutPage, PlaceOrder, paymenthandler, \
+    Faqs, Aboutus, Help, Terms
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,5 +29,10 @@ urlpatterns = [
     path('wishlist/', WishlistPage.as_view(), name='wishlistpage'),
     path('checkout/', CheckoutPage.as_view(), name='checkoutpage'),
     path('placeorder/', PlaceOrder.as_view(), name='placeorderpage'),
-    path('placeorder/paymenthandler/', paymenthandler, name='paymenthandler')
+    path('placeorder/paymenthandler/', paymenthandler, name='paymenthandler'),
+    path('faqs/', Faqs.as_view(), name='faqpage'),
+    path('aboutus/', Aboutus.as_view(), name='aboutuspage'),
+    path('help/', Help.as_view(), name='helppage'),
+    path('terms/', Terms.as_view(), name='termspage'),
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
