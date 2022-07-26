@@ -436,3 +436,17 @@
 .product_link a:hover{
   color:#db4a39!important;
 }
+
+
+
+.accordion .card-header:after {
+  font-family: 'FontAwesome';  
+  content: "\f068";
+  float: right; 
+  cursor: pointer;
+}
+.accordion .card-header.collapsed:after {
+  /* symbol for "collapsed" panels */
+  content: "\f067"; 
+  cursor: pointer;
+}

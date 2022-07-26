@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Help and Support</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="/">Home</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Help and Support</p>
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
+
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-lg-9 col-md-12 mb-3">
+            <div id="accordion" class="accordion">
+                <div class="card mb-0">
+                    <!----------------------Wishlist---------------------->
+                    <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" 
+                    href="#collapseWishlist">
+                        <a class="card-title">
+                            Wishlist
+                        </a>
+                    </div>
+                    <div id="collapseWishlist" class="card-body collapse" data-parent="#accordion" >
+                        <b>1.	Add/Remove Product to Wishlist – Home Page</b>
+                        <p class="pl-5">-	First you need to login to your account if you are already a user or create a new account.</p>
+                        <img src="{% static 'img/help/wishlist_home/1.gif' %}" class="img img-fluid pl-5">
+
+                        <p class="pl-5">-	Click on wishlist button of product listed on home page</p>
+                        <img src="{% static 'img/help/wishlist_home/2.gif' %}" class="img img-fluid pl-5">
+                        
+                        <p class="pl-5">-	Check your wishlisted products on notification tray. Click on View Wishlist to check your wishlited products and their details.</p>
+                        <img src="{% static 'img/help/wishlist_home/3.gif' %}" class="img img-fluid pl-5">
+                    
+
+
+                        <b>2.	Add/ Remove Product to Wishlist – Product Details Page</b>
+                        <p class="pl-5">-	First you need to login to your account if you are already a user or create a new account.</p>
+                        <img src="{% static 'img/help/wishlist_home/1.gif' %}" class="img img-fluid pl-5">
+
+                        <p class="pl-5">-	Click on View Details button of product listed on home page and go to details page of the product. Click on wishlist button of product located on top left corner of details section.</p>
+                        <img src="{% static 'img/help/wishlist_details/1.gif' %}" class="img img-fluid pl-5">
+                        
+                        <p class="pl-5">-	Check your wishlisted products on notification tray. Click on View Wishlist to check your wishlited products and their details.</p>
+                        <img src="{% static 'img/help/wishlist_details/2.gif' %}" class="img img-fluid pl-5">
+                    
+
+
+                        <b>3.	Add Wish listed product to Cart</b>
+                        <img src="{% static 'img/help/wishlist_details/3.gif' %}" class="img img-fluid pl-5">
+                    </div>
+
+                    <!----------------------Cart---------------------->
+                    <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" 
+                    href="#collapseCart">
+                        <a class="card-title">
+                            Cart
+                        </a>
+                    </div>
+                    <div id="collapseCart" class="card-body collapse" data-parent="#accordion" >
+                        <b>1.	Add to Cart – Home Page</b>
+                        <p class="pl-5">-	First you need to login to your account if you are already a user or create a new account.</p>
+                        <img src="{% static 'img/help/wishlist_home/1.gif' %}" class="img img-fluid pl-5">
+
+
+                        <b>2.	Add/Remove quantity</b>
+                        <p class="pl-5">-	First you need to login to your account if you are already a user or create a new account.</p>
+                        <img src="{% static 'img/help/wishlist_home/1.gif' %}" class="img img-fluid pl-5">
+
+
+                        <b>3.	View Cart Page</b>
+                        <p class="pl-5">-	First you need to login to your account if you are already a user or create a new account.</p>
+                        <img src="{% static 'img/help/wishlist_home/1.gif' %}" class="img img-fluid pl-5">
+                    </div>
+
+
+                    <!----------------------Checkout---------------------->
+                    <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" 
+                    href="#collapseCheckout">
+                        <a class="card-title">
+                            Checkout
+                        </a>
+                    </div>
+                    <div id="collapseCheckout" class="card-body collapse" data-parent="#accordion" >
+                        <b>1.	Add to Cart – Home Page</b>
+                        <p class="pl-5">-	First you need to login to your account if you are already a user or create a new account.</p>
+                        <img src="{% static 'img/help/wishlist_home/1.gif' %}" class="img img-fluid pl-5">
+
+
+                        <b>2.	Add/Remove quantity</b>
+                        <p class="pl-5">-	First you need to login to your account if you are already a user or create a new account.</p>
+                        <img src="{% static 'img/help/wishlist_home/1.gif' %}" class="img img-fluid pl-5">
+
+
+                        <b>3.	View Cart Page</b>
+                        <p class="pl-5">-	First you need to login to your account if you are already a user or create a new account.</p>
+                        <img src="{% static 'img/help/wishlist_home/1.gif' %}" class="img img-fluid pl-5">
+                    </div>
+
+                    <!----------------------Coupon Code---------------------->
+                    <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" 
+                    href="#collapseCouponCode">
+                        <a class="card-title">
+                            Coupon Code
+                        </a>
+                    </div>
+                    <div id="collapseCouponCode" class="card-body collapse" data-parent="#accordion" >
+                        <b>1. Valid Coupon Code</b>
+                        <p class="pl-5">-	On Cart Page, you can apply a coupon code to get discount on products.</p>
+                        <p class="pl-5">-	If valid coupon code is applied, then discounted price will be deducted from product price.</p>
+                        <p class="pl-5">-   A valid coupon code is coupon which is currently active, haven't reddemed by user previously, haven't exceed redeem count 
+                            or any other specfic condition set by administrator.
+                        </p>
+                        <img src="{% static 'img/help/coupon_code/1.gif' %}" class="img img-fluid pl-5">
+
+
+                        <b>2. Invalid Coupon Code</b>
+                        <p class="pl-5">-	On Cart Page, you can apply a coupon code to get discount on products.</p>
+                        <p class="pl-5">-	If invalid coupon code is applied then it will display an error.</p>
+                        <img src="{% static 'img/help/coupon_code/2.gif' %}" class="img img-fluid pl-5">
+                    </div>
+
+
+                    <!----------------------Filter product listing---------------------->
+                    <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" 
+                    href="#collapseFilterProduct">
+                        <a class="card-title">
+                            Filter Product Listing
+                        </a>
+                    </div>
+                    <div id="collapseFilterProduct" class="card-body collapse" data-parent="#accordion" >
+                        <b>1.	Filter Products by Price range</b>
+                        <p class="pl-5">-	Go to shop page and scroll down to product listing section. Click on any checkbox next to price range mentioned in ‘Filter by Price Range’ section</p>
+
+                        <b>2.	Filter Product by category</b>
+                        <p class="pl-5">-	Click on any checkbox next to categories range mentioned in ‘Filter by Category’ section</p>
+
+                        <b>3.	Search Product</b>
+                        <p class="pl-5">-	Enter any product related keyword in textbox next to search button above product listing section</p>
+
+                        <img src="{% static 'img/help/filter_product/1.gif' %}" class="img img-fluid pl-5">
+                    </div>
+
+
+                    <!----------------------Sort product listing---------------------->
+                    <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" 
+                    href="#collapseSortProduct">
+                        <a class="card-title">
+                            Sort Product Listing
+                        </a>
+                    </div>
+                    <div id="collapseSortProduct" class="card-body collapse" data-parent="#accordion" >
+                        <b>Sort products by popularity, price</b>
+                        <p class="pl-5">-	On shop page, select any option from dropdown list to sort product by price high to low, latest to older listed products, popularity, etc.</p>
+                        <img src="{% static 'img/help/filter_product/2.gif' %}" class="img img-fluid pl-5">
+
+                    </div>
+
+
+                    <!----------------------Product Ratings---------------------->
+                    <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" 
+                    href="#collapseProductRating">
+                        <a class="card-title">
+                            Product Ratings and Comments
+                        </a>
+                    </div>
+                    <div id="collapseProductRating" class="card-body collapse" data-parent="#accordion" >
+                        <b>1.	Add to Cart – Home Page</b>
+                        <p class="pl-5">-	First you need to login to your account if you are already a user or create a new account.</p>
+                        <img src="{% static 'img/help/wishlist_home/1.gif' %}" class="img img-fluid pl-5">
+
+
+                        <b>2.	Add/Remove quantity</b>
+                        <p class="pl-5">-	First you need to login to your account if you are already a user or create a new account.</p>
+                        <img src="{% static 'img/help/wishlist_home/1.gif' %}" class="img img-fluid pl-5">
+
+
+                        <b>3.	View Cart Page</b>
+                        <p class="pl-5">-	First you need to login to your account if you are already a user or create a new account.</p>
+                        <img src="{% static 'img/help/wishlist_home/1.gif' %}" class="img img-fluid pl-5">
+                    </div>
+
+
+                    <!----------------------Product Details View---------------------->
+                    <div class="card-header collapsed" data-toggle="collapse" data-parent="#accordion" 
+                    href="#collapseProductRating">
+                        <a class="card-title">
+                            Product Details View
+                        </a>
+                    </div>
+                    <div id="collapseProductRating" class="card-body collapse" data-parent="#accordion" >
+                        <b>1.	Product onclick open slider</b>
+                        <p class="pl-5">-	First you need to login to your account if you are already a user or create a new account.</p>
+                        <img src="{% static 'img/help/wishlist_home/1.gif' %}" class="img img-fluid pl-5">
+
+
+                        <b>2.	Product Zoom</b>
+                        <p class="pl-5">-	First you need to login to your account if you are already a user or create a new account.</p>
+                        <img src="{% static 'img/help/wishlist_home/1.gif' %}" class="img img-fluid pl-5">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

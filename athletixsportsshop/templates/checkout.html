@@ -72,7 +72,9 @@
                     <div class="col-md-12 form-group">
                         <div class="custom-control custom-checkbox">
                             <input type="checkbox" class="custom-control-input" id="order_terms" name="order_terms">
-                            <label class="custom-control-label" for="order_terms" data-toggle="collapse" data-target="#place_order_button">Accept Terms and Conditions</label>
+                            <label class="custom-control-label collapsed" for="order_terms" data-toggle="collapse" data-target="#place_order_button">
+                                Accept <a href="{% url 'termspage' %}" target="_blank">Terms and Conditions</a>
+                            </label>
                         </div>
                     </div>
                     <div class="col-md-12 form-group">
@@ -191,24 +193,7 @@
                 </div>
             </div>
             <div class="card no-border mb-5">
-                <!-- <div class="card-header bg-secondary border-0">
-                    <h4 class="font-weight-semi-bold m-0">Payment</h4>
-                </div>
-                <div class="card-body">
-                    <div class="form-group">
-                        <div class="custom-control custom-radio">
-                            <input type="radio" class="custom-control-input" name="payment" id="cod" onclick="changeShippingCost()">
-                            <label class="custom-control-label" for="cod">Cash on Delivery <small>(Shipping Charges Apply)</small></label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="custom-control custom-radio">
-                            <input type="radio" class="custom-control-input" name="payment" id="onlp" onclick="changeShippingCostZero()">
-                            <label class="custom-control-label" for="onlp">Online Payment <small>(Free Shipping)</small></label>
-                        </div>
-                    </div>
-                </div> -->
-                <div class="collapse bg-transparent p-0" id="place_order_button">
+                <div class="bg-transparent p-0 collapse" id="place_order_button">
                     <button type="submit" class="btn btn-lg btn-block btn-primary font-weight-bold">
                         Proceed to Pay
                     </button>

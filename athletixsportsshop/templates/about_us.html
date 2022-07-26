@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">About Us</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="/">Home</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">About Us</p>
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
+
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-lg-8 col-md-12 mb-3 text-justify">
+            <p>
+            AthletiX Sports is Mumbai based sports equipment brand started in year 2020. 
+            We provide top quality cricket and fitness equipment at a reasonable rate. 
+            All of our products are made in India. Raw material used for manufacturing our equipment 
+            are produced in India only. 
+            We deliver our products all over India as well as across the world(International courier 
+            charges applicable). 
+            </p>
+
+            <p>
+            Our sole aim is to make high quality sports equipment available for sports enthusiasts 
+            at low price point. We do not compromise on quality while deciding price factor of our 
+            equipment. Currently we are associated with various upcoming state and district level 
+            professional cricketers. With highly positive feedbacks from our customers, we at 
+            AthletiX Sports are thriving to achieve new heights with our customer base. So don’t 
+            wait, order your new AthletiX Sports gears and hit the ground. let’s be a part of 
+            AthletiX Family.
+            </p>
+        </div>
+        
+        <div class="col-lg-4 col-md-12">
+            <div class="row">
+                <div class="col-lg-4 col-md-12 mb-3">
+                    <img class="img img-fluid" src="{% static 'img/sponsored/player1.jpeg' %}">
+                </div>
+
+                <div class="col-lg-4 col-md-12 mb-3">
+                    <img class="img img-fluid"  src="{% static 'img/sponsored/player2.jpeg' %}">
+                </div>
+
+                <div class="col-lg-4 col-md-12 mb-3">
+                    <img class="img img-fluid"  src="{% static 'img/sponsored/player3.jpeg' %}">
+                </div>
+
+                <div class="col-lg-4 col-md-12 mb-3">
+                    <img class="img img-fluid"  src="{% static 'img/sponsored/player4.jpeg' %}">
+                </div>
+
+                <div class="col-lg-4 col-md-12 mb-3">
+                    <img class="img img-fluid"  src="{% static 'img/sponsored/player5.jpeg' %}">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
